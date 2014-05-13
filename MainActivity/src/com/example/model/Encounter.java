@@ -7,6 +7,8 @@
  */
 package com.example.model;
 
+import java.util.Date;
+
 public class Encounter {
 	private int 	encounter_id;
 	private int 	pid;
@@ -90,7 +92,8 @@ public class Encounter {
 	
 	public String toString()
 	{
-		return date_encountered + " " + type_patient + " " + message_complaint;
+		//return date_encountered + " " + type_patient + " " + message_complaint;
+		return message_complaint + " (" + date_encountered.substring(0,10) + ")";
 	}
 
 }

@@ -1,3 +1,7 @@
+/**
+ * @author Jake Randolph B Muncada
+ */
+
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
@@ -59,12 +63,12 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 
 	public void setChildData(int patient_id, String date_encountered) {
 
-		ArrayList<String> child = new ArrayList<String>();
+		ArrayList<Encounter> child = new ArrayList<Encounter>();
 		DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
 		
 		ArrayList<Encounter> encounterList = db.getPreviousEncounter(patient_id, date_encountered);
 		for (int i = 0; i < encounterList.size(); i++) {
-			child.add(encounterList.get(i).getMessageComplaint());
+			child.add(encounterList.get(i));
 		}
 		childItems.add(child);
 		
@@ -76,6 +80,7 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 		childItems.add(child);
 		*/
 
+		/*
 		// Core Java
 		child = new ArrayList<String>();
 		child.add("Apache");
@@ -100,6 +105,7 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 		child.add("Hibernate");
 		child.add("JSP");
 		childItems.add(child);
+		*/
 	}
 
 }

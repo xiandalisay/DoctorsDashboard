@@ -99,6 +99,6 @@ public class DoctorAdapter extends Data{
 		if(cursor.getInt(0) > 0)
 			return true;
 		else
-			return false;
+			return false; 
 	}
 }

@@ -2,14 +2,13 @@
  * @author Jake Randolph B Muncada
  */
 
-package com.example.android.navigationdrawerexample;
+package com.example.database;
 
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +17,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import com.example.android.navigationdrawerexample.PatientEncounterActivity;
+import com.example.android.navigationdrawerexample.R;
 import com.example.model.Encounter;
 
 public class ExpListAdapter extends BaseExpandableListAdapter {

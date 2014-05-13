@@ -2,6 +2,8 @@ package com.example.android.navigationdrawerexample;
 
 
 
+import com.example.model.Preferences;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.SearchManager;
@@ -244,4 +246,5 @@ public abstract class BaseActivity extends Activity{
         }
         */
     }
+
 }

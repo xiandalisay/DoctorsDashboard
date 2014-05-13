@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,11 +31,12 @@ import com.example.api.auth.MD5Hash;
 import com.example.database.DoctorAdapter;
 import com.example.database.RegistrationAdapter;
 import com.example.model.Doctor;
+import com.example.model.Preferences;
 import com.example.model.Registration;
 import com.example.model.Rest;
 import com.example.parser.TokenParser;
 
-public class RegisterActivity extends Activity{
+public class RegisterActivity extends InitialActivity{
 
 	private Registration reg;
 	private Rest rest;
@@ -64,9 +66,13 @@ public class RegisterActivity extends Activity{
 		
 		setContentView(R.layout.activity_register);
 		getActionBar().setDisplayHomeAsUpEnabled(false);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		initViews();
+		
+		checkNetwork();
+		
 	}
-	
+
 	/* Called when "Register" button is clicked (refer to activity_register layout) */
 	public void processRegistration(View view){
 		
@@ -86,10 +92,10 @@ public class RegisterActivity extends Activity{
 						data.get("access_token"),
 						data.get("birth_date"),
 						data.get("sex"),
-						base_url
+						base_url 
 				};
 				
-				System.out.println("pasok");
+				System.out.println("pasok"); 
 				
 				Doctor doctor = new Doctor();
 				//Inserting Integer Data to the model

@@ -19,6 +19,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public DatabaseHandler(Context context, String name, CursorFactory factory, int version)  {
 	    super(context, name, factory, version);
 	    Log.d("DatabaseHandler", "Database Created");
+	    System.out.println("INSERT INTO patient ('pid','name_last','name_first','name_middle','sex','date_birth','street','city','province','zipcode','hist_smoke','hist_drink') " +
+	    		" VALUES (1,'Cosare','Alvin','Ceniza','m','1994-00-00','Mintal','Davao City','Davao del Sur','8000',1,0)");
+				/*+ "" + 
+				" 	(3,'Unknown','Patient','SPMC','f','0000-00-00','','','','',1,1), " + 
+				" 	(1000000,'Montelibano','Julie','Himo','f','2007-07-07','Commonal','Davao City','Davao del Sur','8000',0,1), " +
+				" 	(1000001,'Diamona','Francis','Garong','m','2003-04-30','Tuban','Davao City','Davao del Sur','8000',1,1), " + 
+				" 	(1086278,'Sarael','Val','Teofilo','m','1974-10-08','#250 BLK III SIR','Davao City','Davao del Sur','8000',0,0), " + 
+				" 	(1158851,'Satinitigan','Val','Repalda','f','2004-02-14','KM. 13, ZONE II','Davao City','Davao del Sur','8000',0,0), " + 
+				" 	(1234567,'Sayman','Val Anthony','Garong','m','2006-07-19','Kabacan Ecoland','Davao City','Davao del Sur','8000',0,0) "  );*/
 	}
 	
 	//	----------------TABLE CREATION METHODS----------------
@@ -62,27 +71,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	public void onCreateDummy(SQLiteDatabase db) {
-		try	{
+		try	{ 
 			db.execSQL("INSERT INTO 'department' ('dept_id','short_dept','name_dept','acr_dept') " + 
 				"VALUES (153,'Anesthesia','Anesthesia',''), " + 
 				"	(106,'Med-Rheuma','Medicine-Rheumatology',''), " + 
 				"	(107,'Med-Neuro','Medicine-Neurology',''), " + 
 				"	(131,'Opthal','Opthalmology',''), " + 
-				"	(133,'FaMed','Family Medicine',''), " + 
+				"	(133,'FaMed','Family Medicine',''), " +  
 				"	(136,'ENT-HNS','ENT-HNS','') " );
-			db.execSQL("INSERT INTO 'doctor' ('personnel_id','license_no','dept_id','name_last','name_first','name_middle') " +
+		    db.execSQL("INSERT INTO 'doctor' ('personnel_id','license_no','dept_id','name_last','name_first','name_middle') " +
 				" VALUES (100022,'1234560',133,'Aquino','Aljun','Galaura'), " +
 				"	(100027,'1234567',133,'Gaurino','Marc','Gonzales'), " +
 				"	(100040,'1234568',133,'Caralos','Rex Arnold','Mesiona'), " +
 				"	(100054,'1234569',131,'Chin','Elizabeth May','Tan') "  );
-			db.execSQL("INSERT INTO 'patient' ('pid','name_last','name_first','name_middle','sex','date_birth','street','city','province','zipcode','hist_smoke','hist_drink') " +
-				" VALUES " + //(1,'Cosare','Alvin','Ceniza','m','1994-00-00','Mintal','Davao City','Davao del Sur','8000',1,0), " + 
-				//" 	(3,'Unknown','Patient','SPMC','f','0000-00-00','','','','',1,1), " + 
-				" 	(1000000,'Montelibano','Julie','Himo','f','2007-07-07','Commonal','Davao City','Davao del Sur','8000',0,1), " +
-				" 	(1000001,'Diamona','Francis','Garong','m','2003-04-30','Tuban','Davao City','Davao del Sur','8000',1,1), " + 
-				" 	(1086278,'Sarael','Val','Teofilo','m','1974-10-08','#250 BLK III SIR','Davao City','Davao del Sur','8000',0,0), " + 
-				" 	(1158851,'Satinitigan','Val','Repalda','f','2004-02-14','KM. 13, ZONE II','Davao City','Davao del Sur','8000',0,0), " + 
-				" 	(1234567,'Sayman','Val Anthony','Garong','m','2006-07-19','Kabacan Ecoland','Davao City','Davao del Sur','8000',0,0) "  );
+			db.execSQL("INSERT INTO patient ('pid','name_last','name_first','name_middle','sex','date_birth','street','city','province','zipcode','hist_smoke','hist_drink') " +
+		    		" VALUES (1,'Cosare','Alvin','Ceniza','m','1994-00-00','Mintal','Davao City','Davao del Sur','8000',1,0)");
 			db.execSQL("INSERT INTO 'encounter' ('encounter_id','personnel_id','pid','type_patient','message_complaint','date_encountered') " + 
 				" VALUES (2008000001,100022,1000000,'OPD',null,'2008-11-24 16:05:43'), " + 
 				"	(2008000002,100022,1000000,'OPD',null,'2008-12-24 08:07:43'), " + 
@@ -90,7 +93,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("INSERT INTO 'reason' ('reason_id','name_reason') " +
 				" VALUES (1,'Surgery'), " + 
 				"   (2,'Dialysis'), " +
-				"	(3,'ER')");
+				"	(3,'ER')"); 
 			db.execSQL("INSERT INTO 'referral' ('referral_id','encounter_id','dept_id','reason_id','date_referred') " + 
 				" VALUES (1,1008000001,133,1,'2013-06-02 00:12:00' )");
 			Log.d("DatabaseHandler","onCreateDummy successful");

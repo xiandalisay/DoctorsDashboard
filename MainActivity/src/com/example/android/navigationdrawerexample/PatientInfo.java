@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,10 +36,9 @@ public class PatientInfo extends Activity {
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
 		int patientid = extras.getInt("EXTRA_PATIENT_ID");
-		//Toast.makeText(getApplicationContext(), patientid, Toast.LENGTH_SHORT).show();
 		
 		DatabaseAdapter db = new DatabaseAdapter(this);
-		Patient patient = db.getPatient(patientid);
+		Patient patient = db.getPatientProfile(patientid);
 		
 		EditText nameEditText = (EditText) findViewById(R.id.FullName);
 		EditText genderEditText = (EditText) findViewById(R.id.Gender);
