@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class Preferences{
+public class Preferences extends HelperSharedPreferences{
 	
 	private  ConnectivityManager connectivityManager;
 	
@@ -21,4 +21,5 @@ public class Preferences{
 	    
 	    return false;
 	} 
+
 }

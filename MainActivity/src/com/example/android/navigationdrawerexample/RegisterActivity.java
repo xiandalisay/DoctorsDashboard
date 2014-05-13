@@ -70,7 +70,6 @@ public class RegisterActivity extends InitialActivity{
 		initViews();
 		
 		checkNetwork();
-		
 	}
 
 	/* Called when "Register" button is clicked (refer to activity_register layout) */
