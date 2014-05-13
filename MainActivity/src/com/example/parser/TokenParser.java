@@ -15,13 +15,23 @@ public class TokenParser extends JSONParser {
 		
 		try {
 			json_object = new JSONObject(content);
-			json_childNode = (JSONObject) json_object.get("data");
 		} catch (JSONException e) {
 			System.out.println("JSON error");
 		}
 	}
 	
-	public HashMap<String, String> extractData(){
+	public boolean getChild(){
+		
+		try{
+			json_childNode = (JSONObject) json_object.get("data");		
+			return true;
+		} catch(Exception e){
+			System.out.println("Null error");
+			return false;
+		} 
+	}
+
+	public HashMap<String, String> extractData(){ 
 		System.out.println("saving data to HashMap..");
 		
         data.put("auth_token", json_childNode.optString("auth_token"));        

@@ -32,6 +32,8 @@ public class Rest extends AsyncTask<Rest, Void, Void>{
 	private String 			    content;
 	private String 				url;
 	private int 				port;
+	private boolean 			result;
+	
 	
 	public Rest(){
 		params = new BasicRequestParams();
@@ -73,11 +75,17 @@ public class Rest extends AsyncTask<Rest, Void, Void>{
 		try{
 			response = Resting.get(url,port);
 			content = response.getResponseString();
+			result = true;
         } catch(Exception e){
-			e.printStackTrace();
+			result = false;
 		}
 		
 		return null;
+		
+	}
+
+	public boolean getResult(){
+		return result;
 	}
 	
 

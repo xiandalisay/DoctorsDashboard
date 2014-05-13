@@ -78,41 +78,13 @@ public class RegisterActivity extends InitialActivity{
 		
 		/* if inputs are all valid, submits them thru API */
 		if(prepareCredentials()){
-			submitCredentials();
-			
-			System.out.println("license_nr: " + license_nr);
-			
-			if(!isDoctorExists(license_nr)){
-				String[] DoctorData = {
-						license_nr,
-						data.get("name_last"),
-						data.get("name_first"),
-						data.get("name_middle"),
-						data.get("auth_token"),
-						data.get("access_token"),
-						data.get("birth_date"),
-						data.get("sex"),
-						base_url 
-				};
-				
-				System.out.println("pasok"); 
-				
-				Doctor doctor = new Doctor();
-				//Inserting Integer Data to the model
-				doctor.setDeptId(Integer.parseInt(data.get("location_nr")));
-				doctor.setPersonnelId(Integer.parseInt("100023"));
-				//doctor.setPersonnelId(Integer.parseInt("100023"));
-				//Inserting string Data to the model
-				doctor.setDoctorCredentials(DoctorData);
-				setRetrievedCredentials(doctor);
-				showLoginActivity();
-			}
-			else{
-				Toast.makeText(getApplicationContext(), "Account Already Exists", Toast.LENGTH_SHORT).show();
+			if(submitCredentials()){
+				insertDoctor();
 			}
 		}
 	}
-	
+
+
 	/* Saves inputted data by user and checks if they are valid */
 	public boolean prepareCredentials(){
 		
@@ -277,7 +249,7 @@ public class RegisterActivity extends InitialActivity{
 	}
 	
 	/* Submits credentials to server via API */
-	private void submitCredentials(){
+	private boolean submitCredentials(){
 		
 		rest = new Rest();
 		/* setup API URL */
@@ -296,26 +268,41 @@ public class RegisterActivity extends InitialActivity{
 		/* process request service request */
 		rest.execute();
 		
-		System.out.println("processing request..");
+		/* check if connection was successful */
 		
+		System.out.println("processing request..");
+			
 		/* wait until data is retrieved, there is delay in retrieving data*/
 		while(rest.getContent() == null){}
-		
+			
 		System.out.println("Data Received:\n" + rest.getContent());
+			
+		if(parseJSONResponse(rest.getContent())){
+			return true;
+		}
 		
-		parseJSONResponse(rest.getContent());
+		return false;
 		
 	} 
 
 	/* Parses data in JSON format to String type */
-	private void parseJSONResponse(String content){
+	private boolean parseJSONResponse(String content){
 
 		TokenParser parser = new TokenParser(content);
-		System.out.println("Parsing data..");
+		System.out.println("Parsing data..\n" + content);
 		
-		data = parser.extractData();
+		if(!parser.getChild()){ 
+			Toast.makeText(getApplicationContext(), "Unauthorized Acess. Please try again.", Toast.LENGTH_LONG).show();
+			return false;
+		}
+		else{
+			System.out.println("Parsing data..");
+			data = parser.extractData();
+			return true;
+		}
+		
 	}
-	
+	 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -359,7 +346,42 @@ public class RegisterActivity extends InitialActivity{
 		Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);
 	}
-
+	
+	
+	private void insertDoctor() {
+		
+		System.out.println("license_nr: " + license_nr);
+		
+		if(!isDoctorExists(license_nr)){
+			String[] DoctorData = {
+					license_nr,
+					data.get("name_last"),
+					data.get("name_first"),
+					data.get("name_middle"),
+					data.get("auth_token"),
+					data.get("access_token"),
+					data.get("birth_date"),
+					data.get("sex"),
+					base_url 
+			};
+			
+			System.out.println("pasok"); 
+			
+			Doctor doctor = new Doctor();
+			//Inserting Integer Data to the model
+			doctor.setDeptId(Integer.parseInt(data.get("location_nr")));
+			doctor.setPersonnelId(Integer.parseInt("100023"));
+			//doctor.setPersonnelId(Integer.parseInt("100023"));
+			//Inserting string Data to the model
+			doctor.setDoctorCredentials(DoctorData);
+			setRetrievedCredentials(doctor);
+			showLoginActivity();
+		}
+		else{
+			Toast.makeText(getApplicationContext(), "Account Already Exists", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
