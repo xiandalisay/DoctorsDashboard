@@ -55,6 +55,7 @@ public class LoginActivity extends InitialActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		
+		/* checks if phone is connected to a network */
 		checkNetwork();
 	}
 	

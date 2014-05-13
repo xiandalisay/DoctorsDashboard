@@ -38,6 +38,7 @@ import com.example.parser.TokenParser;
 
 public class RegisterActivity extends InitialActivity{
 
+	private Preferences pref;
 	private Registration reg;
 	private Rest rest;
 	
@@ -64,14 +65,31 @@ public class RegisterActivity extends InitialActivity{
 		
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_register);
-		getActionBar().setDisplayHomeAsUpEnabled(false);
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-		initViews();
+		/* checks if phone is connected to a network */
+		if(!isConnected()){
+			setContentView(R.layout.activity_offline_registration);
+		}
+		else{
+			setContentView(R.layout.activity_register);
+			getActionBar().setDisplayHomeAsUpEnabled(false);
+			getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+			initViews();
+		}
 		
-		checkNetwork();
+		
 	}
-
+	
+	/* checks if phone is connected to a network */
+	private boolean isConnected(){
+		pref = new Preferences();
+		
+		if(pref.isNetworkAvailable(this)){
+			return true;
+		}
+		
+		return false;
+	}
+	
 	/* Called when "Register" button is clicked (refer to activity_register layout) */
 	public void processRegistration(View view){
 		
@@ -165,7 +183,7 @@ public class RegisterActivity extends InitialActivity{
 			et_username.setError(getString(R.string.error_invalid_format));
 			focusView = et_username;
 			cancel = true;
-		} 
+		}  
 		
 		if (!username.matches(regex)) {
 			et_username.setError(getString(R.string.error_invalid_format));
@@ -346,6 +364,11 @@ public class RegisterActivity extends InitialActivity{
 		startActivity(intent);
 	}
 	
+	public void showRegisterActivity(View view){
+		//System.out.println("register");
+		Intent intent = new Intent(this, RegisterActivity.class);
+		startActivity(intent);
+	}
 	
 	private void insertDoctor() {
 		
