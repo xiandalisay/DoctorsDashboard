@@ -24,13 +24,14 @@ public class TagPatientActivity extends InitialActivity {
 
 	private void submitTag() {
 		
-		rest = new Rest();
+		rest = new Rest("POST");
 		
 		/* setup API URL */
 		rest.setURL(
 					"http://121.97.45.242/segservice"+ //getBaseURL() +
 					"/encounter/tagpatient/"
 					);
+		
 		rest.addRequestParams("doctor_nr", "100055"); //getPersonnelNumber() 
 		rest.addRequestParams("encounter_nr", encounter_id + ""); //getPersonnelNumber() 
 
