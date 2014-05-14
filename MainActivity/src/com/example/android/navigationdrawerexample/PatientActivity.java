@@ -43,7 +43,7 @@ public class PatientActivity extends BaseActivity {
 		EditText edittext = (EditText) findViewById(R.id.searchView1);
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
-		if(isNetworkAvailable()){
+		/*if(isNetworkAvailable()){
 
 			Rest rest = new Rest("GET");
 			rest.setURL(url);
@@ -55,11 +55,12 @@ public class PatientActivity extends BaseActivity {
 				PatientParser patient_parser = new PatientParser(content);
 				patients = patient_parser.getPatients();
 			}
-		}
+		} 
 		else{
+		*/
 			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 			patients = adapter.searchPatient("");
-		}
+		//}
 		
 		ListView listview = (ListView) findViewById(R.id.listView1);
 		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
@@ -82,7 +83,7 @@ public class PatientActivity extends BaseActivity {
         	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
         	    	displayinfo = displayinfo + "Female";
         	    }
-        	    System.out.println(displayinfo);
+        	    //System.out.println(displayinfo);
         	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
         	    
         	    text1.setText(displayname);

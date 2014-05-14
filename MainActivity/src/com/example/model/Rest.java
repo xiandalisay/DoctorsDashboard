@@ -25,6 +25,7 @@ import com.google.resting.component.EncodingTypes;
 import com.google.resting.component.RequestParams;
 import com.google.resting.component.impl.BasicRequestParams;
 import com.google.resting.component.impl.ServiceResponse;
+import com.google.resting.json.JSONArray;
 import com.google.resting.method.post.PostHelper;
 
 public class Rest extends AsyncTask<String, Void, Void>{
@@ -32,7 +33,9 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	private final String USERNAME = "emr";
 	private final String PASSWORD = "3mrh1s";
 	
-	private RequestParams 		params;
+	private String 				data; 	
+	private JSONObject			parameters  = new JSONObject();
+	private BasicRequestParams 	params;
 	private List<Header> 		headers;
 	private ServiceResponse 	response;
 	
@@ -53,17 +56,19 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	}
 	
 	//adds key : value params
-	public void addRequestParams(String arg0, String arg1){
-		params.add(arg0, arg1);
+	public void addRequestParams(){
+		params.add("data_json", data);
 	}
 	
 	public void addToJSON(String key, String value){
-		JSONObject Data = new JSONObject();
+		
 		try{			
-			Data.put(key,value);
+			parameters.put(key,value);
+			//data.put(parameters);
 		} catch(JSONException e){
 			System.out.println(e.getMessage().toString());
 		}
+
 	}
 	
 	/* Setter methods */
@@ -71,7 +76,11 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	public void setURL(String url){
 		this.url = url;
 	}
-
+	
+	public void setData(){
+		data = parameters.toString();
+	}
+	
 	
 	/* Getter Methods */
 	
@@ -87,6 +96,10 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		return response;
 	}
 	
+	public String getData(){
+		return data.toString();
+	}
+	
 
 	@Override
 	protected Void doInBackground(String... params) {
@@ -97,13 +110,14 @@ public class Rest extends AsyncTask<String, Void, Void>{
 				response = Resting.get(url, this.params, EncodingTypes.UTF8, headers, 0);
 				content = response.getResponseString();
 				result = true;
-	        } catch(Exception e){
+	        } catch(Exception e){ 
 				result = false;
 			}
-		}
+		} 
 		else{
+			
 			try{
-				//response = PostHelper.get(url, port, EncodingTypes.UTF8, this.params,headers, null);
+				response = PostHelper.post(url, port, EncodingTypes.UTF8, this.params, headers, null);
 				//EncodingTypes.UTF8, this.params,headers, null);
 				content = response.getResponseString();
 				result = true;

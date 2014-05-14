@@ -32,10 +32,14 @@ public class TagPatientActivity extends InitialActivity {
 					"/encounter/tagpatient/"
 					);
 		
-		rest.addRequestParams("doctor_nr", "100055"); //getPersonnelNumber() 
-		rest.addRequestParams("encounter_nr", encounter_id + ""); //getPersonnelNumber() 
-
-		System.out.println(rest.getURL());
+		rest.addToJSON("doctor_nr", "100475"); //getPersonnelNumber() 
+		rest.addToJSON("encounter_nr", "2013500052" ); //getPersonnelNumber() 
+		
+		rest.setData();
+		rest.addRequestParams();
+		
+		logMessage(rest.getData());
+		
 		/* process request service request */
 		rest.execute();
 		
