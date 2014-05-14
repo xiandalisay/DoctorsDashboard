@@ -198,12 +198,6 @@ public class RegisterActivity extends InitialActivity{
 			cancel = true;
 		} 
 		
-		IPAddressValidator address = new IPAddressValidator();
-		if(!address.validate(base_url)) {
-			et_base_url.setError(getString(R.string.error_invalid_format));
-			focusView = et_base_url;
-			cancel = true;
-		}
 		
 		if(!password.equals(confirm_password) && !cancel){
 			Toast.makeText(getApplicationContext(), "Passwords doesn't match", Toast.LENGTH_SHORT).show();
@@ -270,7 +264,7 @@ public class RegisterActivity extends InitialActivity{
 	/* Submits credentials to server via API */
 	private boolean submitCredentials(){
 		
-		rest = new Rest();
+		rest = new Rest("GET");
 		/* setup API URL */
 		try {
 			rest.setURL(
@@ -281,7 +275,6 @@ public class RegisterActivity extends InitialActivity{
 						"&license_nr="+reg.getLicenseNumber()+
 						"&client_id="+reg.getClientId());
 			
-			rest.setMethod("GET");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
