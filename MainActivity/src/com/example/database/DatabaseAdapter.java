@@ -357,7 +357,7 @@ public class DatabaseAdapter extends Data {
 		db = dbHandler.getWritableDatabase();
 		encounterlist = new ArrayList<Encounter>();
 		try {
-			String query = "SELECT encounter.encounter_id, encounter.date_encountered, encounter.date_released, encounter.type_patient, encounter.message_complaint, encounter.pid FROM encounter INNER JOIN patient ON encounter.pid = patient.pid WHERE patient.pid = " + patientid;
+			String query = "SELECT encounter.encounter_id, encounter.date_encountered, encounter.date_released, encounter.type_patient, encounter.message_complaint, encounter.pid FROM encounter INNER JOIN patient ON encounter.pid = patient.pid WHERE patient.pid = " + patientid + " ORDER BY date_encountered";
 			Cursor cursor = db.rawQuery(query,  null);
 			if(cursor.moveToFirst()){
 				do{
@@ -404,6 +404,7 @@ public class DatabaseAdapter extends Data {
 					String message = cursor.getString(cursor.getColumnIndex("message_complaint"));
 					int pid = cursor.getInt(cursor.getColumnIndex("pid"));
 					encounter = new Encounter(eid, typepatient, message, dateencountered, datereleased, pid);
+					encounterlist.add(encounter);
 			}
 		} catch (Exception e) {
 			Log.d("getEncounter", "Something wrong.");
@@ -495,5 +496,5 @@ public class DatabaseAdapter extends Data {
 		
 		return notelist;
 	}
-	
+
 }

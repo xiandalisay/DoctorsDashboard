@@ -78,9 +78,9 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 		parentItems.add("Notes");
 	}
 
-	public void setChildData(int patient_id, int encounter_id, String date_encountered) {
+	public void setChildData(int patient_id, String date_encountered) {
 
-		ArrayList<Object> child = new ArrayList<Object>();
+		ArrayList<Encounter> child = new ArrayList<Encounter>();
 		DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
 		
 		ArrayList<Encounter> encounterList = db.getPreviousEncounter(patient_id, date_encountered);
