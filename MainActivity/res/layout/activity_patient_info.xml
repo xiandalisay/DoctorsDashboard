@@ -109,7 +109,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@+id/TextView02"
                 android:text="Tag Patient" 
-                android:onClick="handleTagPatient"
+                android:onClick="handleTagClick"
                 />
 
             <CheckBox

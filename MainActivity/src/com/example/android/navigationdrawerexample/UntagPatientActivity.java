@@ -5,7 +5,7 @@ import com.example.model.Rest;
 
 import android.os.Bundle;
 
-public class TagPatientActivity extends InitialActivity {
+public class UntagPatientActivity extends InitialActivity {
 
 	private Rest rest;
 	
@@ -17,21 +17,19 @@ public class TagPatientActivity extends InitialActivity {
 		
 		retrieveBundle();
 		
-		System.out.println(encounter_id);
-		
-		submitTag();
+		submitUntag();
 		
 		finish();
 	}
 
-	private void submitTag() {
+	private void submitUntag() {
 		
 		rest = new Rest("POST");
 		
 		/* setup API URL */
 		rest.setURL(
 					"http://121.97.45.242/segservice"+ //getBaseURL() +
-					"/encounter/tagpatient/"
+					"/encounter/untagpatient/"
 					);
 		
 		rest.addRequestParams("encounter_nr", encounter_id + "");

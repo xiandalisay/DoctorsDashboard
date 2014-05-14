@@ -34,6 +34,7 @@ public class PatientInfoActivity extends InitialActivity {
 	private ArrayList<Encounter> encounters;
 	
 	private Button tag;
+	private String tagText;
 	
 	private int patient_id;
 	private int encounter_id;
@@ -47,7 +48,9 @@ public class PatientInfoActivity extends InitialActivity {
 		
 		intent = getIntent();
 		extras = intent.getExtras();
+		
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
+		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID"); 
 		
 		DatabaseAdapter db = new DatabaseAdapter(this);
 		patient = db.getPatientProfile(patient_id);
@@ -56,10 +59,25 @@ public class PatientInfoActivity extends InitialActivity {
 		EditText genderEditText = (EditText) findViewById(R.id.Gender);
 		EditText addressEditText = (EditText) findViewById(R.id.Address);
 		EditText ageEditText = (EditText) findViewById(R.id.Age);
+		
 		CheckBox histOfSmokingCheckBox = (CheckBox) findViewById(R.id.HistOfSmoking);
 		CheckBox histOfDrinkingCheckBox = (CheckBox) findViewById(R.id.HistOfDrinking);
+		
+		tag = (Button)findViewById(R.id.TagPatientButton);
+		
+		/* check if encounter exists in mobile DB */
+		if(isEncounterExists(encounter_id)){
+			alertMessage("encounter is tagged");
+			tag.setText("Undo Tag");
+		}
+		else{
+			alertMessage("encounter is not tagged");
+			tag.setText("Tag Patient");
+		}
+			
 		histOfSmokingCheckBox.setChecked(true);
 		histOfDrinkingCheckBox.setChecked(true);
+		
 		String nametext = patient.getNameLast() + ", " + patient.getNameFirst();
 		String gendertext;
 		
@@ -110,26 +128,53 @@ public class PatientInfoActivity extends InitialActivity {
 	}
 
 	/* called when the "Tag" button is clicked */
-	public void handleTagPatient(View view){
-		System.out.println("clicked");
+	public void handleTagClick(View view){
+		tagText = tag.getText().toString();
 		
-		tag = (Button)findViewById(R.id.TagPatientButton);
-		tag.setText("Undo Tag");
+		alertMessage("clicked");
 		
-		alertMessage("Successfully Tagged");
-		
-		EncounterAdapter db = new EncounterAdapter(this);
-		
-		
-		/* retrieve latest encounter of the patient */
-		encounter_id = db.getLatestEncounter(patient_id);
+		if(tagText.equals("Tag Patient")){
+			handleTagPatient();
+			//Add here code to save encounter details to mobile DB
+			
+			tag.setText("Undo Tag");
+		}
+		else{
+			handleUntagPatient();
+			//Add here code to remove encounter details from mobile DB
+
+			tag.setText("Tag Patient");
+		}		
+	}
+	
+	/* handles tagging patient process */
+	private void handleTagPatient() {
+		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 		
 		intent = new Intent(this, TagPatientActivity.class);
-		
-		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 		intent.putExtras(extras);
 		
-		//startActivity(intent);
+		startActivity(intent);
+		
+		alertMessage("Successfully Tagged");
+	}
+	
+	/* handles untagging patient process */
+	private void handleUntagPatient() {
+		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
+		
+		intent = new Intent(this, UntagPatientActivity.class);
+		intent.putExtras(extras);
+		
+		startActivity(intent);
+		
+		alertMessage("Successfully Untagged");
+	}
+	
+	private boolean isEncounterExists(int encounter_id){
+		EncounterAdapter db = new EncounterAdapter(this);
+		
+		return db.isEncounterExists(encounter_id);
 	}
 	
 	/**

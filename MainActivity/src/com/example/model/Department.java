@@ -9,21 +9,21 @@ package com.example.model;
 public class Department 
 {
 	private int department_number;
-	private int department_id;
+	private String department_id;
 	private String department_name;
 	
 	public Department()
 	{
-		department_number = 0;
-		department_id = 0;
-		department_name = "";
+		department_number 	= 0;
+		department_id 		= "";
+		department_name 	= "";
 	}
 	
-	public Department(int departmentnumber, int departmentid, String departmentname)
+	public Department(int departmentnumber, String departmentid, String departmentname)
 	{
-		department_number = departmentnumber;
-		department_id = departmentid;
-		department_name = departmentname;
+		department_number 	= departmentnumber;
+		department_id 		= departmentid;
+		department_name 	= departmentname;
 	}
 	
 	public void setDepartmentNumber(int departmentnumber)
@@ -31,7 +31,7 @@ public class Department
 		department_number = departmentnumber;
 	}
 	
-	public void setDepartmentId(int departmentid)
+	public void setDepartmentId(String departmentid)
 	{
 		department_id = departmentid;
 	}
@@ -46,7 +46,7 @@ public class Department
 		return department_number;
 	}
 	
-	public int getDepartmentId()
+	public String getDepartmentId()
 	{
 		return department_id;
 	}

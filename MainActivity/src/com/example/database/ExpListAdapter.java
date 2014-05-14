@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,11 +24,17 @@ import com.example.model.Encounter;
 
 public class ExpListAdapter extends BaseExpandableListAdapter {
 
-	private Activity activity;
+	private Activity activity; 
 	private ArrayList<Object> childItems;
 	private LayoutInflater inflater;
 	private ArrayList<String> parentItems;
-	private ArrayList<Encounter> child;
+	private ArrayList<Object> child;
+	private int lastExpandedGroupPosition;
+	
+	private final int INDEX_MEDICAL_HISTORY = 0;
+	private final int INDEX_PREVIOUS_REQUESTS = 1;
+	private final int INDEX_REFERRALS = 2;
+	private final int INDEX_NOTES = 3;
 
 	public ExpListAdapter(ArrayList<String> parents, ArrayList<Object> children) {
 		this.parentItems = parents;
@@ -43,7 +50,7 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
 		//child = (ArrayList<String>) childItems.get(groupPosition);
-		child = (ArrayList<Encounter>) childItems.get(groupPosition);
+		child = (ArrayList<Object>) childItems.get(groupPosition);
 
 		TextView textView = null;
 
@@ -56,27 +63,15 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
 		textView = (TextView) convertView.findViewById(R.id.textView1);
 		textView.setText(out);
 		
-		textView.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				int eid = child.get(childPosition).getEncounterId();
-				Bundle bundle = new Bundle();
-				bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
-				Intent intent = new Intent(view.getContext(), PatientEncounterActivity.class);
-				intent.putExtras(bundle);
-				view.getContext().startActivity(intent);
-				
-				//Toast.makeText(activity, child.get(childPosition).toString(),
-				//		Toast.LENGTH_SHORT).show();
-			}
-			
-		});
-
+		textView.setOnClickListener(new myOnClickListener(groupPosition, childPosition));
+		convertView.setOnClickListener(new myOnClickListener(groupPosition, childPosition));
+		
+		/*
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
+				
 				int eid = child.get(childPosition).getEncounterId();
 				Bundle bundle = new Bundle();
 				bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
@@ -89,23 +84,61 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
 			}
 			
 		});
-
+		*/
 		return convertView;
 	}
+	
+	public class myOnClickListener implements OnClickListener {
+		
+		int groupPos = -1;
+		int childPos = -1;
+		
+		public myOnClickListener(int groupPosition, int childPosition) {
+			this.groupPos = groupPosition;
+			this.childPos = childPosition;
+		}
+
+		@Override
+		public void onClick(View view) {
+			switch (groupPos) {
+				case INDEX_MEDICAL_HISTORY:
+					int eid = ((Encounter)child.get(childPos)).getEncounterId();
+					Bundle bundle = new Bundle();
+					bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
+					Intent intent = new Intent(view.getContext(), PatientEncounterActivity.class);
+					intent.putExtras(bundle);
+					view.getContext().startActivity(intent);
+					break;
+				case INDEX_PREVIOUS_REQUESTS:
+					break;
+				case INDEX_REFERRALS:
+					break;
+				case INDEX_NOTES:
+					break;
+				default:
+					Log.e("onClick groupPosition", "Error on groupPosition: Should not reach default.");
+					break;
+			}
+		}
+		
+	}
+	
 
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-
+		
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.explist_encounter_row, null);
 		}
 
 		((CheckedTextView) convertView).setText(parentItems.get(groupPosition));
 		((CheckedTextView) convertView).setChecked(isExpanded);
-
+		
+		
+		
 		return convertView;
 	}
-
+	
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
 		return null;
@@ -133,27 +166,29 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public void onGroupCollapsed(int groupPosition) {
-		super.onGroupCollapsed(groupPosition);
+		//super.onGroupCollapsed(groupPosition);
 	}
 
 	@Override
 	public void onGroupExpanded(int groupPosition) {
-		super.onGroupExpanded(groupPosition);
+		//lastExpandedGroupPosition = groupPosition;
 	}
 
 	@Override
 	public long getGroupId(int groupPosition) {
-		return 0;
+		return groupPosition;
 	}
 
 	@Override
 	public boolean hasStableIds() {
-		return false;
+		// Edited from false to true on 5/14/2014
+		return true;
 	}
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		return false;
+		// Edited from false to true on 5/14/2014
+		return true;
 	}
 
 }

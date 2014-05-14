@@ -9,17 +9,25 @@
 
 package com.example.android.navigationdrawerexample;
 
+import java.util.ArrayList;
 import java.util.UUID;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
 
 import com.example.database.AccountsAdapter;
 import com.example.database.ClientAdapter;
 import com.example.database.DepartmentAdapter;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
+import com.example.model.Department;
+import com.example.model.Rest;
+import com.example.parser.DepartmentParser;
 
 public class InitializeActivity extends InitialActivity{
+	
+	private ArrayList<Department> departments;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +40,13 @@ public class InitializeActivity extends InitialActivity{
 			saveClientId(client_id);
 		}
 		
-		/* check if department table is empty*/
+		/* check if department table is empty */
 		if(isDepartmentEmpty()){
 			logMessage("Empty");
+			
+			try{
+				retrieveDepartmentsAPI();
+			}catch(Exception e){}
 		}
 		else{
 			logMessage("Not Empty");
@@ -57,6 +69,25 @@ public class InitializeActivity extends InitialActivity{
 			
 	}
 	
+
+	private void retrieveDepartmentsAPI() {
+		if(isNetworkAvailable()){
+			
+			Rest rest = new Rest("GET");
+			rest.setURL("http://121.97.45.242/segservice/department/show/");
+			rest.execute();
+			while(rest.getContent() == null){}
+			 
+			if(rest.getResult()){
+				String content = rest.getContent();
+				System.out.println(content);
+				//DepartmentParser department_parser = new DepartmentParser(content);
+				//departments = department_parser.getDepartments();
+			}
+		}
+	}
+
+
 	private boolean isDepartmentEmpty() {
 		
 		DepartmentAdapter db = new DepartmentAdapter(this);

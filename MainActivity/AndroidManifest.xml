@@ -96,9 +96,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.navigationdrawerexample.PatientActivity" />
         </activity>
-          <activity
+        <activity
             android:name="com.example.android.navigationdrawerexample.TagPatientActivity"
             android:label="@string/title_activity_tag" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.navigationdrawerexample.PatientInfoActivity" />
+        </activity>
+        <activity
+            android:name="com.example.android.navigationdrawerexample.UntagPatientActivity"
+            android:label="@string/title_activity_untag" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.navigationdrawerexample.PatientInfoActivity" />

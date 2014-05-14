@@ -134,6 +134,7 @@ public class Data {
 	public static final String TABLE_SOAP 	= "soap";
 	public static final String SOAP_ID 		= "soap_id";
 	//public static final String ENCOUNTER_ID = "encounter_id";
+	public static final String TITLE 		= "title_soap";
 	public static final String SOAP 		= "msg_soap";
 	public static final String MODIFIED		= "date_modified";
 	public static final String SYNC_SOAP	= "sync_soap";
@@ -245,6 +246,7 @@ public class Data {
 		"CREATE TABLE " + TABLE_SOAP + "(" +
 		SOAP_ID		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID + " INTEGER NOT NULL REFERENCES " 	+ TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
+		TITLE 		+ " TEXT, " 	+ 
 		SOAP 		+ " TEXT, " 	+ 
 		MODIFIED  	+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime'))," +
 		SYNC_SOAP 	+ " BOOLEAN DEFAULT 0" 	+ ")";
