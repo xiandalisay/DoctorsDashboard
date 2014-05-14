@@ -43,12 +43,13 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	private boolean 			result;
 	
 	
-	public Rest(){
+	public Rest(String method){
 		params = new BasicRequestParams();
 		headers = new ArrayList<Header>();
 		headers.add(new BasicHeader("Authorization","Basic " + 
 		Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes(),Base64.NO_WRAP)));
 		port = 80;
+		this.method = method;
 	}
 	
 	//adds key : value params
@@ -58,7 +59,6 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	
 	public void addToJSON(String key, String value){
 		JSONObject Data = new JSONObject();
-		
 		try{			
 			Data.put(key,value);
 		} catch(JSONException e){
@@ -71,10 +71,7 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	public void setURL(String url){
 		this.url = url;
 	}
-	
-	public void setMethod(String method){
-		this.method = method;
-	}
+
 	
 	/* Getter Methods */
 	
