@@ -6,6 +6,7 @@
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -130,13 +131,33 @@ public class PatientActivity extends BaseActivity {
 		        	EditText edittext = (EditText) findViewById(R.id.searchView1);
 		        	
 		        	String searchtext = edittext.getText().toString();
-		        	final ArrayList<Patient> patients;
-		        	
+		        	//final ArrayList<Patient> patients;
+		        	StringTokenizer t = new StringTokenizer(searchtext, ",");
+		        	String last = t.nextToken();
+		        	String first = t.nextToken();
 		        	
 		            DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 		            
 		            try{
-			            patients = adapter.searchPatient(searchtext);
+		            	
+		            	if(isNetworkAvailable()){
+		            		String searchLast="http://121.45.97.242/segservice/patient/show/name_last/";
+		            		String searchFirst="/name_last/";
+		            		String url2 = searchLast + last + searchFirst + first;
+		            		
+		        			Rest rest = new Rest("GET");
+		        			rest.setURL(url2);
+		        			rest.execute();
+		        			while(rest.getContent() == null){}
+		        			
+		        			if(rest.getResult()){
+		        				String content = rest.getContent();
+		        				PatientParser patient_parser = new PatientParser(content);
+		        				patients = patient_parser.getPatients();
+		        			}
+		        		}
+		            	else
+		            		patients = adapter.searchPatient(searchtext);
 			            ListView listview = (ListView) findViewById(R.id.listView1);
 			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
 			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
