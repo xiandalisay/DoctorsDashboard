@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".PatientInfo" >
+    tools:context=".PatientInfoActivity" >
 
     <GridLayout
         android:id="@+id/gridLayout1"
@@ -108,7 +108,9 @@
                 android:layout_below="@+id/HistOfDrinking"
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@+id/TextView02"
-                android:text="Tag Patient" />
+                android:text="Tag Patient" 
+                android:onClick="handleTagPatient"
+                />
 
             <CheckBox
                 android:id="@+id/HistOfSmoking"

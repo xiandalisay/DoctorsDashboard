@@ -21,5 +21,25 @@ public class Preferences extends HelperSharedPreferences{
 	    
 	    return false;
 	} 
+	
+	/* retrieve base_url for a specific doctor from preferences */
+	public static String getBaseURL(Context context){
+		try{
+			return getSharedPreferencesString(context, "key_base_url", "");			
+		} catch(Exception e){
+			System.out.println("getBaseURL Error");
+			return null;
+		}
+	}
+	
+	/* retrieve personnel_nr for a specific doctor from preferences */
+	public static int getPersonnelNumber(Context context){
+		try{
+			return getSharedPreferencesInt(context, "key_personnel_nr", 0);			
+		} catch(Exception e){
+			System.out.println("getPersonnelNumber Error");
+			return 0;
+		}
+	}
 
 }

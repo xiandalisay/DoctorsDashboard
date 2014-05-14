@@ -15,30 +15,42 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.database.DatabaseAdapter;
+import com.example.database.EncounterAdapter;
 import com.example.model.Encounter;
 import com.example.model.Patient;
 
-public class PatientInfo extends Activity {
-	Encounter encounter;
-	ArrayList<Encounter> encounters;
+public class PatientInfoActivity extends InitialActivity {
+	
+	private Encounter encounter;
+	private Patient patient;
+	
+	private ArrayList<Encounter> encounters;
+	
+	private Button tag;
+	
+	private int patient_id;
+	private int encounter_id;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_patient_info);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		Intent intent = getIntent();
-		Bundle extras = intent.getExtras();
-		int patientid = extras.getInt("EXTRA_PATIENT_ID");
+		
+		intent = getIntent();
+		extras = intent.getExtras();
+		patient_id = extras.getInt("EXTRA_PATIENT_ID");
 		
 		DatabaseAdapter db = new DatabaseAdapter(this);
-		Patient patient = db.getPatientProfile(patientid);
+		patient = db.getPatientProfile(patient_id);
 		
 		EditText nameEditText = (EditText) findViewById(R.id.FullName);
 		EditText genderEditText = (EditText) findViewById(R.id.Gender);
@@ -50,20 +62,24 @@ public class PatientInfo extends Activity {
 		histOfDrinkingCheckBox.setChecked(true);
 		String nametext = patient.getNameLast() + ", " + patient.getNameFirst();
 		String gendertext;
+		
 		if(patient.getSex().equals("M")){
 			gendertext = "Male";
 		}
 		else{
 			gendertext = "Female";
 		}
+		
 		addressEditText.setText(patient.getAddress());
 		nameEditText.setText(nametext);
 		genderEditText.setText(gendertext);
 		String age = String.valueOf(patient.getAge());
 		ageEditText.setText(age);
 		
-		encounters = db.getPatientEncounter(patientid);
-		patient = db.getPatientProfile(patientid);
+		encounters = db.getPatientEncounter(patient_id);
+		
+		/* duplicate code with LINE 41  */
+		patient = db.getPatientProfile(patient_id);
 		ListView listview = (ListView) findViewById(R.id.listView1);
 		ArrayAdapter<Encounter> arrayAdapter = new ArrayAdapter<Encounter>(getApplicationContext(), android.R.layout.simple_list_item_1, encounters){
 			@Override
@@ -93,6 +109,29 @@ public class PatientInfo extends Activity {
 				});
 	}
 
+	/* called when the "Tag" button is clicked */
+	public void handleTagPatient(View view){
+		System.out.println("clicked");
+		
+		tag = (Button)findViewById(R.id.TagPatientButton);
+		tag.setText("Undo Tag");
+		
+		alertMessage("Successfully Tagged");
+		
+		EncounterAdapter db = new EncounterAdapter(this);
+		
+		
+		/* retrieve latest encounter of the patient */
+		encounter_id = db.getLatestEncounter(patient_id);
+		
+		intent = new Intent(this, TagPatientActivity.class);
+		
+		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
+		intent.putExtras(extras);
+		
+		//startActivity(intent);
+	}
+	
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */

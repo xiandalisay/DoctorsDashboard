@@ -9,8 +9,19 @@
 
 package com.example.database;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 public class Data {
 
+	protected Cursor cursor;
+	
+	protected  SQLiteDatabase db;
+	protected DatabaseHandler dbHandler;
+	
+	protected static final int 	DATABASE_VERSION	= 1;
+	protected static final String DATABASE_NAME 		= "localhost";
+	
 	/* --------------------------------------------------------------------------
 	 * 		TABLE NAME AND COLUMN NAME KEYS 
 	 * 	Note: Commented columns are already instantiated on the previous lines.
