@@ -8,6 +8,7 @@ import org.apache.http.message.BasicHeader;
 
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Xml.Encoding;
 import android.widget.Toast;
 
 import com.example.parser.TokenParser;
@@ -18,15 +19,17 @@ import com.example.parser.TokenParser;
 //and select all the JAR files
 import com.google.resting.Resting;
 import com.google.resting.component.EncodingTypes;
+import com.google.resting.component.RequestParams;
 import com.google.resting.component.impl.BasicRequestParams;
 import com.google.resting.component.impl.ServiceResponse;
+import com.google.resting.method.post.PostHelper;
 
 public class Rest extends AsyncTask<Rest, Void, Void>{
 
 	private final String USERNAME = "emr";
 	private final String PASSWORD = "3mrh1s";
 	
-	private BasicRequestParams 	params;
+	private RequestParams 		params;
 	private List<Header> 		headers;
 	private ServiceResponse 	response;
 	private String 			    content;
@@ -71,9 +74,11 @@ public class Rest extends AsyncTask<Rest, Void, Void>{
 
 	@Override
 	protected Void doInBackground(Rest... params) {
-		 
+		System.out.println(this.params);
+		String json = "{\"doctor_nr\"=\"100055\",\"encounter_nr\"=\"2013500052\"}";
+		
 		try{
-			response = Resting.get(url,port);
+			response = PostHelper.post(url, port,EncodingTypes.UTF8, this.params,headers, null);
 			content = response.getResponseString();
 			result = true;
         } catch(Exception e){

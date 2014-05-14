@@ -29,11 +29,11 @@ public class TagPatientActivity extends InitialActivity {
 		/* setup API URL */
 		rest.setURL(
 					"http://121.97.45.242/segservice"+ //getBaseURL() +
-					"/encounter/tagpatient" +
-					"?doctor_nr=" + "100055" +//getPersonnelNumber() +
-					"&encounter_nr=" + encounter_id
+					"/encounter/tagpatient/"
 					);
-		
+		rest.addRequestParams("doctor_nr", "100055"); //getPersonnelNumber() 
+		rest.addRequestParams("encounter_nr", encounter_id + ""); //getPersonnelNumber() 
+
 		System.out.println(rest.getURL());
 		/* process request service request */
 		rest.execute();
@@ -41,7 +41,7 @@ public class TagPatientActivity extends InitialActivity {
 		/* check if connection was successful */
 		while(rest.getContent() == null){}
 		
-		System.out.println("Data Received:\n" + rest.getContent());
+		System.out.println("Data Received:\n" + rest.getContent()); 
 			
 		//System.out.println("processing request..");
 			

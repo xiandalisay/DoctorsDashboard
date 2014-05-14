@@ -116,7 +116,6 @@ public class PatientInfoActivity extends InitialActivity {
 		tag = (Button)findViewById(R.id.TagPatientButton);
 		tag.setText("Undo Tag");
 		
-		alertMessage("Successfully Tagged");
 		
 		EncounterAdapter db = new EncounterAdapter(this);
 		
@@ -129,7 +128,9 @@ public class PatientInfoActivity extends InitialActivity {
 		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 		intent.putExtras(extras);
 		
-		//startActivity(intent);
+		startActivity(intent);
+		
+		alertMessage("Successfully Tagged");
 	}
 	
 	/**
