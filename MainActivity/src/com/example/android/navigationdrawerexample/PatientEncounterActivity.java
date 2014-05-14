@@ -10,16 +10,28 @@ import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.Toast;
 
 import com.example.database.DatabaseAdapter;
 import com.example.model.Encounter;
+import com.example.model.Soap;
 
 public class PatientEncounterActivity extends ExpandableListActivity{
 
 	private ArrayList<String> parentItems = new ArrayList<String>();
 	private ArrayList<Object> childItems = new ArrayList<Object>();
+	private ArrayList<Object> child;
+	
+	private final int INDEX_MEDICAL_HISTORY = 0;
+	private final int INDEX_PREVIOUS_REQUESTS = 1;
+	private final int INDEX_REFERRALS = 2;
+	private final int INDEX_NOTES = 3;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,13 +57,53 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 		String date_encountered = encounter.getDateEncountered().trim().substring(0,10);
 		
 		setGroupParents();
-		setChildData(patient_id, date_encountered);
+		setChildData(patient_id, encounter_id, date_encountered);
+		setDoctorsNotes(encounter_id);
 
 		ExpListAdapter adapter = new ExpListAdapter(parentItems, childItems);
 
 		adapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
 		expandableList.setAdapter(adapter);
-		expandableList.setOnChildClickListener(this);
+		expandableList.setOnChildClickListener(new OnChildClickListener() {
+			
+			@Override
+			public boolean onChildClick (ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
+				Toast.makeText(getApplicationContext(), "BOOM! " + groupPosition + " " + childPosition, Toast.LENGTH_SHORT).show();
+				switch (groupPosition) {
+					case INDEX_MEDICAL_HISTORY:
+						int eid = ((Encounter)child.get(childPosition)).getEncounterId();
+						Bundle bundle = new Bundle();
+						bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
+						Intent intent = new Intent(view.getContext(), PatientEncounterActivity.class);
+						intent.putExtras(bundle);
+						view.getContext().startActivity(intent);
+						break;
+					case INDEX_PREVIOUS_REQUESTS:
+						break;
+					case INDEX_REFERRALS:
+						break;
+					case INDEX_NOTES:
+						break;
+					default:
+						Log.e("onClick groupPosition", "Error on groupPosition: Should not reach default.");
+						break;
+				}
+				return false;
+			}
+			
+		});
+		
+		expandableList.setOnGroupClickListener(new OnGroupClickListener() {
+			
+			@Override
+			public boolean onGroupClick(ExpandableListView expList, View view,
+					int groupPosition, long id) {
+				//Toast.makeText(getApplicationContext(), "BOOM! " + groupPosition + " " + id, Toast.LENGTH_SHORT).show();
+				//expList.collapseGroup(0);
+				return false;
+			}
+			
+		});
 	}
 
 	public void setGroupParents() {
@@ -61,14 +113,33 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 		parentItems.add("Notes");
 	}
 
-	public void setChildData(int patient_id, String date_encountered) {
+	public void setChildData(int patient_id, int encounter_id, String date_encountered) {
 
-		ArrayList<Encounter> child = new ArrayList<Encounter>();
+		ArrayList<Object> child = new ArrayList<Object>();
 		DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
 		
 		ArrayList<Encounter> encounterList = db.getPreviousEncounter(patient_id, date_encountered);
 		for (int i = 0; i < encounterList.size(); i++) {
 			child.add(encounterList.get(i));
+		}
+		childItems.add(child);
+		child = new ArrayList<Object>();
+		
+		for (int i = 0; i < encounterList.size(); i++) {
+			child.add(encounterList.get(i));
+		}
+		childItems.add(child);
+		child = new ArrayList<Object>();
+		
+		for (int i = 0; i < encounterList.size(); i++) {
+			child.add(encounterList.get(i));
+		}
+		childItems.add(child);
+		child = new ArrayList<Object>();
+		
+		ArrayList<Soap> soapList = db.getDoctorNotes(encounter_id);
+		for (int i = 0; i < soapList.size(); i++) {
+			child.add(soapList.get(i));
 		}
 		childItems.add(child);
 		
@@ -108,4 +179,15 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 		*/
 	}
 
+	public void setDoctorsNotes(int eid)
+	{
+		ArrayList<Soap> child = new ArrayList<Soap>();
+		DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
+		
+		ArrayList<Soap> notelist = db.getDoctorNotes(eid);
+		for (int i = 0; i < notelist.size(); i++) {
+			child.add(notelist.get(i));
+		}
+		childItems.add(child);
+	}
 }
