@@ -57,8 +57,8 @@ public class PatientActivity extends BaseActivity {
 			}
 		}
 		else{
-			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
-			patients = adapter.searchPatient("");
+		DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
+		patients = adapter.searchPatient("");
 		}
 		
 		ListView listview = (ListView) findViewById(R.id.listView1);
@@ -116,7 +116,7 @@ public class PatientActivity extends BaseActivity {
 		
 				
 				startActivity(intent);
-				
+
 
 			}
 		});
