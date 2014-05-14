@@ -1,1 +1,1 @@
-Chanly Kaye "Gwapa" Manayan Basa
+Chanly Kaye Manayan Basa Gwapa
