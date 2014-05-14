@@ -25,7 +25,7 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 	private ArrayList<String> parentItems = new ArrayList<String>();
 	private ArrayList<Object> childItems = new ArrayList<Object>();
 	private ArrayList<Object> child;
-
+	private int encounter_id;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -44,13 +44,13 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		
-		int encounter_id = bundle.getInt("EXTRA_ENCOUNTER_ID");
+		encounter_id = bundle.getInt("EXTRA_ENCOUNTER_ID");
 		Encounter encounter = db.getEncounter(encounter_id);
 		int patient_id = encounter.getPid();
 		String date_encountered = encounter.getDateEncountered().trim().substring(0,10);
 		
 		setGroupParents();
-		setChildData(patient_id, encounter_id, date_encountered);
+		setChildData(patient_id, date_encountered);
 		setDoctorsNotes(encounter_id);
 
 		ExpListAdapter adapter = new ExpListAdapter(parentItems, childItems);
@@ -80,7 +80,7 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 
 	public void setChildData(int patient_id, String date_encountered) {
 
-		ArrayList<Encounter> child = new ArrayList<Encounter>();
+		ArrayList<Object> child = new ArrayList<Object>();
 		DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
 		
 		ArrayList<Encounter> encounterList = db.getPreviousEncounter(patient_id, date_encountered);
