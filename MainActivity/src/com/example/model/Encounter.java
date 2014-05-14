@@ -16,6 +16,8 @@ public class Encounter {
 	private String 	message_complaint;
 	private String 	date_encountered;
 	private String 	date_released;
+	private String department;
+	private String is_confidential;
 	
 	public Encounter(){
 		encounter_id 		= 0;
@@ -24,6 +26,8 @@ public class Encounter {
 		message_complaint 	= "";
 		date_encountered 	= "";
 		date_released 		= "";
+		department = "";
+		is_confidential = "";
 	}
 	
 	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, String datereleased, int patientid)
@@ -34,6 +38,18 @@ public class Encounter {
 		date_encountered = dateencountered;
 		date_released = datereleased;
 		pid = patientid;
+	}
+	
+	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, String datereleased, int patientid, String department, String isconfidential)
+	{
+		encounter_id = eid;
+		type_patient = typepatient;
+		message_complaint = messagecomplaint;
+		date_encountered = dateencountered;
+		date_released = datereleased;
+		pid = patientid;
+		this.department = department;
+		is_confidential = isconfidential;
 	}
 	
 	public void setEncounterId(int rEncounter_id) {
