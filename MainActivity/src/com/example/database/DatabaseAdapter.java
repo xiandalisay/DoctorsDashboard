@@ -25,6 +25,7 @@ import com.example.model.Age;
 import com.example.model.DoctorProfile;
 import com.example.model.Encounter;
 import com.example.model.Patient;
+import com.example.model.Soap;
 
 public class DatabaseAdapter extends Data {
 	
@@ -356,7 +357,7 @@ public class DatabaseAdapter extends Data {
 		db = dbHandler.getWritableDatabase();
 		encounterlist = new ArrayList<Encounter>();
 		try {
-			String query = "SELECT encounter.encounter_id, encounter.date_encountered, encounter.date_released, encounter.type_patient, encounter.message_complaint, encounter.pid FROM encounter INNER JOIN patient ON encounter.pid = patient.pid WHERE patient.pid = " + patientid + " ORDER BY date_encountered";
+			String query = "SELECT encounter.encounter_id, encounter.date_encountered, encounter.date_released, encounter.type_patient, encounter.message_complaint, encounter.pid FROM encounter INNER JOIN patient ON encounter.pid = patient.pid WHERE patient.pid = " + patientid;
 			Cursor cursor = db.rawQuery(query,  null);
 			if(cursor.moveToFirst()){
 				do{
@@ -403,7 +404,6 @@ public class DatabaseAdapter extends Data {
 					String message = cursor.getString(cursor.getColumnIndex("message_complaint"));
 					int pid = cursor.getInt(cursor.getColumnIndex("pid"));
 					encounter = new Encounter(eid, typepatient, message, dateencountered, datereleased, pid);
-					encounterlist.add(encounter);
 			}
 		} catch (Exception e) {
 			Log.d("getEncounter", "Something wrong.");
@@ -454,4 +454,46 @@ public class DatabaseAdapter extends Data {
 		Log.d("getPreviousEncounters", "Done successfully.");
 		return encounterlist;
 	}
+	
+	public ArrayList<Soap> getDoctorNotes(int eid)
+	{
+		ArrayList<Soap> notelist = new ArrayList<Soap>();
+		db = dbHandler.getWritableDatabase();
+		
+		try{
+			String query = "SELECT soap_id, msg_soap, date_modified, sync_soap FROM soap WHERE encounter_id = " + eid;
+			Cursor cursor = db.rawQuery(query, null);
+			
+			if(cursor.moveToFirst())
+			{
+				do {
+					int sid = cursor.getInt(cursor.getColumnIndex("soap_id"));
+					String msgsoap = cursor.getString(cursor.getColumnIndex("msg_soap"));
+					String datemodified = cursor.getString(cursor.getColumnIndex("date_modified"));
+					int syncsoap = cursor.getInt(cursor.getColumnIndex("sync_soap"));
+					boolean sync;
+					
+					if(1 == syncsoap)
+					{
+						sync = true;
+					}
+					else
+					{
+						sync = false;
+					}
+					
+					Soap soap = new Soap(sid, eid, msgsoap, datemodified, sync);
+					notelist.add(soap);
+				} while (cursor.moveToNext());
+			}
+		} 
+		catch (Exception e) {
+			Log.d("Doctor's Notes", e.toString());
+		} finally {
+			db.close();
+		}
+		
+		return notelist;
+	}
+	
 }

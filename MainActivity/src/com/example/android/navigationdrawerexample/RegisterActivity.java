@@ -281,6 +281,7 @@ public class RegisterActivity extends InitialActivity{
 						"&license_nr="+reg.getLicenseNumber()+
 						"&client_id="+reg.getClientId());
 			
+			rest.setMethod("GET");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -293,7 +294,7 @@ public class RegisterActivity extends InitialActivity{
 		System.out.println("processing request..");
 			
 		/* wait until data is retrieved, there is delay in retrieving data*/
-		while(rest.getContent() == null){}
+		while(rest.getContent() == null){} 
 			
 		System.out.println("Data Received:\n" + rest.getContent());
 			

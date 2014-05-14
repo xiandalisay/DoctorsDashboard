@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,10 +29,13 @@ import android.widget.Toast;
 
 import com.example.database.DatabaseAdapter;
 import com.example.model.Patient;
+import com.example.model.Rest;
+import com.example.parser.PatientParser;
 
 public class PatientActivity extends BaseActivity {
 	Patient patient;
 	ArrayList<Patient> patients;
+	final String url = "http://121.97.45.242/segservice/patient/show";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_patient);
@@ -38,8 +43,24 @@ public class PatientActivity extends BaseActivity {
 		EditText edittext = (EditText) findViewById(R.id.searchView1);
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
-		DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
-		patients = adapter.searchPatient("");
+		if(isNetworkAvailable()){
+
+			Rest rest = new Rest();
+			rest.setURL(url);
+			rest.execute();
+			while(rest.getContent() == null){}
+			
+			if(rest.getResult()){
+				String content = rest.getContent();
+				PatientParser patient_parser = new PatientParser(content);
+				patients = patient_parser.getPatients();
+			}
+		}
+		else{
+			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
+			patients = adapter.searchPatient("");
+		}
+		
 		ListView listview = (ListView) findViewById(R.id.listView1);
 		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
         	//method to override the getView method of ArrayAdapter, this changes the color of the text view
@@ -53,13 +74,15 @@ public class PatientActivity extends BaseActivity {
         	    String displayname = "";
         	    String displayinfo = "";
         	    Patient patient = patients.get(position);
+        	    System.out.println(patient.getSex());
         	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
-        	    if(patient.getSex().equals("M")){
+        	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
         	    	displayinfo = displayinfo + "Male";
         	    }
-        	    else if(patient.getSex().equals("F")){
+        	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
         	    	displayinfo = displayinfo + "Female";
         	    }
+        	    System.out.println(displayinfo);
         	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
         	    
         	    text1.setText(displayname);
@@ -81,13 +104,19 @@ public class PatientActivity extends BaseActivity {
 				
 				patient = patients.get(position);
 				int patientid = patient.getPid();
-				//Toast.makeText(getApplicationContext(), "Clicked " + patientid, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "Clicked " + patientid, Toast.LENGTH_SHORT).show();
+				
 				Intent intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
+				//intent.putExtra("EXTRA_PATIENT", patient);
+				
 				Bundle extras = new Bundle();
 				extras.putInt("EXTRA_PATIENT_ID", patientid);
 				intent.putExtras(extras);
 				//intent.putExtra("PATIENT_NAME", patientname);
+		
+				
 				startActivity(intent);
+				
 
 			}
 		});
@@ -105,7 +134,6 @@ public class PatientActivity extends BaseActivity {
 		        	
 		        	
 		            DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
-		            
 		            try{
 			            patients = adapter.searchPatient(searchtext);
 			            ListView listview = (ListView) findViewById(R.id.listView1);
@@ -176,6 +204,13 @@ public class PatientActivity extends BaseActivity {
 	}
 	
 	
+	
+	public boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
 	
 	public void showPatientInfo(View view){
     	Intent intent = new Intent(this, PatientInfoActivity.class);

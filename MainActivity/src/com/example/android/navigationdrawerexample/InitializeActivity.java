@@ -49,14 +49,15 @@ public class InitializeActivity extends InitialActivity{
 	
 					Rest rest = new Rest();
 					rest.setURL("http://121.97.45.242/segservice/department/show/");
+					rest.setMethod("GET");
 					rest.execute();
 					while(rest.getContent() == null){}
 					 
 					if(rest.getResult()){
 						String content = rest.getContent();
 						System.out.println(content);
-						DepartmentParser department_parser = new DepartmentParser(content);
-						departments = department_parser.getDepartments();
+						//DepartmentParser department_parser = new DepartmentParser(content);
+						//departments = department_parser.getDepartments();
 					}
 				}
 			}catch(Exception e){}
