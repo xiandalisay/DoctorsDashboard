@@ -68,6 +68,7 @@
     <string name="str_doctor_information">Doctor Information</string>
     <string name="title_activity_patient_info">PatientInfo</string>
      <string name="title_activity_tag">TagPatient</string>
+     <string name="title_activity_untag">UntagPatient</string>
     <string name="title_activity_patient_encounter">PatientEncounter</string>
 
 </resources>

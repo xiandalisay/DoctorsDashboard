@@ -65,19 +65,16 @@ public class RegisterActivity extends InitialActivity{
 		
 		super.onCreate(savedInstanceState);
 		
-		/* checks if phone is connected to a network 
+		/* checks if phone is connected to a network */
 		if(!isConnected()){
 			setContentView(R.layout.activity_offline_registration);
 		}
 		else{
-		*/
 			setContentView(R.layout.activity_register);
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 			getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 			initViews();
-		//}
-		
-		
+		}
 	}
 	
 	/* checks if phone is connected to a network */
@@ -134,7 +131,7 @@ public class RegisterActivity extends InitialActivity{
 		doctor.addDoctor(rDoctor);
 	}
 	
-	/* Associate layout elements with class variables */
+	/* associate layout elements with class variables */
 	private void initViews(){
 		et_license_nr = (EditText) findViewById(R.id.license_number);
 		et_username = (EditText) findViewById(R.id.username);
@@ -146,7 +143,7 @@ public class RegisterActivity extends InitialActivity{
 	    register.requestFocus();
 	}
 	
-	/* Retrieves inputted text by user and converts/saves it as String */
+	/* retrieves inputted text by user and converts/saves it as String */
 	private void convertInputText(){
 		license_nr = et_license_nr.getText().toString();
 		username = et_username.getText().toString();
@@ -155,7 +152,7 @@ public class RegisterActivity extends InitialActivity{
 		base_url = et_base_url.getText().toString();
 	}
 	
-	/* Validate each input of user in case or missing fields and etc.*/
+	/* validate each input of user in case or missing fields and etc.*/
 	public boolean validateInputs(){
 		
 		/* for flagging; will be equal to true if there are errors */
@@ -253,7 +250,7 @@ public class RegisterActivity extends InitialActivity{
 		}
 	}
 	
-	/* Retrieves client_id of mobile device and returns it as string */
+	/* retrieves client_id of mobile device and returns it as string */
 	private String getClientId(){
 		RegistrationAdapter db = new RegistrationAdapter(this);
 		
@@ -261,7 +258,7 @@ public class RegisterActivity extends InitialActivity{
 		return db.getClientId().toString();
 	}
 	
-	/* Submits credentials to server via API */
+	/* submits credentials to server via API */
 	private boolean submitCredentials(){
 		
 		rest = new Rest("GET");
@@ -299,7 +296,7 @@ public class RegisterActivity extends InitialActivity{
 		
 	} 
 
-	/* Parses data in JSON format to String type */
+	/* parses data in JSON format to String type */
 	private boolean parseJSONResponse(String content){
 
 		TokenParser parser = new TokenParser(content);
@@ -367,6 +364,7 @@ public class RegisterActivity extends InitialActivity{
 		startActivity(intent);
 	}
 	
+	/* insert newly registered doctor's details to mobile DB */
 	private void insertDoctor() {
 		
 		System.out.println("license_nr: " + license_nr);
@@ -397,7 +395,7 @@ public class RegisterActivity extends InitialActivity{
 			showLoginActivity();
 		}
 		else{
-			Toast.makeText(getApplicationContext(), "Account Already Exists", Toast.LENGTH_SHORT).show();
+			alertMessage("Account Already Exists");
 		}
 	}
 	

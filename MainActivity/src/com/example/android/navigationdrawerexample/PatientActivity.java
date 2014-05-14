@@ -1,6 +1,7 @@
 /*
  * Created by Eclipse
  * Edited by Jose Martin Ipong on 5/7/2014, added event handler for search button
+ * Edited by Alvin jay Cosare on 5/14/2014, added method to automatically get latest encounter of patient
  */
 
 package com.example.android.navigationdrawerexample;
@@ -29,14 +30,21 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.example.database.DatabaseAdapter;
+import com.example.database.EncounterAdapter;
 import com.example.model.Patient;
 import com.example.model.Rest;
 import com.example.parser.PatientParser;
 
 public class PatientActivity extends BaseActivity {
-	Patient patient;
-	ArrayList<Patient> patients;
-	final String url = "http://121.97.45.242/segservice/patient/show";
+	
+	private Patient patient;
+	private ArrayList<Patient> patients;
+	
+	private final String url = "http://121.97.45.242/segservice/patient/show";
+	
+	private int encounter_id;
+	private int patient_id;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_patient);
@@ -102,24 +110,24 @@ public class PatientActivity extends BaseActivity {
 				// getting values from selected ListItem
 				TextView text = (TextView) view.findViewById(android.R.id.text1);
 				String patientname = text.getText().toString();
+				
 				// Starting single contact activity
-				
 				patient = patients.get(position);
-				int patientid = patient.getPid();
-				Toast.makeText(getApplicationContext(), "Clicked " + patientid, Toast.LENGTH_SHORT).show();
+				patient_id = patient.getPid();
+				encounter_id = getLatestEncounter(patient_id);
 				
-				Intent intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
-				//intent.putExtra("EXTRA_PATIENT", patient);
+				/* saves the patient_id and encounter_id to be passed to the next activity */
+				extras = new Bundle();
+				extras.putInt("EXTRA_PATIENT_ID", patient_id);
+				extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 				
-				Bundle extras = new Bundle();
-				extras.putInt("EXTRA_PATIENT_ID", patientid);
+				alertMessage(encounter_id+"");
+				
+				/* start next activity Patient Info (2nd Page) */
+				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
 				intent.putExtras(extras);
-				//intent.putExtra("PATIENT_NAME", patientname);
-		
 				
 				startActivity(intent);
-				
-
 			}
 		});
    
@@ -198,11 +206,11 @@ public class PatientActivity extends BaseActivity {
 			    				String patientname = text.getText().toString();
 			    				// Starting single contact activity
 			    				patient = patients.get(position);
-			    				int patientid = patient.getPid();
-			    				//Toast.makeText(getApplicationContext(), "Clicked " + patientid, Toast.LENGTH_SHORT).show();
-			    				Intent intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
-			    				Bundle extras = new Bundle();
-			    				extras.putInt("EXTRA_PATIENT_ID", patientid);
+			    				int patient_id = patient.getPid();
+			    				//Toast.makeText(getApplicationContext(), "Clicked " + patient_id, Toast.LENGTH_SHORT).show();
+			    				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
+			    				extras = new Bundle();
+			    				extras.putInt("EXTRA_PATIENT_ID", patient_id);
 			    				intent.putExtras(extras);
 			    				startActivity(intent);
 
@@ -214,7 +222,7 @@ public class PatientActivity extends BaseActivity {
 		            }
 		            catch(Exception e){
 		            	System.out.println(e);
-		            	Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+		            	alertMessage(e.toString());
 		            }
 		            handled = true;
 		        }
@@ -222,11 +230,14 @@ public class PatientActivity extends BaseActivity {
 		    }
 		});
 		
-		
-		
 	}
 	
-	
+	/* retrieves latest encounter of the patient */
+	private int getLatestEncounter(int patient_id) {
+		EncounterAdapter db = new EncounterAdapter(this);
+		
+		return db.getLatestEncounter(patient_id);
+	}
 	
 	public boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 

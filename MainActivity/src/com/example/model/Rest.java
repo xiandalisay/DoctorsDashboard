@@ -55,9 +55,14 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		this.method = method;
 	}
 	
-	//adds key : value params
+	/*adds key : value params
 	public void addRequestParams(){
 		params.add("data_json", data);
+	}
+	*/
+	
+	public void addRequestParams(String key, String value){
+		params.add(key, value);
 	}
 	
 	public void addToJSON(String key, String value){
@@ -115,7 +120,7 @@ public class Rest extends AsyncTask<String, Void, Void>{
 			}
 		} 
 		else{
-			
+			System.out.println(params.toString());
 			try{
 				response = PostHelper.post(url, port, EncodingTypes.UTF8, this.params, headers, null);
 				//EncodingTypes.UTF8, this.params,headers, null);

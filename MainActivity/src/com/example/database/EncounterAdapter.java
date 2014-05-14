@@ -47,8 +47,26 @@ public class EncounterAdapter extends Data {
 			Log.d("Encounter Adapter","0 rows retrieved");
 			return (Integer) null;
 		}
-		
 	}
 	
-	
+	public boolean isEncounterExists(int encounter_id){
+
+		db = dbHandler.getReadableDatabase();
+		
+		String query = 
+				"SELECT encounter_id " + 
+			    " FROM " + TABLE_ENCOUNTER + 
+				" WHERE  encounter_id = " + encounter_id;
+		
+		cursor = db.rawQuery(query, null);
+		
+		try{
+			System.out.println("Encounter ID: " + encounter_id);
+			return cursor.moveToFirst();
+		} catch(Exception e) {
+			Log.d("Encounter Adapter","0 rows retrieved");
+			return false;
+		}
+	}
+
 }

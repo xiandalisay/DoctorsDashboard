@@ -40,25 +40,12 @@ public class InitializeActivity extends InitialActivity{
 			saveClientId(client_id);
 		}
 		
-		/* check if department table is empty*/
+		/* check if department table is empty */
 		if(isDepartmentEmpty()){
 			logMessage("Empty");
 			
 			try{
-				if(isNetworkAvailable()){
-	
-					Rest rest = new Rest("GET");
-					rest.setURL("http://121.97.45.242/segservice/department/show/");
-					rest.execute();
-					while(rest.getContent() == null){}
-					 
-					if(rest.getResult()){
-						String content = rest.getContent();
-						System.out.println(content);
-						//DepartmentParser department_parser = new DepartmentParser(content);
-						//departments = department_parser.getDepartments();
-					}
-				}
+				retrieveDepartmentsAPI();
 			}catch(Exception e){}
 		}
 		else{
@@ -82,6 +69,24 @@ public class InitializeActivity extends InitialActivity{
 			
 	}
 	
+
+	private void retrieveDepartmentsAPI() {
+		if(isNetworkAvailable()){
+			
+			Rest rest = new Rest("GET");
+			rest.setURL("http://121.97.45.242/segservice/department/show/");
+			rest.execute();
+			while(rest.getContent() == null){}
+			 
+			if(rest.getResult()){
+				String content = rest.getContent();
+				System.out.println(content);
+				//DepartmentParser department_parser = new DepartmentParser(content);
+				//departments = department_parser.getDepartments();
+			}
+		}
+	}
+
 
 	private boolean isDepartmentEmpty() {
 		
