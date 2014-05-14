@@ -3,12 +3,18 @@ package com.example.android.navigationdrawerexample;
 import com.example.model.Preferences;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
 
 public class InitialActivity extends Activity{
 	
+	protected Intent intent;
+    protected Bundle extras;
+    
+    @SuppressWarnings("static-access")
     
     /* checks if phone is connected to a network */
-    @SuppressWarnings("static-access")
 	protected void checkNetwork() {
 		// TODO Auto-generated method stub
 		Preferences pref =  new Preferences();
@@ -24,5 +30,16 @@ public class InitialActivity extends Activity{
 		}
 			
 	}
+    
+    /* displays message dialog */
+    protected void alertMessage(String message){
+    	Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+    
+    /* displays message dialog */
+    protected void logMessage(String message){
+    	System.out.println(message);
+    }
+    
     
 }

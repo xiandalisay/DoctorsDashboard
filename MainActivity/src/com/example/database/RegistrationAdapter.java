@@ -23,14 +23,7 @@ import android.util.Log;
 import com.example.database.Data;
 
 public class RegistrationAdapter extends Data{
-	
-	
-	public  SQLiteDatabase db;
-	private DatabaseHandler dbHandler;
-	
-	private static final int 	DATABASE_VERSION	= 1;
-	private static final String DATABASE_NAME 		= "localhost";
-	//
+
 	public  RegistrationAdapter(Context context) 
 	{
 		try {

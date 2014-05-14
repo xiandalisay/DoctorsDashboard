@@ -356,7 +356,7 @@ public class DatabaseAdapter extends Data {
 		db = dbHandler.getWritableDatabase();
 		encounterlist = new ArrayList<Encounter>();
 		try {
-			String query = "SELECT encounter.encounter_id, encounter.date_encountered, encounter.date_released, encounter.type_patient, encounter.message_complaint, encounter.pid FROM encounter INNER JOIN patient ON encounter.pid = patient.pid WHERE patient.pid = " + patientid;
+			String query = "SELECT encounter.encounter_id, encounter.date_encountered, encounter.date_released, encounter.type_patient, encounter.message_complaint, encounter.pid FROM encounter INNER JOIN patient ON encounter.pid = patient.pid WHERE patient.pid = " + patientid + " ORDER BY date_encountered";
 			Cursor cursor = db.rawQuery(query,  null);
 			if(cursor.moveToFirst()){
 				do{

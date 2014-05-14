@@ -82,7 +82,7 @@ public class PatientActivity extends BaseActivity {
 				patient = patients.get(position);
 				int patientid = patient.getPid();
 				//Toast.makeText(getApplicationContext(), "Clicked " + patientid, Toast.LENGTH_SHORT).show();
-				Intent intent = new Intent(getApplicationContext(), PatientInfo.class);
+				Intent intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
 				Bundle extras = new Bundle();
 				extras.putInt("EXTRA_PATIENT_ID", patientid);
 				intent.putExtras(extras);
@@ -105,6 +105,7 @@ public class PatientActivity extends BaseActivity {
 		        	
 		        	
 		            DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
+		            
 		            try{
 			            patients = adapter.searchPatient(searchtext);
 			            ListView listview = (ListView) findViewById(R.id.listView1);
@@ -148,7 +149,7 @@ public class PatientActivity extends BaseActivity {
 			    				patient = patients.get(position);
 			    				int patientid = patient.getPid();
 			    				//Toast.makeText(getApplicationContext(), "Clicked " + patientid, Toast.LENGTH_SHORT).show();
-			    				Intent intent = new Intent(getApplicationContext(), PatientInfo.class);
+			    				Intent intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
 			    				Bundle extras = new Bundle();
 			    				extras.putInt("EXTRA_PATIENT_ID", patientid);
 			    				intent.putExtras(extras);
@@ -177,7 +178,7 @@ public class PatientActivity extends BaseActivity {
 	
 	
 	public void showPatientInfo(View view){
-    	Intent intent = new Intent(this, PatientInfo.class);
+    	Intent intent = new Intent(this, PatientInfoActivity.class);
     	startActivity(intent);
     }
 }

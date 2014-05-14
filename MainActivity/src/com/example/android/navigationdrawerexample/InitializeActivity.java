@@ -13,12 +13,13 @@ import java.util.UUID;
 
 import com.example.database.AccountsAdapter;
 import com.example.database.ClientAdapter;
+import com.example.database.DepartmentAdapter;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class InitializeActivity extends Activity{
+public class InitializeActivity extends InitialActivity{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,15 @@ public class InitializeActivity extends Activity{
 			String client_id = generateClientId();
 			saveClientId(client_id);
 		}
+		
+		/* check if department table is empty*/
+		if(isDepartmentEmpty()){
+			logMessage("Empty");
+		}
+		else{
+			logMessage("Not Empty");
+		}
+		
 		
 		/*
 		 *  Check if at least one account already exists 
@@ -47,6 +57,17 @@ public class InitializeActivity extends Activity{
 			
 	}
 	
+	private boolean isDepartmentEmpty() {
+		
+		DepartmentAdapter db = new DepartmentAdapter(this);
+		if(db.checkDepartments()){
+			return true;
+		}
+		else{
+			return false;			
+		}
+	}
+
 	/* Checks if a client_id already exists */
 	private boolean checkClientId(){
 		

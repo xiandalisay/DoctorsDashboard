@@ -1,5 +1,5 @@
 /*
- ** Created by Alvin Jay Cosare
+* ** Created by Alvin Jay Cosare
  ** Created on 05/06/14
  ** Handles processes for the registration of a new account 
  **
@@ -65,16 +65,17 @@ public class RegisterActivity extends InitialActivity{
 		
 		super.onCreate(savedInstanceState);
 		
-		/* checks if phone is connected to a network */
+		/* checks if phone is connected to a network 
 		if(!isConnected()){
 			setContentView(R.layout.activity_offline_registration);
 		}
 		else{
+		*/
 			setContentView(R.layout.activity_register);
 			getActionBar().setDisplayHomeAsUpEnabled(false);
 			getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 			initViews();
-		}
+		//}
 		
 		
 	}
@@ -169,7 +170,7 @@ public class RegisterActivity extends InitialActivity{
 			cancel = true;
 		} 
 		
-		// must only contain numeric characters
+		/* must only contain numeric characters */
 		String regex = "\\d+"; 
 		if (!license_nr.matches(regex)) {
 			et_license_nr.setError(getString(R.string.error_invalid_format));
@@ -177,7 +178,7 @@ public class RegisterActivity extends InitialActivity{
 			cancel = true;
 		} 
 		
-		// must only contain alphanumeric characters
+		/* must only contain alphanumeric characters */
 		regex = "[\\p{Alnum}]+"; 
 		if (!username.matches(regex)) {
 			et_username.setError(getString(R.string.error_invalid_format));
@@ -248,9 +249,10 @@ public class RegisterActivity extends InitialActivity{
 		}
 	}
 	
-	private boolean isDoctorExists(String license) {
+	/* checks if doctor already exists in the mobile DB */
+	private boolean isDoctorExists(String license_nr) {
 		DoctorAdapter _doctor = new DoctorAdapter(this);
-		if(_doctor.isDoctorExists(license)) {
+		if(_doctor.isDoctorExists(license_nr)) {
 			return true;
 		} else {
 			return false;
@@ -271,8 +273,9 @@ public class RegisterActivity extends InitialActivity{
 		rest = new Rest();
 		/* setup API URL */
 		try {
-			rest.setURL("http://" + reg.getBaseURL() + 
-					    "/segservice/registration/doctor?" + 
+			rest.setURL(
+						reg.getBaseURL() + 
+					 	"/registration/doctor?" + 
 						"login_id="+reg.getUsername()+
 						"&password="+MD5Hash.md5(reg.getPassword())+
 						"&license_nr="+reg.getLicenseNumber()+

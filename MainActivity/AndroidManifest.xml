@@ -89,12 +89,19 @@
                 android:value="com.example.android.navigationdrawerexample.LoginActivity" />
         </activity>
         <activity
-            android:name="com.example.android.navigationdrawerexample.PatientInfo"
+            android:name="com.example.android.navigationdrawerexample.PatientInfoActivity"
             android:label="@string/title_activity_patient_info"
             android:parentActivityName="com.example.android.navigationdrawerexample.PatientActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.navigationdrawerexample.PatientActivity" />
+        </activity>
+          <activity
+            android:name="com.example.android.navigationdrawerexample.TagPatientActivity"
+            android:label="@string/title_activity_tag" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.navigationdrawerexample.PatientInfoActivity" />
         </activity>
         <activity
             android:name="com.example.android.navigationdrawerexample.PatientEncounterActivity"
