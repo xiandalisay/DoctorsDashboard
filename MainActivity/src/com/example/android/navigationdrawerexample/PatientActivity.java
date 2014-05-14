@@ -181,4 +181,5 @@ public class PatientActivity extends BaseActivity {
     	Intent intent = new Intent(this, PatientInfoActivity.class);
     	startActivity(intent);
     }
+	//edit ni ipong
 }
