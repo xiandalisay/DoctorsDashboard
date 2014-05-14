@@ -47,9 +47,8 @@ public class InitializeActivity extends InitialActivity{
 			try{
 				if(isNetworkAvailable()){
 	
-					Rest rest = new Rest();
+					Rest rest = new Rest("GET");
 					rest.setURL("http://121.97.45.242/segservice/department/show/");
-					rest.setMethod("GET");
 					rest.execute();
 					while(rest.getContent() == null){}
 					 

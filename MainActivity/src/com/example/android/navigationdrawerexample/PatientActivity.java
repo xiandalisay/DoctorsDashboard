@@ -45,7 +45,7 @@ public class PatientActivity extends BaseActivity {
 		patients = new ArrayList<Patient>();
 		if(isNetworkAvailable()){
 
-			Rest rest = new Rest();
+			Rest rest = new Rest("GET");
 			rest.setURL(url);
 			rest.execute();
 			while(rest.getContent() == null){}
