@@ -83,7 +83,7 @@ public class PatientActivity extends BaseActivity {
         	    String displayname = "";
         	    String displayinfo = "";
         	    Patient patient = patients.get(position);
-        	    System.out.println(patient.getSex());
+        	  
         	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
         	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
         	    	displayinfo = displayinfo + "Male";
@@ -91,7 +91,7 @@ public class PatientActivity extends BaseActivity {
         	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
         	    	displayinfo = displayinfo + "Female";
         	    }
-        	    //System.out.println(displayinfo);
+   
         	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
         	    
         	    text1.setText(displayname);
