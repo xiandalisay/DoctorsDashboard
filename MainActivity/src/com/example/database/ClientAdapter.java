@@ -57,4 +57,21 @@ public class ClientAdapter extends Data{
 		db.insert(TABLE_CLIENT, null, values);
 		db.close();
 	}
+	
+	public String getClientId(){
+		
+		db = dbHandler.getReadableDatabase();
+		String query = 
+				"SELECT " + CLIENT_ID + 
+			    " FROM " + TABLE_CLIENT + 
+				" WHERE id = 1"; 
+		
+		cursor = db.rawQuery(query, null);
+		if(cursor.moveToFirst()){
+			return cursor.getString(0);
+		}
+		else{
+			return "";
+		}
+	}
 }

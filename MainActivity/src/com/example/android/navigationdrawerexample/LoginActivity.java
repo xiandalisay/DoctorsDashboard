@@ -12,6 +12,7 @@
 import com.example.api.auth.HMAC_SHA1;
 import com.example.api.auth.MD5Hash;
 import com.example.database.*;
+import com.example.model.Preferences;
 import com.example.model.Registration;
 import com.example.model.TokenValidate;
 
@@ -43,6 +44,7 @@ public class LoginActivity extends InitialActivity {
 	// UI references.
 	private EditText et_username;
 	private EditText et_password;
+	
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
@@ -57,6 +59,14 @@ public class LoginActivity extends InitialActivity {
 		
 		/* checks if phone is connected to a network */
 		checkNetwork();
+		/*
+		 * Logs into the account automatically if
+		 * clicked the remember me
+		 */
+		if (isAuthtokenExists(Preferences.getAuthenticationPreference(this))
+				&& Preferences.getRememberPreference(this)){
+			successfulLogin();
+		}
 	}
 	
 	@Override
@@ -176,6 +186,14 @@ public class LoginActivity extends InitialActivity {
 		}
 	
 	public Boolean AuthtokenValidation() {
+		/* Created By: Christian Joseph Dalisay
+		 * Created On: 05/08/14
+		 * AuthtokenValidation 
+		 * 	- Validates if there is a match of generated and stored authentication
+		 *    token, then stores the authentication token, base_url, and personnel_nr
+		 *    of the user account into the preferences.
+		 */
+		
 		RegistrationAdapter client = new RegistrationAdapter(this);
 		String data = client.getClientId() + "\\n" + username;
 		String key = "";
@@ -194,6 +212,15 @@ public class LoginActivity extends InitialActivity {
 			e.printStackTrace();
 		}
 		if(isAuthtokenExists(digest)) {
+			Preferences.setAuthenticationPreference(this,digest);
+			setBaseUrl();
+			setPersonnel();
+			System.out.println("Remember? "+Preferences.getRememberPreference(this).toString());
+			if(Preferences.getRememberPreference(this)){
+			}
+			else {
+				Preferences.setAuthenticationPreference(this,"digest");
+			}
 			return true;
 		}
 		else {
@@ -249,5 +276,21 @@ public class LoginActivity extends InitialActivity {
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
+	}
+	
+	public void isRemember(View v) {
+		Preferences.setRememberPreference(this, !Preferences.getRememberPreference(this));
+	}
+	
+	//saves the key base url in the preferences for API use
+	public void setBaseUrl() {
+		DoctorAdapter doc = new DoctorAdapter(this);
+		Preferences.setBaseUrlPreference(this, doc.getBaseUrl(Preferences.getAuthenticationPreference(this)));
+	}
+	
+	//saves the key personnel_nr in the preferences for API use
+	public void setPersonnel() {
+		DoctorAdapter doc = new DoctorAdapter(this);
+		Preferences.setPersonnelPreference(this, doc.getPersonnelNr(Preferences.getAuthenticationPreference(this)));
 	}
 }

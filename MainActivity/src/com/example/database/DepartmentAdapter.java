@@ -1,7 +1,12 @@
 package com.example.database;
 
+import java.util.ArrayList;
+
+import android.content.ContentValues;
 import android.content.Context;
+import com.example.model.Department;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.util.Log;
 
 public class DepartmentAdapter extends Data {
@@ -34,6 +39,30 @@ public class DepartmentAdapter extends Data {
 		else{
 			return false;
 		}
+	}
+	
+	public void insertDepartments(ArrayList<Department> dept){
+		db = dbHandler.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		
+		try {
+			db.beginTransaction();
+			for(int i = 0; i < dept.size(); i++) {
+				values.put(DEPT_ID, dept.get(i).getDepartmentNumber());	
+				values.put(DEPT, dept.get(i).getDepartmentName());	
+				values.put(SHORT_DEPT, dept.get(i).getDepartmentId());	
+			    db.insert(TABLE_DEPARTMENT, null, values);
+			  }
+			  db.setTransactionSuccessful();
+				Log.d("DepartmentAdapter insertDepartments", "setTransactionSuccessful");
+			}
+			catch (SQLException se) {
+				Log.d("DepartmentAdapter insertDepartments", Log.getStackTraceString(se));
+			}
+			finally
+			{
+			  db.endTransaction();
+			}
 	}
 	
 }
