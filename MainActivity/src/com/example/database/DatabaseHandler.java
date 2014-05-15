@@ -31,14 +31,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL(Data.CREATE_TABLE_DEPARTMENT);
 			db.execSQL(Data.CREATE_TABLE_PATIENT);
 			db.execSQL(Data.CREATE_TABLE_ENCOUNTER);
+			db.execSQL(Data.CREATE_TABLE_DOC_ENC);
 			db.execSQL(Data.CREATE_TABLE_REFERRAL);
 			db.execSQL(Data.CREATE_TABLE_REASON);
-			db.execSQL(Data.CREATE_TABLE_CANVASS);
 			db.execSQL(Data.CREATE_TABLE_LAB_REQUEST);
 			db.execSQL(Data.CREATE_TABLE_LAB_SERVICE);
 			db.execSQL(Data.CREATE_TABLE_SERVICE_REQUEST);
 			db.execSQL(Data.CREATE_TABLE_LAB_RESULT);
-			db.execSQL(Data.CREATE_TABLE_SOAP);
+			db.execSQL(Data.CREATE_TABLE_NOTES);
 			
 			onCreateDummy(db);
 			Log.d("DatabaseHandler","Database onCreateTables Successful");
@@ -91,16 +91,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"	(100027,'1234567',133,'Gaurino','Marc','Gonzales'), " +
 				"	(100040,'1234568',133,'Caralos','Rex Arnold','Mesiona'), " +
 					"	(100054,'1234569',131,'Chin','Elizabeth May','Tan') "  );*/
-			db.execSQL("INSERT INTO doctor values(100055, '0117236', 133, 'ESPAÑOLA', 'SEURINANE SEAN', 'BORRA', '97ffcb8e6d1014d2752cadd03b1ac6ca8b4a63d0', '28b0f836cc41361b90ce15a7a28ac8b3a9363f5b', 'm', '1981-05-12', '121.97.45.242')");
-			db.execSQL("insert into [encounter] values(1, 100022, 1, 'In-Patient', 'Fever', '2012-07-01 00:00:00.000', null)," +
-						"(2, 100022, 2, 'In-Patient', 'Headache', '2013-06-02 00:08:00.000', null)," +
-						"(3, 100022, 1, 'In-Patient', 'Stomach ache', '2014-01-03 00:00:00.000', null)," +
-						"(4, 100022, 1, 'In-Patient', 'Flu', '2014-05-12 00:00:00.000', null)," +
-						"(5, 100022, 1, 'In-Patient', 'Kalibanga', '2014-05-11 00:00:00.000', null)," +
-						"(2008000000, 100022, 1000000, 'Inpatient from ER', null, '2009-02-09 11:47:00.000', null)," +
-						"(2008000001, 100022, 1000000, 'OPD', null, '2008-11-24 16:05:43.000', null)," +
-						"(2008000002, 100022, 1000000, 'OPD', null, '2008-12-24 08:07:43.000', null)");
+			/*
+			 * db.execSQL("INSERT INTO doctor values(100055, '0117236', 133, 'ESPAÑOLA', 'SEURINANE SEAN', 'BORRA', '97ffcb8e6d1014d2752cadd03b1ac6ca8b4a63d0', '28b0f836cc41361b90ce15a7a28ac8b3a9363f5b', 'm', '1981-05-12', '121.97.45.242')");
+			 */
+			db.execSQL("insert into [encounter] (encounter_id, pid, type_patient,message_complaint, date_encountered,official_receipt_nr,is_confidential)" + 
+						" values(1, 1, 'In-Patient', 'Fever', '2012-07-01 00:00:00.000',null,null)," +
+						"(2, 2, 'In-Patient', 'Headache', '2013-06-02 00:08:00.000',null,null)," +
+						"(3, 1, 'In-Patient', 'Stomach ache', '2014-01-03 00:00:00.000',null,null)," +
+						"(4, 1, 'In-Patient', 'Flu', '2014-05-12 00:00:00.000',null,null)," +
+						"(5, 1, 'In-Patient', 'Kalibanga', '2014-05-11 00:00:00.000',null,null)," +
+						"(2008000000, 1000000, 'Inpatient from ER',null, '2009-02-09 11:47:00.000',null,null)," +
+						"(2008000001, 1000000, 'OPD',null, '2008-11-24 16:05:43.000',null,null)," +
+						"(2008000002, 1000000, 'OPD',null, '2008-12-24 08:07:43.000',null,null)");
 			db.execSQL("insert into [client] values(1, '06778975-75e3-4da2-9e1e-866b222e0fa6')");
+			db.execSQL("INSERT INTO 'reason' ('reason_id','name_reason') " +
+				" VALUES (1,'Surgery'), " + 
+				"   (2,'Dialysis'), " +
+				"	(3,'ER')"); 
+			db.execSQL("INSERT INTO 'referral' ('referral_id','encounter_id','dept_id','reason_id','date_referred') " + 
+				" VALUES (1,1,107,1,'2013-06-02 00:12:00' ), " + 
+				" (2,2,131,2,'2013-08-10 12:12:00' ), " + 	
+				" (3,3,136,3,'2014-02-20 07:08:00' ) " );
+			db.execSQL("INSERT INTO 'notes' ('notes_id','encounter_id','title','body','date_created','sync') " + 
+					" VALUES (1,1,'First Encounter','Encountered for the first time','2013-06-02 00:12:00',0 ), " + 
+					" (2,2,'Second Encounter','Encountered for the first time','2013-08-10 12:12:00',0 ), " + 	
+					" (3,3,'Third Encounter','Encountered for the first time','2014-02-20 07:08:00',0 ) " );
 			Log.d("DatabaseHandler","onCreateDummy successful");
 		} catch (SQLException se) {
 			Log.d("onCreateDummy SQLException",Log.getStackTraceString(se));
@@ -116,14 +131,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_DEPARTMENT);
 			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_PATIENT);
 			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_ENCOUNTER);
+			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_DOC_ENC);
 			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_REFERRAL);
 			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_REASON);
-			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_CANVASS);
 			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_LAB_REQUEST);
 			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_LAB_SERVICE);
 			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_SERVICE_REQUEST);
 			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_LAB_RESULT);
-			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_SOAP);
+			db.execSQL("DROP TABLE IF EXISTS " + Data.TABLE_NOTES);
 			
 			onCreate(db);
 			//better if there is a backup of a table

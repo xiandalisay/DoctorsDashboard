@@ -73,13 +73,16 @@ public class Data {
 	// Table Name: Encounter
 	public static final String TABLE_ENCOUNTER = "encounter";
 	public static final String ENCOUNTER_ID = "encounter_id";
-	//public static final String PERSONNEL_ID = "personnel_id";
 	//public static final String PID 		= "pid";
 	public static final String PATIENT 		= "type_patient";
 	public static final String COMPLAINT 	= "message_complaint";
 	public static final String ENCOUNTERED 	= "date_encountered";
-	public static final String RELEASED 	= "date_released";
-
+	public static final String OFFICIAL_RECEIPT_NR = "official_receipt_nr";
+	public static final String IS_CONFIDENTIAL = "is_confidential";
+	
+	public static final String TABLE_DOC_ENC = "doctor_encounter";
+	//public static final String PERSONNEL_ID = "personnel_id";
+	//public static final String ENCOUNTER_ID = "encounter_id";
 	
 	// Table Name: Referral
 	public static final String TABLE_REFERRAL = "referral";
@@ -94,15 +97,6 @@ public class Data {
 	//public static final String REASON_ID 	= "reason_id";
 	public static final String REASON 		= "name_reason";
 	
-	// Table Name: Canvass
-	public static final String TABLE_CANVASS 	= "canvass";
-	public static final String CANVASS_ID 		= "canvass_id";
-	//public static final String ENCOUNTER_ID 	= "encounter_id";
-	public static final String IMAGE 			= "uri_image";
-	public static final String CANVASS 			= "type_canvass";
-	public static final String UPLOADED 		= "date_uploaded";
-	public static final String SYNC_CANVASS 	= "sync_canvass";
-
 	// Table Name: LabRequest
 	public static final String TABLE_LAB_REQUEST = "lab_request";
 	public static final String REQUEST_ID 		= "request_id";
@@ -130,14 +124,15 @@ public class Data {
 	public static final String HL7 			= "message_hl7";
 	public static final String PATHO 		= "name_patho";
 	
-	// Table Name: Soap
-	public static final String TABLE_SOAP 	= "soap";
-	public static final String SOAP_ID 		= "soap_id";
+	// Table Name: Notes
+	public static final String TABLE_NOTES 	= "notes";
+	public static final String NOTES_ID 	= "notes_id";
 	//public static final String ENCOUNTER_ID = "encounter_id";
-	public static final String TITLE 		= "title_soap";
-	public static final String SOAP 		= "msg_soap";
-	public static final String MODIFIED		= "date_modified";
-	public static final String SYNC_SOAP	= "sync_soap";
+	public static final String TITLE 	= "title";
+	public static final String TYPE 	= "type";
+	public static final String BODY		= "body";
+	public static final String CREATED	= "date_created";
+	public static final String SYNC		= "sync";
 	
 	//	-----Table Creation Statements--------------
 	 static final String CREATE_TABLE_CLIENT = 
@@ -184,14 +179,18 @@ public class Data {
 	 static final String CREATE_TABLE_ENCOUNTER = 
 		"CREATE TABLE " + TABLE_ENCOUNTER + "(" +
 		ENCOUNTER_ID	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		//LICENSE_NO 	+ " NVARCHAR(10) REFERENCES " + TABLE_DOCTOR + "(" + LICENSE_NO + ")" + ", "	+
-		PERSONNEL_ID 	+ " INTEGER REFERENCES " + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
 		PID 		+ " INTEGER NOT NULL REFERENCES " + TABLE_PATIENT + "(" + PID + ")" + ", "	+
 		PATIENT 	+ " NVARCHAR(20), " +
 		COMPLAINT 	+ " TEXT, " +
-		ENCOUNTERED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " + ", " + 
-		RELEASED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " +	")";
+		ENCOUNTERED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " +	", " +
+		OFFICIAL_RECEIPT_NR + " NVARCHAR(10), " +
+		IS_CONFIDENTIAL + " CHAR(3) DEFAULT 'No' " +	")";
 	
+	 static final String CREATE_TABLE_DOC_ENC = 
+		"CREATE TABLE " + TABLE_DOC_ENC + "(" +
+		PERSONNEL_ID 	+ " INTEGER NOT NULL " + ", " +
+		ENCOUNTER_ID 	+ " INTEGER NOT NULL " + ") ";
+			
 	 static final String CREATE_TABLE_REASON = 
 		"CREATE TABLE " + TABLE_REASON + "(" +
 		REASON_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -205,16 +204,7 @@ public class Data {
 		REASON_ID 		+ " INTEGER NOT NULL REFERENCES "  + TABLE_REASON + "(" + REASON_ID + ")" + ", "	+
 		REFERRED 		+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime')) " + ")";
 		
-	 static final String CREATE_TABLE_CANVASS = 
-		"CREATE TABLE " + TABLE_CANVASS + " ( " +
-		CANVASS_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		ENCOUNTER_ID + " INTEGER NOT NULL REFERENCES "  + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
-		IMAGE 		+ " TEXT NOT NULL, " +
-		CANVASS 	+ " NVARCHAR(20), " 		+
-		UPLOADED 	+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime')), " 	+
-		SYNC_CANVASS + " BOOLEAN NOT NULL DEFAULT 0 "+	")";
-	
-	 static final String CREATE_TABLE_LAB_REQUEST = 
+	static final String CREATE_TABLE_LAB_REQUEST = 
 		"CREATE TABLE " + TABLE_LAB_REQUEST + " ( " +
 		REQUEST_ID 		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES " + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", " +
@@ -241,12 +231,12 @@ public class Data {
 		HL7 		+ " TEXT NOT NULL, " +
 		PATHO 		+ " NVARCHAR(50) NOT NULL " + ")";
 	
-	 static final String CREATE_TABLE_SOAP = 
-		"CREATE TABLE " + TABLE_SOAP + "(" +
-		SOAP_ID		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+	 static final String CREATE_TABLE_NOTES = 
+		"CREATE TABLE " + TABLE_NOTES + "(" +
+		NOTES_ID		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID + " INTEGER NOT NULL REFERENCES " 	+ TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
-		TITLE 		+ " NVARCHAR(20) NOT NULL, " 	+ 
-		SOAP 		+ " TEXT, " 	+ 
-		MODIFIED  	+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime'))," +
-		SYNC_SOAP 	+ " BOOLEAN DEFAULT 0" 	+ ")";
+		TITLE 		+ " NVARCHAR(30) NOT NULL, " 	+ 
+		BODY 		+ " TEXT, " 	+ 
+		CREATED  	+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime'))," +
+		SYNC 		+ " BOOLEAN DEFAULT 0" 	+ ")";
 }

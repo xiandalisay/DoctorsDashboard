@@ -1,5 +1,10 @@
 package com.example.android.navigationdrawerexample;
 
+import com.example.database.CanvasAdapter;
+import com.example.database.DatabaseAdapter;
+import com.example.database.DoctorAdapter;
+import com.example.database.LabRequestAdapter;
+import com.example.database.ReferralAdapter;
 import com.example.model.Preferences;
 import com.example.model.Rest;
 
@@ -18,6 +23,7 @@ public class UntagPatientActivity extends InitialActivity {
 		retrieveBundle();
 		
 		submitUntag();
+		deleteRelatedData();
 		
 		finish();
 	}
@@ -63,6 +69,16 @@ public class UntagPatientActivity extends InitialActivity {
 		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
 	}
 
+	private void deleteRelatedData() {
+		DoctorAdapter doc_ad = new DoctorAdapter(this);
+		doc_ad.deleteDoctorEncounter(encounter_id);
+		/*ReferralAdapter ra = new ReferralAdapter(this);
+		ra.deleteReferrals(encounter_id);
+		CanvasAdapter ca = new CanvasAdapter(this);
+		ca.deleteCanvas(encounter_id);
+		LabRequestAdapter lra = new LabRequestAdapter(this);
+		lra.deleteLabRequests(encounter_id);*/
+	}
 	
 
 	
