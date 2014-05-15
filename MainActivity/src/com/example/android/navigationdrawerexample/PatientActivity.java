@@ -7,6 +7,7 @@
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import android.content.Context;
@@ -27,7 +28,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
@@ -140,20 +140,28 @@ public class PatientActivity extends BaseActivity {
 		        	EditText edittext = (EditText) findViewById(R.id.searchView1);
 		        	
 		        	String searchtext = edittext.getText().toString();
-		        	StringTokenizer t = new StringTokenizer(searchtext, ",");
-		        	String last = t.nextToken();
-		        	String first = t.nextToken();
 		        	
 		            DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 		            patients = new ArrayList<Patient>();
+		            
+		            StringTokenizer t = new StringTokenizer(searchtext, ",");
+		            String last = "";
+		            String first = "%";
+		            if(t.countTokens() == 1){
+		            	last = t.nextToken();
+		            }
+		            else{
+		            	last = t.nextToken();
+		            	first = t.nextToken();
+		            }
 		            try{
 		            	
 		            	if(isNetworkAvailable()){ //checks if device is connected to the internet
 		          
 		        			Rest rest = new Rest("GET");
-		        			rest.addRequestParams("name_last", last); //adds lastname as parameter to url
-		        			rest.addRequestParams("name_first", first); //adds firstname as parameter to url
 		        			rest.setURL(url);
+		        			rest.addRequestParams("name_last", last);
+		        			rest.addRequestParams("name_first", first);
 		        			rest.execute();
 		        			while(rest.getContent() == null){}
 		        			
@@ -163,6 +171,7 @@ public class PatientActivity extends BaseActivity {
 		        				PatientParser patient_parser = new PatientParser(content);
 		        				patients = patient_parser.getPatients(); //get patients from online source
 		        			}
+		        			
 		        		}
 		            	else //gets patients from the database
 		            		patients = adapter.searchPatient(searchtext);
