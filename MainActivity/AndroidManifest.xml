@@ -81,6 +81,11 @@
             android:parentActivityName="com.example.android.navigationdrawerexample.LoginActivity" >
         </activity>
         <activity
+            android:name="com.example.android.navigationdrawerexample.InitialSyncActivity"
+            android:label="@string/title_activity_register"
+            android:parentActivityName="com.example.android.navigationdrawerexample.RegisterActivity" >
+        </activity>
+        <activity
             android:name="com.example.android.navigationdrawerexample.ValidateDoctor"
             android:label="@string/title_activity_validate_doctor"
             android:parentActivityName="com.example.android.navigationdrawerexample.LoginActivity" >

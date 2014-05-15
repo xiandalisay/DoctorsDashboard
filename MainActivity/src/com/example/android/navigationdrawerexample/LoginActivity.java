@@ -70,6 +70,12 @@ public class LoginActivity extends InitialActivity {
 	}
 	
 	@Override
+	protected void onPause() {
+		super.onPause();
+		finish();
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.login, menu);

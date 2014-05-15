@@ -48,7 +48,7 @@ public class RegisterActivity extends InitialActivity{
 	private String username = "seurinane";
 	private String password = "1234";
 	private String confirm_password = "1234";
-	private String base_url = "121.97.45.242";
+	private String base_url = "http://121.97.45.242/segservice";
 	
 	private HashMap<String, String> data;
 	
@@ -96,26 +96,28 @@ public class RegisterActivity extends InitialActivity{
 		/* if inputs are all valid, submits them thru API */
 		if(prepareCredentials()){
 			if(submitCredentials()){
-				insertDoctor();
-				retrieveEncounters();
+				//insertDoctor();
+				startInitialSync();
+				//showLoginActivity();
 			}
 		}
 	}
-
+	
 	/* Saves inputted data by user and checks if they are valid */
 	public boolean prepareCredentials(){
 		
 		/* Convert data type from EditText -> Editable -> String */ 
-		convertInputText();
+		//convertInputText();
 		
-		/* Validate inputs from user (i.e. empty field, unequal passwords) */
+		/* Validate inputs from user (i.e. empty field, unequal passwords) 
 		if(!validateInputs()){
 			return false;
 		}
+		*/
 		
 		reg = new Registration();
 		
-		/* Retrieve inputted data in textbox */
+		/* Retrieve inputted data in textbox */ 
 		reg.setLicenseNumber(license_nr);
 		reg.setUsername(username);
 		reg.setPassword(password);
@@ -274,6 +276,7 @@ public class RegisterActivity extends InitialActivity{
 						"&license_nr="+reg.getLicenseNumber()+
 						"&client_id="+reg.getClientId());
 			
+			logMessage(rest.getURL());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -315,6 +318,66 @@ public class RegisterActivity extends InitialActivity{
 		}
 		
 	}
+	
+	/* starts Login Activity */
+	public void showLoginActivity(){
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
+	}
+	
+	public void showRegisterActivity(View view){
+		//System.out.println("register");
+		Intent intent = new Intent(this, RegisterActivity.class);
+		startActivity(intent);
+	}
+	
+	/* insert newly registered doctor's details to mobile DB */
+	private void insertDoctor() {
+		
+		System.out.println("license_nr: " + license_nr);
+		
+		if(!isDoctorExists(license_nr)){
+			String[] DoctorData = {
+					license_nr,
+					data.get("name_last"),
+					data.get("name_first"),
+					data.get("name_middle"),
+					data.get("auth_token"),
+					data.get("access_token"),
+					data.get("birth_date"),
+					data.get("sex"),
+					base_url 
+			};
+			
+			System.out.println("pasok"); 
+			
+			Doctor doctor = new Doctor();
+			//Inserting Integer Data to the model
+			doctor.setDeptId(Integer.parseInt(data.get("location_nr")));
+			doctor.setPersonnelId(Integer.parseInt(data.get("personell_nr")));
+			//doctor.setPersonnelId(Integer.parseInt("100023"));
+			
+			/* inserting string Data to the model */
+			doctor.setDoctorCredentials(DoctorData);
+			setRetrievedCredentials(doctor);
+		}
+		else{
+			alertMessage("Account Already Exists");
+		}
+	}
+	
+	private void startInitialSync() {
+		// TODO Auto-generated method stub
+		extras = new Bundle();
+		extras.putString("EXTRA_BASE_URL", base_url);
+		extras.putString("EXTRA_PERSONNEL_ID", data.get("personell_nr"));
+		
+		intent = new Intent(this, InitialSyncActivity.class);
+		intent.putExtras(extras);
+		
+		startActivity(intent);
+	}
+
 	 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -353,67 +416,8 @@ public class RegisterActivity extends InitialActivity{
 			return rootView;
 		}
 	}
-	
-	/* starts Login Activity */
-	public void showLoginActivity(){
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
-	}
-	
-	public void showRegisterActivity(View view){
-		//System.out.println("register");
-		Intent intent = new Intent(this, RegisterActivity.class);
-		startActivity(intent);
-	}
-	
-	/* insert newly registered doctor's details to mobile DB */
-	private void insertDoctor() {
-		
-		System.out.println("license_nr: " + license_nr);
-		
-		if(!isDoctorExists(license_nr)){
-			String[] DoctorData = {
-					license_nr,
-					data.get("name_last"),
-					data.get("name_first"),
-					data.get("name_middle"),
-					data.get("auth_token"),
-					data.get("access_token"),
-					data.get("birth_date"),
-					data.get("sex"),
-					base_url 
-			};
-			
-			System.out.println("pasok"); 
-			
-			Doctor doctor = new Doctor();
-			//Inserting Integer Data to the model
-			doctor.setDeptId(Integer.parseInt(data.get("location_nr")));
-			doctor.setPersonnelId(Integer.parseInt("100023"));
-			//doctor.setPersonnelId(Integer.parseInt("100023"));
-			//Inserting string Data to the model
-			doctor.setDoctorCredentials(DoctorData);
-			setRetrievedCredentials(doctor);
-			showLoginActivity();
-		}
-		else{
-			alertMessage("Account Already Exists");
-		}
-	}
-	
-
-	private void retrieveEncounters() {
 		
 		
-		rest = new Rest("GET");
-		
-		logMessage(HelperSharedPreferences.getSharedPreferencesString(this, "key_base_url", ""));
-		/* get base_url associated with doctor */
-		rest.setURL(HelperSharedPreferences.getSharedPreferencesString(this, "key_base_url", ""));
-		
-	}
-
-	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
