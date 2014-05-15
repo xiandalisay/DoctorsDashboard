@@ -20,28 +20,49 @@ import android.os.Bundle;
 
 import com.example.database.AccountsAdapter;
 import com.example.database.ClientAdapter;
+import com.example.database.DatabaseAdapter;
 import com.example.database.DepartmentAdapter;
 import com.example.model.Department;
+import com.example.model.Preferences;
 import com.example.model.Rest;
 import com.example.parser.DepartmentParser;
 
 public class InitializeActivity extends InitialActivity{
 	
 	private ArrayList<Department> departments;
-	
+	private String client_id;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		/*Initializes the database, and the shared preferences*/
+		DatabaseAdapter db = new DatabaseAdapter(this);
+		Preferences.createPreferences(this);
 		
-		/* check if client_id needs to be generated */
+		/* Created By: Christian Joseph Dalisay
+		 * Created On: 05/14/14
+		 * 
+		 * checks if client_id needs to be generated 
+		 * then, stores a new client_id into the preferences
+		 * else gets the stored client_id from the preferences
+		 */
+		
+		if(Preferences.getInitializePreference(this).equals("client")) {
+			Preferences.setInitializePreference(this,generateClientId());
+		}
+		/* When dummy datum client_id is used */
 		if(!checkClientId()){
-			String client_id = generateClientId();
+			client_id = generateClientId();
+			Preferences.setInitializePreference(this,client_id);
+			System.out.println("set " + Preferences.getInitializePreference(this));
 			saveClientId(client_id);
+		}
+		else{
+			Preferences.setInitializePreference(this,getClientId());
 		}
 		
 		/* check if department table is empty */
-		if(isDepartmentEmpty()){
+		/*if(isDepartmentEmpty()){
 			logMessage("Empty");
 			
 			try{
@@ -50,7 +71,7 @@ public class InitializeActivity extends InitialActivity{
 		}
 		else{
 			logMessage("Not Empty");
-		}
+		}*/
 		
 		
 		/*
@@ -81,8 +102,10 @@ public class InitializeActivity extends InitialActivity{
 			if(rest.getResult()){
 				String content = rest.getContent();
 				System.out.println(content);
-				//DepartmentParser department_parser = new DepartmentParser(content);
-				//departments = department_parser.getDepartments();
+				DepartmentParser department_parser = new DepartmentParser(content);
+				departments = department_parser.getDepartments();
+				DepartmentAdapter da = new DepartmentAdapter(this);
+				da.insertDepartments(departments);
 			}
 		}
 	}
@@ -129,6 +152,11 @@ public class InitializeActivity extends InitialActivity{
 		
 	}
 	
+	private String getClientId() {
+		ClientAdapter db = new ClientAdapter(this);
+		return db.getClientId();
+	}
+	
 	/* Checks if at least one account exists */
 	private boolean accountExists(){
 		AccountsAdapter db = new AccountsAdapter(this);
@@ -157,9 +185,6 @@ public class InitializeActivity extends InitialActivity{
 	protected void onPause() {
 		finish();
 	}
-	
-	
-	
 }
 
 

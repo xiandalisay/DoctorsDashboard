@@ -11,23 +11,23 @@ import java.util.Date;
 
 public class Encounter {
 	private int 	encounter_id;
+	private int 	personnel_id;
 	private int 	pid;
 	private String 	type_patient;
 	private String 	message_complaint;
 	private String 	date_encountered;
 	private String 	date_released;
-	private String department;
-	private String is_confidential;
 	
 	public Encounter(){
 		encounter_id 		= 0;
+		personnel_id 		= 0;
 		pid 				= 0;
 		type_patient 		= "";
 		message_complaint 	= "";
 		date_encountered 	= "";
 		date_released 		= "";
-		department = "";
-		is_confidential = "";
+		//department = "";
+		//is_confidential = "";
 	}
 	
 	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, String datereleased, int patientid)
@@ -48,8 +48,8 @@ public class Encounter {
 		date_encountered = dateencountered;
 		date_released = datereleased;
 		pid = patientid;
-		this.department = department;
-		is_confidential = isconfidential;
+		//this.department = department;
+		//is_confidential = isconfidential;
 	}
 	
 	public void setEncounterId(int rEncounter_id) {
@@ -88,6 +88,10 @@ public class Encounter {
 	
 	public int getPid() {
 		return this.pid;
+	}
+	
+	public int getPersonnelId() {
+		return this.personnel_id;
 	}
 	
 	public String getTypePatient() {

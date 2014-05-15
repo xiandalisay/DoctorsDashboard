@@ -101,4 +101,38 @@ public class DoctorAdapter extends Data{
 		else
 			return false; 
 	}
+	
+	public String getBaseUrl(String auth) {
+		db = dbHandler.getReadableDatabase();
+		String query = 
+				"SELECT base_url " + 
+				" FROM " + TABLE_DOCTOR + 
+				" WHERE authtoken = '" + auth + "'";
+		try{
+			cursor = db.rawQuery(query, null);
+        }catch(Exception e) {
+         Log.d("DoctorAdapter getBaseUrl", Log.getStackTraceString(e));
+         return "";
+        }
+		cursor.moveToFirst();
+		System.out.println("base_url: "+ cursor.getString(0));
+		return cursor.getString(0);
+	}
+	
+	public Integer getPersonnelNr(String auth) {
+		db = dbHandler.getReadableDatabase();
+		String query = 
+				"SELECT personnel_id " + 
+				" FROM " + TABLE_DOCTOR + 
+				" WHERE authtoken = '" + auth + "'";
+		try{
+			cursor = db.rawQuery(query, null);
+        }catch(Exception e) {
+         Log.d("DoctorAdapter getPersonnelNr", Log.getStackTraceString(e));
+         return 0;
+        }
+		cursor.moveToFirst();
+		System.out.println("Personnel Nr: "+ cursor.getString(0));
+		return cursor.getInt(0);
+	}
 }

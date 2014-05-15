@@ -156,8 +156,7 @@ public class Data {
 		"CREATE TABLE " + TABLE_DOCTOR + " (" +
 		PERSONNEL_ID + " INTEGER PRIMARY KEY NOT NULL , " +
 		LICENSE_NO	+ " NVARCHAR(10) UNIQUE NOT NULL, " +
-		DEPT_ID		+ " INTEGER NOT NULL, " +
-				//"REFERENCES " 	+ TABLE_DEPARTMENT + "(" + DEPT_ID + ")" + ", "	+
+		DEPT_ID		+ " INTEGER NOT NULL REFERENCES " + TABLE_DEPARTMENT + "(" + DEPT_ID + ")" + ", "	+
 		NAME_LAST 	+ " NVARCHAR(20) NOT NULL, " +
 		NAME_FIRST 	+ " NVARCHAR(30) NOT NULL, " +
 		NAME_MIDDLE + " NVARCHAR(20) , " 		+
@@ -246,7 +245,7 @@ public class Data {
 		"CREATE TABLE " + TABLE_SOAP + "(" +
 		SOAP_ID		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID + " INTEGER NOT NULL REFERENCES " 	+ TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
-		TITLE 		+ " TEXT, " 	+ 
+		TITLE 		+ " NVARCHAR(20) NOT NULL, " 	+ 
 		SOAP 		+ " TEXT, " 	+ 
 		MODIFIED  	+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime'))," +
 		SYNC_SOAP 	+ " BOOLEAN DEFAULT 0" 	+ ")";

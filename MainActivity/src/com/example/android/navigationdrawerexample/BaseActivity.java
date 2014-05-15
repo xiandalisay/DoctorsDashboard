@@ -152,14 +152,10 @@ public abstract class BaseActivity extends InitialActivity{
         	}
             
             else if(position == 6){
-             
+            	resetPreferences();
                 intent = new Intent(context, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
 
-            }
-            else if(position == 7){
-                
-                intent = new Intent(context, CanvassActivity.class);
             }
         	startActivity(intent);
             selectItem(position);
@@ -245,6 +241,17 @@ public abstract class BaseActivity extends InitialActivity{
             return rootView;
         }
         */
+    }
+
+
+    public void resetPreferences() {
+    	/*Created by: Christian Joseph Dalisay
+    	 *Created On: 5/14/14 
+    	 *ResetPreferences = resets the stored account preferences to blank
+    	 */
+    	Preferences.setRememberPreference(this, false);
+    	Preferences.setBaseUrlPreference(this, "");
+    	Preferences.setPersonnelPreference(this, 0);
     }
 
 }
