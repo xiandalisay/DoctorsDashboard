@@ -74,7 +74,7 @@ public class PatientActivity extends BaseActivity {
         	    String displayname = "";
         	    String displayinfo = "";
         	    Patient patient = patients.get(position);
-        	    System.out.println(patient.getSex());
+        	    
         	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
         	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
         	    	displayinfo = displayinfo + "Male";

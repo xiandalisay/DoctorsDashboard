@@ -1,13 +1,18 @@
+/*
+ * Edited by Jose Martin Ipong 5/15/2014, added online functionalities
+ */
+
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +30,9 @@ import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
 import com.example.model.Encounter;
 import com.example.model.Patient;
+import com.example.model.Rest;
+import com.example.parser.EncounterParser;
+import com.example.parser.PatientParser;
 
 public class PatientInfoActivity extends InitialActivity {
 	
@@ -32,25 +40,61 @@ public class PatientInfoActivity extends InitialActivity {
 	private Patient patient;
 	
 	private ArrayList<Encounter> encounters;
+	private ArrayList<Patient> patients;
 	
 	private Button tag;
 	
 	private int patient_id;
 	private int encounter_id;
-
+	final String url_patient = "http://121.97.45.242/segservice/patient/show";
+	final String url_encounter = "http://121.97.45.242/segservice/encounter/show";
+	final static int FIRST_PATIENT = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_patient_info);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
 		intent = getIntent();
 		extras = intent.getExtras();
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
-		
 		DatabaseAdapter db = new DatabaseAdapter(this);
-		patient = db.getPatientProfile(patient_id);
+		if(isNetworkAvailable()){
+			//Rest for patient
+			Rest rest_patient = new Rest("GET");
+			rest_patient.setURL(url_patient);
+			rest_patient.addRequestParams("id", Integer.toString(patient_id));
+			rest_patient.execute();
+			while(rest_patient.getContent() == null){}
+			
+			if(rest_patient.getResult()){
+				String content = rest_patient.getContent();
+				PatientParser patient_parser = new PatientParser(content);
+				patients = patient_parser.getPatients();
+				patient = patients.get(FIRST_PATIENT);
+				System.out.println(patient);
+			}
+			
+			//Rest for encounter
+			Rest rest_encounter = new Rest("GET");
+			rest_encounter.setURL(url_encounter);
+			//rest_encounter.addRequestParams("id", Integer.toString(patient_id));
+			rest_encounter.execute();
+			while(rest_encounter.getContent() == null){}
+			if(rest_encounter.getResult()){
+				String content = rest_encounter.getContent();
+				EncounterParser encounter_parser = new EncounterParser(content);
+				encounters = encounter_parser.getEncounters();
+				
+			}
+			
+		}
+		
+		
+		else{
+			patient = db.getPatientProfile(patient_id);
+			encounters = db.getPatientEncounter(patient_id);
+		}
 		
 		EditText nameEditText = (EditText) findViewById(R.id.FullName);
 		EditText genderEditText = (EditText) findViewById(R.id.Gender);
@@ -76,7 +120,7 @@ public class PatientInfoActivity extends InitialActivity {
 		String age = String.valueOf(patient.getAge());
 		ageEditText.setText(age);
 		
-		encounters = db.getPatientEncounter(patient_id);
+		
 		
 		/* duplicate code with LINE 41  */
 		patient = db.getPatientProfile(patient_id);
@@ -164,6 +208,13 @@ public class PatientInfoActivity extends InitialActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 }

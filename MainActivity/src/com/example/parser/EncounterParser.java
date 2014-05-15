@@ -63,7 +63,7 @@ public class EncounterParser extends JSONParser{
 				String name_first = jsonChildNode.optString(NAME_FIRST).toString();
 				String name_middle = jsonChildNode.optString(NAME_MIDDLE).toString();
 				String department = jsonChildNode.optString(DEPARTMENT).toString();
-				String encounter_date = jsonChildNode.optString(ENCOUNTER_DATE).toString();
+				String encounter_date = jsonChildNode.optString(ENCOUNTER_DATE).toString().substring(0,10);
 				String patient_type = jsonChildNode.optString(PATIENT_TYPE).toString();
 				String official_receipt_nr = jsonChildNode.optString(OFFICIAL_RECEIPT_NR).toString();
 				String chief_complaint = jsonChildNode.optString(CHIEF_COMPLAINT).toString();
