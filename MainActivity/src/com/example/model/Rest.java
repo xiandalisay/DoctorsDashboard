@@ -28,7 +28,7 @@ import com.google.resting.component.impl.ServiceResponse;
 import com.google.resting.json.JSONArray;
 import com.google.resting.method.post.PostHelper;
 
-public class Rest extends AsyncTask<String, Void, Void>{
+public class Rest extends AsyncTask<Void, Void, Void>{
 
 	private final String USERNAME = "emr";
 	private final String PASSWORD = "3mrh1s";
@@ -107,7 +107,7 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	
 
 	@Override
-	protected Void doInBackground(String... params) {
+	protected Void doInBackground(Void... params) {
 		System.out.println(this.params);
 		
 		if(method == "GET"){

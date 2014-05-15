@@ -42,7 +42,7 @@ public class TokenParser extends JSONParser {
         data.put("sex", json_childNode.optString("sex").toString());
         data.put("location_nr", json_childNode.optString("location_nr"));
         data.put("birth_date", json_childNode.optString("birth_date"));
-        data.put("personnel_nr", json_childNode.optString("personnel_nr"));
+        data.put("personell_nr", json_childNode.optString("personell_nr"));
         
         return data;
 	}
