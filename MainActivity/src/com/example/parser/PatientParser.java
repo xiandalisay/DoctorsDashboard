@@ -69,7 +69,7 @@ public class PatientParser extends JSONParser {
 			//String mother_of_patient 	= jsonChildNode.optString(MOTHER_OF_PATIENT).toString();
 			//String father_of_patient 	= jsonChildNode.optString(FATHER_OF_PATIENT).toString();
 			//String spouse_of_patient 	= jsonChildNode.optString(SPOUSE_OF_PATIENT).toString();
-			System.out.println(sex);
+			//System.out.println(sex);
 			Patient patient = new Patient(pid,name_last,name_first,name_middle,sex,date_birth,street1,city,province,zipCode);
 			patients.add(patient);   
 			//System.out.println(pid);			

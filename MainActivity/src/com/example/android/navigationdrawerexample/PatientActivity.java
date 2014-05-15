@@ -40,7 +40,7 @@ public class PatientActivity extends BaseActivity {
 	private Patient patient;
 	private ArrayList<Patient> patients;
 	
-	private final String url = "http://121.97.45.242/segservice/patient/show";
+	private final String url = "http://121.97.45.242/segservice/patient/show/";
 	
 	private int encounter_id;
 	private int patient_id;
@@ -52,7 +52,7 @@ public class PatientActivity extends BaseActivity {
 		EditText edittext = (EditText) findViewById(R.id.searchView1);
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
-		/*if(isNetworkAvailable()){
+		if(isNetworkAvailable()){
 
 			Rest rest = new Rest("GET");
 			rest.setURL(url);
@@ -66,12 +66,12 @@ public class PatientActivity extends BaseActivity {
 			}
 		} 
 		else{
-		*/
+		
 			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 			patients = adapter.searchPatient("");
-		//}
+		}
 		
-		ListView listview = (ListView) findViewById(R.id.listView1);
+		ListView listview = (ListView) findViewById(R.id.servicesList);
 		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
         	//method to override the getView method of ArrayAdapter, this changes the color of the text view
         	@Override
@@ -140,34 +140,33 @@ public class PatientActivity extends BaseActivity {
 		        	EditText edittext = (EditText) findViewById(R.id.searchView1);
 		        	
 		        	String searchtext = edittext.getText().toString();
-		        	//final ArrayList<Patient> patients;
 		        	StringTokenizer t = new StringTokenizer(searchtext, ",");
 		        	String last = t.nextToken();
 		        	String first = t.nextToken();
 		        	
 		            DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
-		            
+		            patients = new ArrayList<Patient>();
 		            try{
 		            	
-		            	if(isNetworkAvailable()){
-		            		String searchLast="http://121.45.97.242/segservice/patient/show/name_last/";
-		            		String searchFirst="/name_last/";
-		            		String url2 = searchLast + last + searchFirst + first;
+		            	if(isNetworkAvailable()){ //checks if device is connected to the internet
 		            		
 		        			Rest rest = new Rest("GET");
-		        			rest.setURL(url2);
+		        			rest.addRequestParams("name_last", last); //adds lastname as parameter to url
+		        			rest.addRequestParams("name_first", first); //adds firstname as parameter to url
+		        			rest.setURL(url);
 		        			rest.execute();
 		        			while(rest.getContent() == null){}
 		        			
 		        			if(rest.getResult()){
 		        				String content = rest.getContent();
+		        				System.out.println(content);
 		        				PatientParser patient_parser = new PatientParser(content);
-		        				patients = patient_parser.getPatients();
-		        			} 
+		        				patients = patient_parser.getPatients(); //get patients from online source
+		        			}
 		        		}
-		            	else
+		            	else //gets patients from the database
 		            		patients = adapter.searchPatient(searchtext);
-			            ListView listview = (ListView) findViewById(R.id.listView1);
+			            ListView listview = (ListView) findViewById(R.id.servicesList);
 			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
 			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
 			            	@Override
