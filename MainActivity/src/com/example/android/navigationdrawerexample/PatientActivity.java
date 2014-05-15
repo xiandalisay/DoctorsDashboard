@@ -66,9 +66,8 @@ public class PatientActivity extends BaseActivity {
 			}
 		} 
 		else{
-		
-			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
-			patients = adapter.searchPatient("");
+			DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
+			patients = db.searchPatient("");
 		}
 		
 		ListView listview = (ListView) findViewById(R.id.servicesList);
@@ -84,7 +83,7 @@ public class PatientActivity extends BaseActivity {
         	    String displayname = "";
         	    String displayinfo = "";
         	    Patient patient = patients.get(position);
-        	    System.out.println(patient.getSex());
+        	  
         	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
         	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
         	    	displayinfo = displayinfo + "Male";
@@ -92,7 +91,7 @@ public class PatientActivity extends BaseActivity {
         	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
         	    	displayinfo = displayinfo + "Female";
         	    }
-        	    //System.out.println(displayinfo);
+   
         	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
         	    
         	    text1.setText(displayname);
@@ -105,9 +104,9 @@ public class PatientActivity extends BaseActivity {
         listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// getting values from selected ListItem
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				
+				/* getting values from selected ListItem */
 				TextView text = (TextView) view.findViewById(android.R.id.text1);
 				String patientname = text.getText().toString();
 				
