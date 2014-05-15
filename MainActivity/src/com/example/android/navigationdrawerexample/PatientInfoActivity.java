@@ -1,8 +1,13 @@
+/*
+ * Edited by Jose Martin Ipong 5/15/2014, added online functionalities
+ */
+
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,6 +30,9 @@ import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
 import com.example.model.Encounter;
 import com.example.model.Patient;
+import com.example.model.Rest;
+import com.example.parser.EncounterParser;
+import com.example.parser.PatientParser;
 
 public class PatientInfoActivity extends InitialActivity {
 	
@@ -32,13 +40,16 @@ public class PatientInfoActivity extends InitialActivity {
 	private Patient patient;
 	
 	private ArrayList<Encounter> encounters;
+	private ArrayList<Patient> patients;
 	
 	private Button tag;
 	private String tagText;
 	
 	private int patient_id;
 	private int encounter_id;
-
+	final String url_patient = "http://121.97.45.242/segservice/patient/show";
+	final String url_encounter = "http://121.97.45.242/segservice/encounter/show";
+	final static int FIRST_PATIENT = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,36 +59,53 @@ public class PatientInfoActivity extends InitialActivity {
 		
 		intent = getIntent();
 		extras = intent.getExtras();
-		
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
-		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID"); 
-		
 		DatabaseAdapter db = new DatabaseAdapter(this);
-		patient = db.getPatientProfile(patient_id);
+		if(isNetworkAvailable()){
+			
+			//Rest for patient
+			Rest rest_patient = new Rest("GET", this);
+			rest_patient.setURL(url_patient);
+			rest_patient.addRequestParams("id", Integer.toString(patient_id));
+			rest_patient.execute();
+			while(rest_patient.getContent() == null){}
+			
+			if(rest_patient.getResult()){
+				String content = rest_patient.getContent();
+				PatientParser patient_parser = new PatientParser(content);
+				patients = patient_parser.getPatients();
+				patient = patients.get(FIRST_PATIENT);
+				System.out.println(patient);
+			}
+			
+			//Rest for encounter
+			Rest rest_encounter = new Rest("GET", this);
+			rest_encounter.setURL(url_encounter);
+			//rest_encounter.addRequestParams("id", Integer.toString(patient_id));
+			rest_encounter.execute();
+			while(rest_encounter.getContent() == null){}
+			if(rest_encounter.getResult()){
+				String content = rest_encounter.getContent();
+				EncounterParser encounter_parser = new EncounterParser(content);
+				encounters = encounter_parser.getEncounters();
+				
+			}
+		
+			
+		}		
+		else{
+		        patient = db.getPatientProfile(patient_id);
+			encounters = db.getPatientEncounter(patient_id);
+		}
 		
 		EditText nameEditText = (EditText) findViewById(R.id.FullName);
 		EditText genderEditText = (EditText) findViewById(R.id.Gender);
 		EditText addressEditText = (EditText) findViewById(R.id.Address);
 		EditText ageEditText = (EditText) findViewById(R.id.Age);
-		
 		CheckBox histOfSmokingCheckBox = (CheckBox) findViewById(R.id.HistOfSmoking);
 		CheckBox histOfDrinkingCheckBox = (CheckBox) findViewById(R.id.HistOfDrinking);
-		
-		tag = (Button)findViewById(R.id.TagPatientButton);
-		
-		/* check if encounter exists in mobile DB */
-		if(isEncounterExists(encounter_id)){
-			alertMessage("encounter is tagged");
-			tag.setText("Undo Tag");
-		}
-		else{
-			alertMessage("encounter is not tagged");
-			tag.setText("Tag Patient");
-		}
-			
 		histOfSmokingCheckBox.setChecked(true);
 		histOfDrinkingCheckBox.setChecked(true);
-		
 		String nametext = patient.getNameLast() + ", " + patient.getNameFirst();
 		String gendertext;
 		
@@ -98,7 +126,7 @@ public class PatientInfoActivity extends InitialActivity {
 		
 		/* duplicate code with LINE 41  */
 		patient = db.getPatientProfile(patient_id);
-		ListView listview = (ListView) findViewById(R.id.servicesList);
+		ListView listview = (ListView) findViewById(R.id.listView1);
 		ArrayAdapter<Encounter> arrayAdapter = new ArrayAdapter<Encounter>(getApplicationContext(), android.R.layout.simple_list_item_1, encounters){
 			@Override
 			public View getView(int position, View ConvertView, ViewGroup parent){
@@ -136,17 +164,17 @@ public class PatientInfoActivity extends InitialActivity {
 		if(tagText.equals("Tag Patient")){
 			handleTagPatient();
 			//Add here code to save encounter details to mobile DB
-			
-			tag.setText("Undo Tag");
+		
+		tag.setText("Undo Tag");
 		}
 		else{
 			handleUntagPatient();
 			//Add here code to remove encounter details from mobile DB
-
+		
 			tag.setText("Tag Patient");
 		}		
 	}
-	
+		
 	/* handles tagging patient process */
 	private void handleTagPatient() {
 		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
@@ -158,7 +186,7 @@ public class PatientInfoActivity extends InitialActivity {
 		
 		alertMessage("Successfully Tagged");
 	}
-	
+		
 	/* handles untagging patient process */
 	private void handleUntagPatient() {
 		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);

@@ -49,29 +49,38 @@ public class PatientActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_patient);
 		super.onCreate(savedInstanceState);
+		
+		
+		ProgressDialog progress = new ProgressDialog(this);
+		progress.setTitle("Loading");
+		progress.setMessage("Wait while loading...");
 		EditText edittext = (EditText) findViewById(R.id.searchView1);
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
 		if(isNetworkAvailable()){
 
-			Rest rest = new Rest("GET");
+			Rest rest = new Rest("GET", this);
 			rest.setURL(url);
 			rest.execute();
-			while(rest.getContent() == null){}
+			while(rest.getContent() == null){
+				
+				
+				progress.show();
+			}
 			
 			if(rest.getResult()){
+				progress.dismiss();
 				String content = rest.getContent();
 				PatientParser patient_parser = new PatientParser(content);
 				patients = patient_parser.getPatients();
 			}
-		} 
+		}
 		else{
-		
 			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 			patients = adapter.searchPatient("");
 		}
 		
-		ListView listview = (ListView) findViewById(R.id.servicesList);
+		ListView listview = (ListView) findViewById(R.id.listView1);
 		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
         	//method to override the getView method of ArrayAdapter, this changes the color of the text view
         	@Override
@@ -92,7 +101,7 @@ public class PatientActivity extends BaseActivity {
         	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
         	    	displayinfo = displayinfo + "Female";
         	    }
-        	    //System.out.println(displayinfo);
+        	    System.out.println(displayinfo);
         	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
         	    
         	    text1.setText(displayname);
@@ -110,24 +119,24 @@ public class PatientActivity extends BaseActivity {
 				// getting values from selected ListItem
 				TextView text = (TextView) view.findViewById(android.R.id.text1);
 				String patientname = text.getText().toString();
-				
 				// Starting single contact activity
+				
 				patient = patients.get(position);
-				patient_id = patient.getPid();
-				encounter_id = getLatestEncounter(patient_id);
+				int patientid = patient.getPid();
+				Toast.makeText(getApplicationContext(), "Clicked " + patientid, Toast.LENGTH_SHORT).show();
 				
-				/* saves the patient_id and encounter_id to be passed to the next activity */
-				extras = new Bundle();
-				extras.putInt("EXTRA_PATIENT_ID", patient_id);
-				extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
+				Intent intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
+				//intent.putExtra("EXTRA_PATIENT", patient);
 				
-				alertMessage(encounter_id+"");
-				
-				/* start next activity Patient Info (2nd Page) */
-				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
+				Bundle extras = new Bundle();
+				extras.putInt("EXTRA_PATIENT_ID", patientid);
 				intent.putExtras(extras);
+				//intent.putExtra("PATIENT_NAME", patientname);
+		
 				
 				startActivity(intent);
+				
+
 			}
 		});
    
@@ -140,33 +149,14 @@ public class PatientActivity extends BaseActivity {
 		        	EditText edittext = (EditText) findViewById(R.id.searchView1);
 		        	
 		        	String searchtext = edittext.getText().toString();
-		        	StringTokenizer t = new StringTokenizer(searchtext, ",");
-		        	String last = t.nextToken();
-		        	String first = t.nextToken();
+		        	final ArrayList<Patient> patients;
+		        	
 		        	
 		            DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
-		            patients = new ArrayList<Patient>();
+		            
 		            try{
-		            	
-		            	if(isNetworkAvailable()){ //checks if device is connected to the internet
-		            		
-		        			Rest rest = new Rest("GET");
-		        			rest.addRequestParams("name_last", last); //adds lastname as parameter to url
-		        			rest.addRequestParams("name_first", first); //adds firstname as parameter to url
-		        			rest.setURL(url);
-		        			rest.execute();
-		        			while(rest.getContent() == null){}
-		        			
-		        			if(rest.getResult()){
-		        				String content = rest.getContent();
-		        				System.out.println(content);
-		        				PatientParser patient_parser = new PatientParser(content);
-		        				patients = patient_parser.getPatients(); //get patients from online source
-		        			}
-		        		}
-		            	else //gets patients from the database
-		            		patients = adapter.searchPatient(searchtext);
-			            ListView listview = (ListView) findViewById(R.id.servicesList);
+			            patients = adapter.searchPatient(searchtext);
+			            ListView listview = (ListView) findViewById(R.id.listView1);
 			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
 			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
 			            	@Override
@@ -205,11 +195,11 @@ public class PatientActivity extends BaseActivity {
 			    				String patientname = text.getText().toString();
 			    				// Starting single contact activity
 			    				patient = patients.get(position);
-			    				int patient_id = patient.getPid();
-			    				//Toast.makeText(getApplicationContext(), "Clicked " + patient_id, Toast.LENGTH_SHORT).show();
-			    				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
-			    				extras = new Bundle();
-			    				extras.putInt("EXTRA_PATIENT_ID", patient_id);
+			    				int patientid = patient.getPid();
+			    				//Toast.makeText(getApplicationContext(), "Clicked " + patientid, Toast.LENGTH_SHORT).show();
+			    				Intent intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
+			    				Bundle extras = new Bundle();
+			    				extras.putInt("EXTRA_PATIENT_ID", patientid);
 			    				intent.putExtras(extras);
 			    				startActivity(intent);
 
@@ -221,7 +211,7 @@ public class PatientActivity extends BaseActivity {
 		            }
 		            catch(Exception e){
 		            	System.out.println(e);
-		            	alertMessage(e.toString());
+		            	Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
 		            }
 		            handled = true;
 		        }
@@ -229,14 +219,11 @@ public class PatientActivity extends BaseActivity {
 		    }
 		});
 		
+		
+		
 	}
 	
-	/* retrieves latest encounter of the patient */
-	private int getLatestEncounter(int patient_id) {
-		EncounterAdapter db = new EncounterAdapter(this);
-		
-		return db.getLatestEncounter(patient_id);
-	}
+	
 	
 	public boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 

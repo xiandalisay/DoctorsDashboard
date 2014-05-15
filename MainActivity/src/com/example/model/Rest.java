@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Xml.Encoding;
@@ -25,17 +27,14 @@ import com.google.resting.component.EncodingTypes;
 import com.google.resting.component.RequestParams;
 import com.google.resting.component.impl.BasicRequestParams;
 import com.google.resting.component.impl.ServiceResponse;
-import com.google.resting.json.JSONArray;
 import com.google.resting.method.post.PostHelper;
 
-public class Rest extends AsyncTask<Void, Void, Void>{
+public class Rest extends AsyncTask<String, Void, Void>{
 
 	private final String USERNAME = "emr";
 	private final String PASSWORD = "3mrh1s";
 	
-	private String 				data; 	
-	private JSONObject			parameters  = new JSONObject();
-	private BasicRequestParams 	params;
+	private RequestParams 		params;
 	private List<Header> 		headers;
 	private ServiceResponse 	response;
 	
@@ -44,6 +43,8 @@ public class Rest extends AsyncTask<Void, Void, Void>{
 	private String 				method;	
 	private int 				port;
 	private boolean 			result;
+	private ProgressDialog      progressdialog; 
+	private Context             context;
 	
 	
 	public Rest(String method){
@@ -53,27 +54,48 @@ public class Rest extends AsyncTask<Void, Void, Void>{
 		Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes(),Base64.NO_WRAP)));
 		port = 80;
 		this.method = method;
+		this.context = null;
+		
 	}
 	
-	/*adds key : value params
-	public void addRequestParams(){
-		params.add("data_json", data);
+	public Rest(String method, Context context){
+		params = new BasicRequestParams();
+		headers = new ArrayList<Header>();
+		headers.add(new BasicHeader("Authorization","Basic " + 
+		Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes(),Base64.NO_WRAP)));
+		port = 80;
+		this.method = method;
+		this.context = context;
 	}
-	*/
 	
-	public void addRequestParams(String key, String value){
-		params.add(key, value);
+	@Override
+    protected void onPreExecute() {
+		progressdialog = new ProgressDialog (context);
+		progressdialog.setMessage("Hulat lang...");
+		try{
+		//progressdialog.show();
+	}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		
+		System.out.println("pre execute");
+    }
+	
+	
+	
+	//adds key : value params
+	public void addRequestParams(String arg0, String arg1){
+		params.add(arg0, arg1);
 	}
 	
 	public void addToJSON(String key, String value){
-		
+		JSONObject Data = new JSONObject();
 		try{			
-			parameters.put(key,value);
-			//data.put(parameters);
+			Data.put(key,value);
 		} catch(JSONException e){
 			System.out.println(e.getMessage().toString());
 		}
-
 	}
 	
 	/* Setter methods */
@@ -81,11 +103,7 @@ public class Rest extends AsyncTask<Void, Void, Void>{
 	public void setURL(String url){
 		this.url = url;
 	}
-	
-	public void setData(){
-		data = parameters.toString();
-	}
-	
+
 	
 	/* Getter Methods */
 	
@@ -101,13 +119,9 @@ public class Rest extends AsyncTask<Void, Void, Void>{
 		return response;
 	}
 	
-	public String getData(){
-		return data.toString();
-	}
-	
 
 	@Override
-	protected Void doInBackground(Void... params) {
+	protected Void doInBackground(String... params) {
 		System.out.println(this.params);
 		
 		if(method == "GET"){
@@ -115,14 +129,15 @@ public class Rest extends AsyncTask<Void, Void, Void>{
 				response = Resting.get(url, this.params, EncodingTypes.UTF8, headers, 0);
 				content = response.getResponseString();
 				result = true;
-	        } catch(Exception e){ 
+				//progressdialog.dismiss();
+				
+	        } catch(Exception e){
 				result = false;
 			}
-		} 
+		}
 		else{
-			System.out.println(params.toString());
 			try{
-				response = PostHelper.post(url, port, EncodingTypes.UTF8, this.params, headers, null);
+				//response = PostHelper.get(url, port, EncodingTypes.UTF8, this.params,headers, null);
 				//EncodingTypes.UTF8, this.params,headers, null);
 				content = response.getResponseString();
 				result = true;
@@ -135,6 +150,8 @@ public class Rest extends AsyncTask<Void, Void, Void>{
 		return null;
 		
 	}
+
+	
 
 	public boolean getResult(){
 		return result;
