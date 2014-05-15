@@ -54,7 +54,7 @@ public class PatientActivity extends BaseActivity {
 		patients = new ArrayList<Patient>();
 		if(isNetworkAvailable()){
 
-			Rest rest = new Rest("GET");
+			Rest rest = new Rest("GET",this);
 			rest.setURL(url);
 			rest.execute();
 			while(rest.getContent() == null){}
@@ -140,9 +140,6 @@ public class PatientActivity extends BaseActivity {
 		        	EditText edittext = (EditText) findViewById(R.id.searchView1);
 		        	
 		        	String searchtext = edittext.getText().toString();
-		        	StringTokenizer t = new StringTokenizer(searchtext, ",");
-		        	String last = t.nextToken();
-		        	String first = t.nextToken();
 		        	
 		            DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 		            patients = new ArrayList<Patient>();

@@ -52,8 +52,8 @@ public class DepartmentParser extends JSONParser {
 	                           
 	                         /******* Fetch node values **********/
 	            int    deptnr       = Integer.parseInt(jsonChildNode.optString(DEPT_NR));
-	            String     deptid       = jsonChildNode.optString(DEPT_ID).toString();
-				String dept_name		= jsonChildNode.optString(DEPT_NAME).toString();
+	            String deptid       = jsonChildNode.optString(DEPT_ID).toString();
+				String dept_name	= jsonChildNode.optString(DEPT_NAME).toString();
 				
 				Department department = new Department(deptnr, deptid, dept_name);
 				departments.add(department);

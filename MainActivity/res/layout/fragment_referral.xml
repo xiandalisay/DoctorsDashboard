@@ -19,6 +19,40 @@
         android:text="Referral"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <Spinner
+            android:id="@+id/referDepartment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="41dp"/>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="24dp"
+            android:text="Refer To"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:id="@+id/referDepartment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/referDepartment"
+            android:layout_alignParentLeft="true"
+            android:text="Reason for Referall"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
@@ -27,27 +61,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="75dp"
             android:layout_marginRight="16dp"
-            android:onClick="referPatient"
             android:text="Submit" />
-
-        <TextView
-            android:id="@+id/nameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView2"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_centerHorizontal="true"
-            android:text="Name"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="Reason for Referall"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ImageView
             android:id="@+id/imageView1"
@@ -58,35 +72,12 @@
             android:src="@drawable/line" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/textView3"
             android:layout_alignParentLeft="true"
+            android:layout_below="@+id/referDepartment"
             android:src="@drawable/line" />
-
-        <Spinner
-            android:id="@+id/referDepartment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textView2" />
-
-        <Spinner
-            android:id="@+id/referDepartment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textView3" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/imageView1"
-            android:text="Refer"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </RelativeLayout>
 

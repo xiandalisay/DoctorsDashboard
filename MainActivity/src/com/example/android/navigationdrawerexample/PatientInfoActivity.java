@@ -10,6 +10,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -154,7 +156,18 @@ public class PatientInfoActivity extends InitialActivity {
 					}
 				});
 	}
-
+	
+	/* called when "refer" button is clicked */
+    public void showReferPatient(View view){
+	        intent = new Intent(this,ReferralActivity.class);
+		extras = new Bundle();
+		extras.putInt("EXTRA_PATIENT_ID", patient.getPid());
+		extras.putString("EXTRA_PATIENT_NAME_LAST", patient.getNameLast());
+		extras.putString("EXTRA_PATIENT_NAME_FIRST", patient.getNameFirst());
+		intent.putExtras(extras);
+		startActivity(intent);
+	}
+	
 	/* called when the "Tag" button is clicked */
 	public void handleTagClick(View view){
 		tagText = tag.getText().toString();

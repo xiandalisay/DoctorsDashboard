@@ -55,4 +55,9 @@ public class Department
 	{
 		return department_name;
 	}
+	
+	@Override
+	public String toString(){
+		return this.department_name;
+	}
 }

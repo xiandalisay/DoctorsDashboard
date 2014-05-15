@@ -7,7 +7,6 @@ import android.content.Context;
 import com.example.model.Department;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class DepartmentAdapter extends Data {
@@ -52,9 +51,7 @@ public class DepartmentAdapter extends Data {
 				values.put(DEPT_ID, dept.get(i).getDepartmentNumber());	
 				values.put(DEPT, dept.get(i).getDepartmentName());	
 				values.put(SHORT_DEPT, dept.get(i).getDepartmentId());	
-			    //db.insert(TABLE_DEPARTMENT, null, values);
-			    //db.insertOrThrow(TABLE_DEPARTMENT, null, values);
-				db.insertWithOnConflict(TABLE_DEPARTMENT, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+			    db.insert(TABLE_DEPARTMENT, null, values);
 			  }
 			  db.setTransactionSuccessful();
 				Log.d("DepartmentAdapter insertDepartments", "setTransactionSuccessful");
@@ -65,7 +62,6 @@ public class DepartmentAdapter extends Data {
 			finally
 			{
 			  db.endTransaction();
-			  db.close();
 			}
 	}
 	
@@ -83,17 +79,18 @@ public class DepartmentAdapter extends Data {
 					Department dept = new Department(cursor.getInt(cursor.getColumnIndex(DEPT_ID)),
 							cursor.getString(cursor.getColumnIndex(SHORT_DEPT)),
 							cursor.getString(cursor.getColumnIndexOrThrow(DEPT)));
+					System.out.println(cursor.getString(cursor.getColumnIndexOrThrow(DEPT)));
 					deptlist.add(dept);
-				}while(cursor.moveToNext());	
+				}while(cursor.moveToNext());
+				Log.d("DepartmentAdapter getDepartments", "successful");
+				return deptlist;
 			}
-			Log.d("DepartmentAdapter getDepartments", "successful");
-			db.close();
-			return deptlist;
+			
 		}
 		catch(SQLException se) {
 			Log.d("DepartmentAdapter getDepartments",Log.getStackTraceString(se));
 		}
-		return null;
+		return null;	
 	}
 	
 }

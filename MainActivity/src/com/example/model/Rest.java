@@ -67,7 +67,7 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		this.method = method;
 		this.context = context;
 	}
-	
+	/*
 	@Override
     protected void onPreExecute() {
 		progressdialog = new ProgressDialog (context);
@@ -81,6 +81,7 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		
 		System.out.println("pre execute");
     }
+    */
 	
 	
 	
