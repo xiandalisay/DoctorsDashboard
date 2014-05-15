@@ -62,7 +62,7 @@ public class InitializeActivity extends InitialActivity{
 		}
 		
 		/* check if department table is empty */
-		/*if(isDepartmentEmpty()){
+		if(isDepartmentEmpty()){
 			logMessage("Empty");
 			
 			try{
@@ -71,7 +71,7 @@ public class InitializeActivity extends InitialActivity{
 		}
 		else{
 			logMessage("Not Empty");
-		}*/
+		}
 		
 		
 		/*
@@ -106,6 +106,7 @@ public class InitializeActivity extends InitialActivity{
 				departments = department_parser.getDepartments();
 				DepartmentAdapter da = new DepartmentAdapter(this);
 				da.insertDepartments(departments);
+				da.getDepartments();
 			}
 		}
 	}

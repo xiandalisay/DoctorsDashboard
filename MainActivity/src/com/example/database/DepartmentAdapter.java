@@ -65,4 +65,28 @@ public class DepartmentAdapter extends Data {
 			}
 	}
 	
+	public ArrayList<Department> getDepartments() {
+		db = dbHandler.getWritableDatabase();
+		ArrayList<Department> deptlist = new ArrayList<Department>();
+		String query = "SELECT dept_id, short_dept, name_dept FROM department";
+		try {
+			Cursor cursor = db.rawQuery(query, null);
+			if(cursor.moveToFirst()){
+				do {
+					Department dept = new Department(cursor.getInt(cursor.getColumnIndex(DEPT_ID)),
+							cursor.getString(cursor.getColumnIndex(SHORT_DEPT)),
+							cursor.getString(cursor.getColumnIndexOrThrow(DEPT)));
+					deptlist.add(dept);
+				}while(cursor.moveToNext());	
+			}
+			else {
+			}
+			Log.d("DepartmentAdapter getDepartments", "successful");
+		}
+		catch(SQLException se) {
+			Log.d("DepartmentAdapter getDepartments",Log.getStackTraceString(se));
+		}
+		return null;	
+	}
+	
 }
