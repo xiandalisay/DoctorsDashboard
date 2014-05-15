@@ -36,7 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL(Data.CREATE_TABLE_CANVASS);
 			db.execSQL(Data.CREATE_TABLE_LAB_REQUEST);
 			db.execSQL(Data.CREATE_TABLE_LAB_SERVICE);
-			db.execSQL(Data.CREATE_TABLE_SERVICE_REQUEST);
+			db.execSQL(Data.CREATE_TABLE_SERVICE_REQUEST); 
 			db.execSQL(Data.CREATE_TABLE_LAB_RESULT);
 			db.execSQL(Data.CREATE_TABLE_SOAP);
 			
@@ -91,7 +91,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"	(100027,'1234567',133,'Gaurino','Marc','Gonzales'), " +
 				"	(100040,'1234568',133,'Caralos','Rex Arnold','Mesiona'), " +
 					"	(100054,'1234569',131,'Chin','Elizabeth May','Tan') "  );*/
-			db.execSQL("INSERT INTO doctor values(100055, '0117236', 133, 'ESPAÑOLA', 'SEURINANE SEAN', 'BORRA', '97ffcb8e6d1014d2752cadd03b1ac6ca8b4a63d0', '28b0f836cc41361b90ce15a7a28ac8b3a9363f5b', 'm', '1981-05-12', '121.97.45.242')");
 			db.execSQL("insert into [encounter] values(1, 100022, 1, 'In-Patient', 'Fever', '2012-07-01 00:00:00.000', null)," +
 						"(2, 100022, 2, 'In-Patient', 'Headache', '2013-06-02 00:08:00.000', null)," +
 						"(3, 100022, 1, 'In-Patient', 'Stomach ache', '2014-01-03 00:00:00.000', null)," +
