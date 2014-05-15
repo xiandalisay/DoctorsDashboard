@@ -7,6 +7,7 @@ package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -40,25 +41,37 @@ public class PatientActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_patient);
 		super.onCreate(savedInstanceState);
+		
+		
+		ProgressDialog progress = new ProgressDialog(this);
+		progress.setTitle("Loading");
+		progress.setMessage("Wait while loading...");
 		EditText edittext = (EditText) findViewById(R.id.searchView1);
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
 		if(isNetworkAvailable()){
-
-			Rest rest = new Rest("GET");
+			
+			Rest rest = new Rest("GET", this);
 			rest.setURL(url);
 			rest.execute();
-			while(rest.getContent() == null){}
+			while(rest.getContent() == null){
+				
+				
+				progress.show();
+			}
 			
 			if(rest.getResult()){
+				progress.dismiss();
 				String content = rest.getContent();
 				PatientParser patient_parser = new PatientParser(content);
 				patients = patient_parser.getPatients();
 			}
+			
 		}
 		else{
 			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 			patients = adapter.searchPatient("");
+			
 		}
 		
 		ListView listview = (ListView) findViewById(R.id.listView1);

@@ -5,27 +5,23 @@ import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
-
-import android.os.AsyncTask;
-import android.util.Base64;
-import android.util.Xml.Encoding;
-import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.parser.TokenParser;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Base64;
 
-//	To import Resting, copy the .JAR files in Alvin's Seg Dropbox 
-//folder to the 'libs' folder of the chosen project. 
-//Go to Project > Properties > Java Build Path > Libraries > Add external JARS
-//and select all the JAR files
 import com.google.resting.Resting;
 import com.google.resting.component.EncodingTypes;
 import com.google.resting.component.RequestParams;
 import com.google.resting.component.impl.BasicRequestParams;
 import com.google.resting.component.impl.ServiceResponse;
-import com.google.resting.method.post.PostHelper;
+//	To import Resting, copy the .JAR files in Alvin's Seg Dropbox 
+//folder to the 'libs' folder of the chosen project. 
+//Go to Project > Properties > Java Build Path > Libraries > Add external JARS
+//and select all the JAR files
 
 public class Rest extends AsyncTask<String, Void, Void>{
 
@@ -41,6 +37,8 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	private String 				method;	
 	private int 				port;
 	private boolean 			result;
+	private ProgressDialog      progressdialog; 
+	private Context             context;
 	
 	
 	public Rest(String method){
@@ -50,7 +48,35 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes(),Base64.NO_WRAP)));
 		port = 80;
 		this.method = method;
+		this.context = null;
+		
 	}
+	
+	public Rest(String method, Context context){
+		params = new BasicRequestParams();
+		headers = new ArrayList<Header>();
+		headers.add(new BasicHeader("Authorization","Basic " + 
+		Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes(),Base64.NO_WRAP)));
+		port = 80;
+		this.method = method;
+		this.context = context;
+	}
+	
+	@Override
+    protected void onPreExecute() {
+		progressdialog = new ProgressDialog (context);
+		progressdialog.setMessage("Hulat lang...");
+		try{
+		//progressdialog.show();
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		
+		System.out.println("pre execute");
+    }
+	
+	
 	
 	//adds key : value params
 	public void addRequestParams(String arg0, String arg1){
@@ -88,7 +114,6 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	}
 	
 
-	@Override
 	protected Void doInBackground(String... params) {
 		System.out.println(this.params);
 		
@@ -97,6 +122,8 @@ public class Rest extends AsyncTask<String, Void, Void>{
 				response = Resting.get(url, this.params, EncodingTypes.UTF8, headers, 0);
 				content = response.getResponseString();
 				result = true;
+				//progressdialog.dismiss();
+				
 	        } catch(Exception e){
 				result = false;
 			}
@@ -116,6 +143,8 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		return null;
 		
 	}
+	
+	
 
 	public boolean getResult(){
 		return result;
