@@ -163,7 +163,7 @@ public class PatientActivity extends BaseActivity {
 		        				String content = rest.getContent();
 		        				PatientParser patient_parser = new PatientParser(content);
 		        				patients = patient_parser.getPatients();
-		        			}
+		        			} 
 		        		}
 		            	else
 		            		patients = adapter.searchPatient(searchtext);
