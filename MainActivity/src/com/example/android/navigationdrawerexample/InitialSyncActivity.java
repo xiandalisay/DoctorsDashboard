@@ -35,10 +35,10 @@ public class InitialSyncActivity extends InitialActivity {
 		rest.setURL(
 				base_url + 
 				"/encounter/tagged/doctor_nr/" +
-				personnel_id
-				); //HelperSharedPreferences.getSharedPreferencesInt(context, key, _default));
+				personnel_id ); 
 		
 		logMessage(rest.getURL());
+		
 		rest.execute();
 
 		logMessage("processing request..");
