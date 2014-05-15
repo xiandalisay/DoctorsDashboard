@@ -375,7 +375,7 @@ public class RegisterActivity extends InitialActivity{
 		intent = new Intent(this, InitialSyncActivity.class);
 		intent.putExtras(extras);
 		
-		startActivityForResult(intent, STATIC_INTEGER_VALUE);
+		startActivityForResult(intent, 1);
 	}
 
 	 

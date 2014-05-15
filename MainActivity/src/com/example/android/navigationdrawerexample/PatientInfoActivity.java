@@ -94,7 +94,7 @@ public class PatientInfoActivity extends InitialActivity {
 			
 		}		
 		else{
-		        patient = db.getPatientProfile(patient_id);
+		    patient = db.getPatientProfile(patient_id);
 			encounters = db.getPatientEncounter(patient_id);
 		}
 		
@@ -126,7 +126,7 @@ public class PatientInfoActivity extends InitialActivity {
 		
 		/* duplicate code with LINE 41  */
 		patient = db.getPatientProfile(patient_id);
-		ListView listview = (ListView) findViewById(R.id.listView1);
+		ListView listview = (ListView) findViewById(R.id.servicesList);
 		ArrayAdapter<Encounter> arrayAdapter = new ArrayAdapter<Encounter>(getApplicationContext(), android.R.layout.simple_list_item_1, encounters){
 			@Override
 			public View getView(int position, View ConvertView, ViewGroup parent){
