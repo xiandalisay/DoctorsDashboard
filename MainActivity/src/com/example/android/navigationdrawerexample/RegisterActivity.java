@@ -325,8 +325,8 @@ public class RegisterActivity extends InitialActivity{
 		startActivity(intent);
 	}
 	
+	/* starts Register Activity */
 	public void showRegisterActivity(View view){
-		//System.out.println("register");
 		Intent intent = new Intent(this, RegisterActivity.class);
 		startActivity(intent);
 	}
@@ -352,12 +352,12 @@ public class RegisterActivity extends InitialActivity{
 			System.out.println("pasok"); 
 			
 			Doctor doctor = new Doctor();
-			//Inserting Integer Data to the model
+			
+			/* inserting integer data to the model */
 			doctor.setDeptId(Integer.parseInt(data.get("location_nr")));
 			doctor.setPersonnelId(Integer.parseInt(data.get("personell_nr")));
-			//doctor.setPersonnelId(Integer.parseInt("100023"));
 			
-			/* inserting string Data to the model */
+			/* inserting string data to the model */
 			doctor.setDoctorCredentials(DoctorData);
 			setRetrievedCredentials(doctor);
 		}
@@ -375,7 +375,7 @@ public class RegisterActivity extends InitialActivity{
 		intent = new Intent(this, InitialSyncActivity.class);
 		intent.putExtras(extras);
 		
-		startActivity(intent);
+		startActivityForResult(intent, STATIC_INTEGER_VALUE);
 	}
 
 	 
