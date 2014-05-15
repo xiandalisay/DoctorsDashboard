@@ -17,6 +17,8 @@ public class Encounter {
 	private String 	message_complaint;
 	private String 	date_encountered;
 	private String 	date_released;
+	private String 	department;
+	private String 	is_confidential;
 	
 	public Encounter(){
 		encounter_id 		= 0;
@@ -26,8 +28,8 @@ public class Encounter {
 		message_complaint 	= "";
 		date_encountered 	= "";
 		date_released 		= "";
-		//department = "";
-		//is_confidential = "";
+		department 			= "";
+		is_confidential 	= "";
 	}
 	
 	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, String datereleased, int patientid)
