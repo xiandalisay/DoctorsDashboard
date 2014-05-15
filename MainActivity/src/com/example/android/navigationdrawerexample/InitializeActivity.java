@@ -92,8 +92,9 @@ public class InitializeActivity extends InitialActivity{
 	
 
 	private void retrieveDepartmentsAPI() {
-		if(isNetworkAvailable()){
-			
+		DepartmentAdapter da = new DepartmentAdapter(this);
+		
+		if(isNetworkAvailable() && !isDepartmentEmpty()){
 			Rest rest = new Rest("GET");
 			rest.setURL("http://121.97.45.242/segservice/department/show/");
 			rest.execute();
@@ -104,7 +105,6 @@ public class InitializeActivity extends InitialActivity{
 				System.out.println(content);
 				DepartmentParser department_parser = new DepartmentParser(content);
 				departments = department_parser.getDepartments();
-				DepartmentAdapter da = new DepartmentAdapter(this);
 				da.insertDepartments(departments);
 				da.getDepartments();
 			}

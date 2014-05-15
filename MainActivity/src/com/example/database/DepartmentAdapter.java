@@ -41,6 +41,10 @@ public class DepartmentAdapter extends Data {
 		}
 	}
 	
+	/*
+	 * @Author: Christian Joseph Dalisay
+	 * 
+	 */
 	public void insertDepartments(ArrayList<Department> dept){
 		db = dbHandler.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -62,9 +66,14 @@ public class DepartmentAdapter extends Data {
 			finally
 			{
 			  db.endTransaction();
+			  db.close();
 			}
 	}
 	
+	/*
+	 * @Author: Christian Joseph Dalisay
+	 * 
+	 */
 	public ArrayList<Department> getDepartments() {
 		db = dbHandler.getWritableDatabase();
 		ArrayList<Department> deptlist = new ArrayList<Department>();
@@ -83,6 +92,7 @@ public class DepartmentAdapter extends Data {
 					deptlist.add(dept);
 				}while(cursor.moveToNext());
 				Log.d("DepartmentAdapter getDepartments", "successful");
+				db.close();
 				return deptlist;
 			}
 			
