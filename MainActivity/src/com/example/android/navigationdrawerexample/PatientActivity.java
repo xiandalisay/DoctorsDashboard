@@ -7,9 +7,9 @@
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,7 +28,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
@@ -50,33 +49,24 @@ public class PatientActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_patient);
 		super.onCreate(savedInstanceState);
-		
-		
-		ProgressDialog progress = new ProgressDialog(this);
-		progress.setTitle("Loading");
-		progress.setMessage("Wait while loading...");
 		EditText edittext = (EditText) findViewById(R.id.searchView1);
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
 		if(isNetworkAvailable()){
 
-			Rest rest = new Rest("GET", this);
+			Rest rest = new Rest("GET");
 			rest.setURL(url);
 			rest.execute();
-			while(rest.getContent() == null){
-				
-				
-				progress.show();
-			}
+			while(rest.getContent() == null){}
 			
 			if(rest.getResult()){
-				progress.dismiss();
 				String content = rest.getContent();
 				PatientParser patient_parser = new PatientParser(content);
 				patients = patient_parser.getPatients();
 			}
-		}
+		} 
 		else{
+		
 			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 			patients = adapter.searchPatient("");
 		}
@@ -102,7 +92,7 @@ public class PatientActivity extends BaseActivity {
         	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
         	    	displayinfo = displayinfo + "Female";
         	    }
-        	    System.out.println(displayinfo);
+        	    //System.out.println(displayinfo);
         	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
         	    
         	    text1.setText(displayname);
@@ -120,24 +110,24 @@ public class PatientActivity extends BaseActivity {
 				// getting values from selected ListItem
 				TextView text = (TextView) view.findViewById(android.R.id.text1);
 				String patientname = text.getText().toString();
+				
 				// Starting single contact activity
-				
 				patient = patients.get(position);
-				int patientid = patient.getPid();
-				Toast.makeText(getApplicationContext(), "Clicked " + patientid, Toast.LENGTH_SHORT).show();
+				patient_id = patient.getPid();
+				encounter_id = getLatestEncounter(patient_id);
 				
-				Intent intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
-				//intent.putExtra("EXTRA_PATIENT", patient);
+				/* saves the patient_id and encounter_id to be passed to the next activity */
+				extras = new Bundle();
+				extras.putInt("EXTRA_PATIENT_ID", patient_id);
+				extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 				
-				Bundle extras = new Bundle();
-				extras.putInt("EXTRA_PATIENT_ID", patientid);
+				alertMessage(encounter_id+"");
+				
+				/* start next activity Patient Info (2nd Page) */
+				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
 				intent.putExtras(extras);
-				//intent.putExtra("PATIENT_NAME", patientname);
-		
 				
 				startActivity(intent);
-				
-
 			}
 		});
    
@@ -150,13 +140,45 @@ public class PatientActivity extends BaseActivity {
 		        	EditText edittext = (EditText) findViewById(R.id.searchView1);
 		        	
 		        	String searchtext = edittext.getText().toString();
-		        	final ArrayList<Patient> patients;
-		        	
+		        	StringTokenizer t = new StringTokenizer(searchtext, ",");
+		        	String last = t.nextToken();
+		        	String first = t.nextToken();
 		        	
 		            DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
+		            patients = new ArrayList<Patient>();
 		            
+		            StringTokenizer t = new StringTokenizer(searchtext, ",");
+		            String last = "";
+		            String first = "%";
+		            if(t.countTokens() == 1){
+		            	last = t.nextToken();
+		            }
+		            else{
+		            	last = t.nextToken();
+		            	first = t.nextToken();
+		            }
 		            try{
-			            patients = adapter.searchPatient(searchtext);
+		            	
+		            	if(isNetworkAvailable()){ //checks if device is connected to the internet
+		          
+		        			Rest rest = new Rest("GET");
+		        			rest.addRequestParams("name_last", last); //adds lastname as parameter to url
+		        			rest.addRequestParams("name_first", first); //adds firstname as parameter to url
+		        			rest.setURL(url);
+		        			rest.addRequestParams("name_last", last);
+		        			rest.addRequestParams("name_first", first);
+		        			rest.execute();
+		        			while(rest.getContent() == null){}
+		        			
+		        			if(rest.getResult()){
+		        				String content = rest.getContent();
+		        				System.out.println(content);
+		        				PatientParser patient_parser = new PatientParser(content);
+		        				patients = patient_parser.getPatients(); //get patients from online source
+		        			}
+		        		}
+		            	else //gets patients from the database
+		            		patients = adapter.searchPatient(searchtext);
 			            ListView listview = (ListView) findViewById(R.id.servicesList);
 			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
 			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
@@ -196,11 +218,11 @@ public class PatientActivity extends BaseActivity {
 			    				String patientname = text.getText().toString();
 			    				// Starting single contact activity
 			    				patient = patients.get(position);
-			    				int patientid = patient.getPid();
-			    				//Toast.makeText(getApplicationContext(), "Clicked " + patientid, Toast.LENGTH_SHORT).show();
-			    				Intent intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
-			    				Bundle extras = new Bundle();
-			    				extras.putInt("EXTRA_PATIENT_ID", patientid);
+			    				int patient_id = patient.getPid();
+			    				//Toast.makeText(getApplicationContext(), "Clicked " + patient_id, Toast.LENGTH_SHORT).show();
+			    				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
+			    				extras = new Bundle();
+			    				extras.putInt("EXTRA_PATIENT_ID", patient_id);
 			    				intent.putExtras(extras);
 			    				startActivity(intent);
 
@@ -212,7 +234,7 @@ public class PatientActivity extends BaseActivity {
 		            }
 		            catch(Exception e){
 		            	System.out.println(e);
-		            	Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+		            	alertMessage(e.toString());
 		            }
 		            handled = true;
 		        }
@@ -220,11 +242,14 @@ public class PatientActivity extends BaseActivity {
 		    }
 		});
 		
-		
-		
 	}
 	
-	
+	/* retrieves latest encounter of the patient */
+	private int getLatestEncounter(int patient_id) {
+		EncounterAdapter db = new EncounterAdapter(this);
+		
+		return db.getLatestEncounter(patient_id);
+	}
 	
 	public boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
