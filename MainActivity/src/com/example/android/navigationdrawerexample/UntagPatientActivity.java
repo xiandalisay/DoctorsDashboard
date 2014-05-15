@@ -1,5 +1,6 @@
 package com.example.android.navigationdrawerexample;
 
+import com.example.model.HelperSharedPreferences;
 import com.example.model.Preferences;
 import com.example.model.Rest;
 
@@ -47,7 +48,7 @@ public class UntagPatientActivity extends InitialActivity {
 
 	/* retrieves base_url */
 	private String getBaseURL() {
-		return Preferences.getBaseURL(this);
+		return HelperSharedPreferences.getSharedPreferencesString(this, "key_base_url", "");
 	}
 	
 	/* retrieves base_url */
