@@ -135,7 +135,7 @@
             android:src="@drawable/line" />
 
         <ListView
-            android:id="@+id/listView1"
+            android:id="@+id/servicesList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/addItemButtonLab"
