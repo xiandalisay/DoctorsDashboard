@@ -84,13 +84,14 @@ public class LoginActivity extends InitialActivity {
 	}
 	
 	public void showRegisterActivity(View view){
-		Intent intent = new Intent(this, RegisterActivity.class);
+		intent = new Intent(this, RegisterActivity.class);
 		startActivity(intent);
 	}
 	
 	
 	public void successfulLogin(){
-		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+		intent = new Intent(getApplicationContext(), MainActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
 		startActivity(intent);	
 	}
 	
