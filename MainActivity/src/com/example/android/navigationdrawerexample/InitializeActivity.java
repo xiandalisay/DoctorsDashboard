@@ -40,7 +40,7 @@ public class InitializeActivity extends InitialActivity{
 			saveClientId(client_id);
 		}
 		
-		/* check if department table is empty */
+		/* check if department table is empty 
 		if(isDepartmentEmpty()){
 			logMessage("Empty");
 			
@@ -51,6 +51,7 @@ public class InitializeActivity extends InitialActivity{
 		else{
 			logMessage("Not Empty");
 		}
+		*/
 		
 		
 		/*

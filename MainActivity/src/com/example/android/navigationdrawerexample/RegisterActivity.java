@@ -29,8 +29,10 @@ import android.widget.Toast;
 import com.example.api.auth.IPAddressValidator;
 import com.example.api.auth.MD5Hash;
 import com.example.database.DoctorAdapter;
+import com.example.database.EncounterAdapter;
 import com.example.database.RegistrationAdapter;
 import com.example.model.Doctor;
+import com.example.model.HelperSharedPreferences;
 import com.example.model.Preferences;
 import com.example.model.Registration;
 import com.example.model.Rest;
@@ -95,10 +97,10 @@ public class RegisterActivity extends InitialActivity{
 		if(prepareCredentials()){
 			if(submitCredentials()){
 				insertDoctor();
+				retrieveEncounters();
 			}
 		}
 	}
-
 
 	/* Saves inputted data by user and checks if they are valid */
 	public boolean prepareCredentials(){
@@ -126,7 +128,7 @@ public class RegisterActivity extends InitialActivity{
 	}
 	
 	private void setRetrievedCredentials(Doctor rDoctor){
-		//stores the retrieved doctor info and tokens to the database
+		/* stores the retrieved doctor info and tokens to the database */
 		DoctorAdapter doctor = new DoctorAdapter(this);
 		doctor.addDoctor(rDoctor);
 	}
@@ -398,6 +400,19 @@ public class RegisterActivity extends InitialActivity{
 			alertMessage("Account Already Exists");
 		}
 	}
+	
+
+	private void retrieveEncounters() {
+		
+		
+		rest = new Rest("GET");
+		
+		logMessage(HelperSharedPreferences.getSharedPreferencesString(this, "key_base_url", ""));
+		/* get base_url associated with doctor */
+		rest.setURL(HelperSharedPreferences.getSharedPreferencesString(this, "key_base_url", ""));
+		
+	}
+
 	
 	@Override
 	protected void onPause() {
