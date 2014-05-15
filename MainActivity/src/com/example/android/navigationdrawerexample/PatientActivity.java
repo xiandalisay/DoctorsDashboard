@@ -40,7 +40,7 @@ public class PatientActivity extends BaseActivity {
 	private Patient patient;
 	private ArrayList<Patient> patients;
 	
-	private final String url = "http://121.97.45.242/segservice/patient/show";
+	private final String url = "http://121.97.45.242/segservice/patient/show/";
 	
 	private int encounter_id;
 	private int patient_id;
@@ -52,7 +52,7 @@ public class PatientActivity extends BaseActivity {
 		EditText edittext = (EditText) findViewById(R.id.searchView1);
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
-		/*if(isNetworkAvailable()){
+		if(isNetworkAvailable()){
 
 			Rest rest = new Rest("GET");
 			rest.setURL(url);
@@ -66,10 +66,10 @@ public class PatientActivity extends BaseActivity {
 			}
 		} 
 		else{
-		*/
+		
 			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 			patients = adapter.searchPatient("");
-		//}
+		}
 		
 		ListView listview = (ListView) findViewById(R.id.listView1);
 		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
@@ -144,23 +144,26 @@ public class PatientActivity extends BaseActivity {
 		        	StringTokenizer t = new StringTokenizer(searchtext, ",");
 		        	String last = t.nextToken();
 		        	String first = t.nextToken();
-		        	
+		        	System.out.println(last + " " + first);
 		            DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
-		            
+		            patients = new ArrayList<Patient>();
 		            try{
 		            	
 		            	if(isNetworkAvailable()){
 		            		String searchLast="http://121.45.97.242/segservice/patient/show/name_last/";
-		            		String searchFirst="/name_last/";
+		            		String searchFirst="/name_first/";
 		            		String url2 = searchLast + last + searchFirst + first;
-		            		
+		            		//System.out.println("URL = " + url);
 		        			Rest rest = new Rest("GET");
-		        			rest.setURL(url2);
+		        			rest.addRequestParams("name_last", last);
+		        			rest.addRequestParams("name_first", first);
+		        			rest.setURL(url);
 		        			rest.execute();
 		        			while(rest.getContent() == null){}
 		        			
 		        			if(rest.getResult()){
 		        				String content = rest.getContent();
+		        				System.out.println(content);
 		        				PatientParser patient_parser = new PatientParser(content);
 		        				patients = patient_parser.getPatients();
 		        			}
