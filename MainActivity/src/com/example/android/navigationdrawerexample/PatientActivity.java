@@ -140,23 +140,19 @@ public class PatientActivity extends BaseActivity {
 		        	EditText edittext = (EditText) findViewById(R.id.searchView1);
 		        	
 		        	String searchtext = edittext.getText().toString();
-		        	//final ArrayList<Patient> patients;
 		        	StringTokenizer t = new StringTokenizer(searchtext, ",");
 		        	String last = t.nextToken();
 		        	String first = t.nextToken();
-		        	System.out.println(last + " " + first);
+		        	
 		            DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 		            patients = new ArrayList<Patient>();
 		            try{
 		            	
-		            	if(isNetworkAvailable()){
-		            		String searchLast="http://121.45.97.242/segservice/patient/show/name_last/";
-		            		String searchFirst="/name_first/";
-		            		String url2 = searchLast + last + searchFirst + first;
-		            		//System.out.println("URL = " + url);
+		            	if(isNetworkAvailable()){ //checks if device is connected to the internet
+		          
 		        			Rest rest = new Rest("GET");
-		        			rest.addRequestParams("name_last", last);
-		        			rest.addRequestParams("name_first", first);
+		        			rest.addRequestParams("name_last", last); //adds lastname as parameter to url
+		        			rest.addRequestParams("name_first", first); //adds firstname as parameter to url
 		        			rest.setURL(url);
 		        			rest.execute();
 		        			while(rest.getContent() == null){}
@@ -165,10 +161,10 @@ public class PatientActivity extends BaseActivity {
 		        				String content = rest.getContent();
 		        				System.out.println(content);
 		        				PatientParser patient_parser = new PatientParser(content);
-		        				patients = patient_parser.getPatients();
+		        				patients = patient_parser.getPatients(); //get patients from online source
 		        			}
 		        		}
-		            	else
+		            	else //gets patients from the database
 		            		patients = adapter.searchPatient(searchtext);
 			            ListView listview = (ListView) findViewById(R.id.listView1);
 			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
