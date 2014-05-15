@@ -66,9 +66,8 @@ public class PatientActivity extends BaseActivity {
 			}
 		} 
 		else{
-		
-			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
-			patients = adapter.searchPatient("");
+			DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
+			patients = db.searchPatient("");
 		}
 		
 		ListView listview = (ListView) findViewById(R.id.servicesList);
@@ -105,9 +104,9 @@ public class PatientActivity extends BaseActivity {
         listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// getting values from selected ListItem
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				
+				/* getting values from selected ListItem */
 				TextView text = (TextView) view.findViewById(android.R.id.text1);
 				String patientname = text.getText().toString();
 				
