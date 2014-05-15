@@ -71,7 +71,7 @@ public class PatientActivity extends BaseActivity {
 			patients = adapter.searchPatient("");
 		}
 		
-		ListView listview = (ListView) findViewById(R.id.listView1);
+		ListView listview = (ListView) findViewById(R.id.servicesList);
 		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
         	//method to override the getView method of ArrayAdapter, this changes the color of the text view
         	@Override
@@ -166,7 +166,7 @@ public class PatientActivity extends BaseActivity {
 		        		}
 		            	else //gets patients from the database
 		            		patients = adapter.searchPatient(searchtext);
-			            ListView listview = (ListView) findViewById(R.id.listView1);
+			            ListView listview = (ListView) findViewById(R.id.servicesList);
 			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
 			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
 			            	@Override
