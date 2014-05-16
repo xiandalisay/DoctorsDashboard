@@ -25,155 +25,124 @@
 
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content_frame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
- 
-	    <Space
-        android:id="@+id/Space1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="fill_vertical"
-        android:layout_weight="1" />
 
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="107dp"
-        android:layout_height="107dp"
-        android:layout_alignLeft="@+id/Space1"
-        android:layout_alignTop="@+id/Space1"
-        android:layout_marginTop="38dp"
-        android:adjustViewBounds="false"
-        android:padding="30dip"
-        android:src="@drawable/ic_newpatient2"
-        android:onClick="showPatientActivity" />
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="107dp"
-        android:layout_height="107dp"
-        android:layout_alignTop="@+id/imageButton1"
-        android:layout_centerHorizontal="true"
-        android:padding="30dip"
-        android:src="@drawable/ic_newlaboratory2"
-        android:onClick="showLaboratoryActivity" />
+        <Space
+            android:id="@+id/Space1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="fill_vertical"
+            android:layout_weight="1" />
 
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="107dp"
-        android:layout_height="107dp"
-        android:layout_alignRight="@+id/Space1"
-        android:layout_alignTop="@+id/imageButton2"
-        android:padding="30dip"
-        android:src="@drawable/ic_newmedicalhistory2"
-        android:onClick="showMedicalHistoryActivity" />
+        <TextView
+            android:id="@+id/text_firstname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/Space1"
+            android:layout_centerHorizontal="true"
+            android:text="Menu"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/text_firstname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/Space1"
-        android:layout_centerHorizontal="true"
-        android:text="Menu"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/ImageButton01"
+            android:layout_below="@+id/ImageButton01"
+            android:text="Calculations"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/text_lastname"
-        android:layout_alignBottom="@+id/text_lastname"
-        android:layout_centerHorizontal="true"
-        android:text="Laboratory"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="107dp"
+            android:layout_height="107dp"
+            android:layout_above="@+id/textView3"
+            android:layout_toRightOf="@+id/text_firstname"
+            android:onClick="showLaboratoryActivity"
+            android:padding="30dip"
+            android:src="@drawable/ic_newlaboratory2" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView3"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_alignLeft="@+id/imageButton3"
-        android:layout_alignParentRight="true"
-        android:padding="17dip"
-        android:text="Medical History"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/text_lastname"
+            android:layout_alignBottom="@+id/text_lastname"
+            android:layout_alignLeft="@+id/textView6"
+            android:text="Laboratory"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <ImageButton
-        android:id="@+id/ImageButton03"
-        android:layout_width="107dp"
-        android:layout_height="107dp"
-        android:layout_alignLeft="@+id/Space1"
-        android:layout_below="@+id/textView5"
-        android:layout_marginTop="42dp"
-        android:padding="30dip"
-        android:src="@drawable/ic_newresult2" 
-        android:onClick="showResultsActivity" />
+        <ImageButton
+            android:id="@+id/ImageButton01"
+            android:layout_width="107dp"
+            android:layout_height="107dp"
+            android:layout_alignTop="@+id/imageButton3"
+            android:layout_toRightOf="@+id/text_firstname"
+            android:onClick="showCalculationsActivity"
+            android:padding="30dip"
+            android:src="@drawable/ic_newcalculations2" />
 
-    <ImageButton
-        android:id="@+id/ImageButton02"
-        android:layout_width="107dp"
-        android:layout_height="107dp"
-        android:layout_alignRight="@+id/Space1"
-        android:layout_alignTop="@+id/ImageButton03"
-        android:padding="30dip"
-        android:src="@drawable/ic_newencounters2"
-        android:onClick="showEncountersActivity" />
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="107dp"
+            android:layout_height="107dp"
+            android:layout_below="@+id/text_firstname"
+            android:layout_marginTop="18dp"
+            android:layout_toLeftOf="@+id/text_firstname"
+            android:adjustViewBounds="false"
+            android:onClick="showPatientActivity"
+            android:padding="30dip"
+            android:src="@drawable/ic_newpatient2" />
 
-    <ImageButton
-        android:id="@+id/ImageButton01"
-        android:layout_width="107dp"
-        android:layout_height="107dp"
-        android:layout_alignTop="@+id/ImageButton03"
-        android:layout_centerHorizontal="true"
-        android:padding="30dip"
-        android:src="@drawable/ic_newcalculations2"
-        android:onClick="showCalculationsActivity" />
+        <TextView
+            android:id="@+id/text_lastname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/imageButton1"
+            android:layout_below="@+id/imageButton1"
+            android:layout_marginRight="23dp"
+            android:text="Patient"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView7"
-        android:layout_alignBottom="@+id/textView7"
-        android:layout_centerHorizontal="true"
-        android:text="Calculations"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView6"
+            android:layout_alignBottom="@+id/textView6"
+            android:layout_alignLeft="@+id/imageButton3"
+            android:text="Doctor&apos;s Notes"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/text_lastname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/Space1"
-        android:layout_below="@+id/imageButton1"
-        android:layout_marginLeft="18dp"
-        android:text="Patient"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="107dp"
+            android:layout_height="107dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/text_firstname"
+            android:onClick="showMedicalHistoryActivity"
+            android:padding="30dip"
+            android:src="@drawable/ic_newmedicalhistory2" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_lastname"
-        android:layout_below="@+id/ImageButton03"
-        android:text="Results"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <Button
+            android:id="@+id/logOutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_alignRight="@+id/textView6"
+            android:layout_below="@+id/textView6"
+            android:layout_marginTop="23dp"
+            android:text="LOGOUT" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView4"
-        android:layout_alignBottom="@+id/textView4"
-        android:layout_alignRight="@+id/Space1"
-        android:text="Encounters"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
     </RelativeLayout>
     
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
