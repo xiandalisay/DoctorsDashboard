@@ -1,9 +1,15 @@
 package com.example.android.navigationdrawerexample;
 
+import java.util.ArrayList;
+
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+
+import com.example.model.Encounter;
 
 
 public class MyOnClickListener implements OnClickListener {
@@ -16,8 +22,10 @@ public class MyOnClickListener implements OnClickListener {
 	private static int lastExpandedGroupPosition;
 	
 	int childPos = -1;
+	ArrayList<Object> child;
 	
-	public MyOnClickListener(int childPosition) {  
+	public MyOnClickListener(int childPosition, ArrayList<Object> child) { 
+		this.child = child;
 		this.childPos = childPosition;
 	}
 	
@@ -26,14 +34,14 @@ public class MyOnClickListener implements OnClickListener {
 		
 		switch (lastExpandedGroupPosition) {
 			case INDEX_MEDICAL_HISTORY:
-				/*
+				
 				int eid = ((Encounter)child.get(childPos)).getEncounterId();
 				Bundle bundle = new Bundle();
 				bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
 				Intent intent = new Intent(view.getContext(), PatientEncounterActivity.class);
 				intent.putExtras(bundle);
 				view.getContext().startActivity(intent);
-				*/
+				
 				Toast.makeText(view.getContext(),"groupPos:"+lastExpandedGroupPosition+"\n"+"childPos:"+childPos, Toast.LENGTH_SHORT).show();
 				break;
 			case INDEX_PREVIOUS_REQUESTS:

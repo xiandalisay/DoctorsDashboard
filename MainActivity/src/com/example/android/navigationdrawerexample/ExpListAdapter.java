@@ -49,8 +49,8 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
 		textView = (TextView) convertView.findViewById(R.id.textView1);
 		textView.setText(out);
 		
-		textView.setOnClickListener(new MyOnClickListener(childPosition));
-		convertView.setOnClickListener(new MyOnClickListener(childPosition));
+		textView.setOnClickListener(new MyOnClickListener(childPosition, child));
+		convertView.setOnClickListener(new MyOnClickListener(childPosition, child));
 		
 		/*
 		convertView.setOnClickListener(new OnClickListener() {
