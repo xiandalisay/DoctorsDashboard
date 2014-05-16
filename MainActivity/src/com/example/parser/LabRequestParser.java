@@ -61,7 +61,7 @@ public class LabRequestParser extends JSONParser{
 				
 				LabRequest labrequest = new LabRequest(refno, encounter_nr, service_code, service_name, Integer.parseInt(quantity));
 				labrequests.add(labrequest);
-				//System.out.println(pid);			
+							
 	        }
 		}catch(Exception e){System.out.println(e.toString() + " pong was here too :)");}
         
