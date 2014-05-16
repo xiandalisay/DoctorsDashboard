@@ -49,6 +49,5 @@ public class LabRequestAdapter extends Data {
 		return db;
 	}
 	
-	public 
 	
 }

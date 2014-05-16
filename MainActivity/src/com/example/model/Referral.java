@@ -6,6 +6,7 @@ public class Referral
 	private int encounter_number;
 	private int referred_department_number;
 	private int reason_referral_number;
+	private String date_referred;
 	
 	public Referral()
 	{
@@ -13,6 +14,7 @@ public class Referral
 		encounter_number = 0;
 		referred_department_number = 0;
 		reason_referral_number = 0;
+		date_referred = "";
 	}
 	
 	public Referral(int referralid, int encounternumber, 
