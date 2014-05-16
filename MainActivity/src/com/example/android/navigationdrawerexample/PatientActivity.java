@@ -7,6 +7,7 @@
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -31,16 +32,19 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.model.Encounter;
 import com.example.model.HelperSharedPreferences;
 import com.example.model.Patient;
 import com.example.model.Preferences;
 import com.example.model.Rest;
+import com.example.parser.EncounterParser;
 import com.example.parser.PatientParser;
 
 public class PatientActivity extends BaseActivity {
 	
 	private Patient patient;
 	private ArrayList<Patient> patients;
+	private ArrayList<Encounter> encounters;
 	
 	private String patients_url; // = Preferences.getBaseURL(this) + "/patient/show/";
 	private String encounters_url; // = Preferences.getBaseURL(this) + "/encounter/";
@@ -134,17 +138,20 @@ public class PatientActivity extends BaseActivity {
 					encounter_id = getLatestEncounter(patient_id);
 					extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 					alertMessage(encounter_id+"");
+					
+
+					/* start next activity Patient Info (2nd Page) */
+					intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
+					intent.putExtras(extras);
+					
+					startActivity(intent);
 				}
 				else{
 					logMessage("it online");
-					encounter_id = getLatestEncounterAPI(patient_id);
+					getLatestEncounterAPI(patient_id);
+					logMessage("Saved into arraylist");
 				}
 				
-				/* start next activity Patient Info (2nd Page) */
-				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
-				intent.putExtras(extras);
-				
-				startActivity(intent);
 			}
 		});
    
@@ -268,7 +275,7 @@ public class PatientActivity extends BaseActivity {
 	}
 	
 	/* retrieves latest encounter of the patient thru web service */
-	private int getLatestEncounterAPI(int patient_id) {
+	private void getLatestEncounterAPI(int patient_id) {
 		
 		encounters_url = Preferences.getBaseURL(this) + "/encounter/show/";
 		
@@ -286,7 +293,18 @@ public class PatientActivity extends BaseActivity {
 		
 		System.out.println("Data Received:\n" + rest.getContent());
 		
-		return 0; //temp
+		EncounterParser parser = new EncounterParser(rest.getContent());
+		
+		encounters = parser.getEncounters();
+		
+		//sortEncountersList();
+		
+		//Collections.sort(encounters);
+		
+		
+		for(int i=0; i<encounters.size();i++){
+			logMessage(encounters.get(i).getDateEncountered());
+		}
 	}
 	
 	

@@ -3,6 +3,7 @@ package com.example.android.navigationdrawerexample;
 import com.example.database.CanvasAdapter;
 import com.example.database.DatabaseAdapter;
 import com.example.database.DoctorAdapter;
+import com.example.database.EncounterAdapter;
 import com.example.model.HelperSharedPreferences;
 import com.example.model.Preferences;
 import com.example.model.Rest;

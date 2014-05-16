@@ -115,7 +115,7 @@ public class LoginActivity extends InitialActivity {
 		
 		/* Validate inputs from user (i.e. empty field, unequal passwords) */
 		if(validateInputs()){
-			if (AuthtokenValidation()){
+			if (validateAuthtoken()){
 				successfulLogin();
 			}
 			else {

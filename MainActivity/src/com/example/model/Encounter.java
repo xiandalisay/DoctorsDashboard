@@ -57,7 +57,8 @@ public class Encounter implements Comparable<Encounter> {
 	
 	@SuppressWarnings("deprecation")
 	public int compareTo(Encounter e){
-		long date1 = Date.parse(this.date_encountered);
+		String[] date =this.date_encountered.split(" ");
+		long date1 = Date.parse(date[0]);
 		long date2 = Date.parse(e.date_encountered);
 		
 		return (int)(date1 - date2);
