@@ -9,7 +9,8 @@ package com.example.model;
 
 import java.util.Date;
 
-public class Encounter {
+
+public class Encounter implements Comparable<Encounter> {
 	private int 	encounter_id;
 	private int 	personnel_id;
 	private int 	pid;
@@ -52,6 +53,14 @@ public class Encounter {
 		pid = patientid;
 		//this.department = department;
 		//is_confidential = isconfidential;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public int compareTo(Encounter e){
+		long date1 = Date.parse(this.date_encountered);
+		long date2 = Date.parse(e.date_encountered);
+		
+		return (int)(date1 - date2);
 	}
 	
 	public void setEncounterId(int rEncounter_id) {

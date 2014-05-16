@@ -263,8 +263,8 @@ public class PatientActivity extends BaseActivity {
 	/* retrieves latest encounter of the patient */
 	private int getLatestEncounter(int patient_id) {
 		EncounterAdapter db = new EncounterAdapter(this);
-		
 		return db.getLatestEncounter(patient_id);
+		
 	}
 	
 	/* retrieves latest encounter of the patient thru web service */
