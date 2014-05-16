@@ -24,9 +24,24 @@ public class InitialSyncActivity extends InitialActivity {
 		
 		retrieveEncountersAPI();
 		
-		finish();
+		showLoginActivity();
+		
 	}
 	
+	/* starts Login Activity */
+	public void showLoginActivity(){
+		Intent intent = new Intent(this, LoginActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
+		startActivity(intent);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		finish();
+	}
+
 	private void retrieveEncountersAPI() {
 		
 		rest = new Rest("GET");

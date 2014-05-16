@@ -38,7 +38,7 @@ public class UntagPatientActivity extends InitialActivity {
 					);
 		
 		rest.addRequestParams("encounter_nr", encounter_id + "");
-		rest.addRequestParams("doctor_nr", getPersonnelNumber() + "");
+		rest.addRequestParams("doctor_nr", Preferences.getPersonnelNumber(this) + "");
 		
 		/* process request service request */
 		rest.execute();
@@ -48,16 +48,6 @@ public class UntagPatientActivity extends InitialActivity {
 		
 		System.out.println("Data Received:\n" + rest.getContent()); 
 			
-	}
-
-	/* retrieves base_url */
-	private String getBaseURL() {
-		return Preferences.getBaseURL(this);
-	}
-	
-	/* retrieves base_url */
-	private int getPersonnelNumber() {
-		return Preferences.getPersonnelNumber(this);
 	}
 
 	/* retrieve passed data from parent intent */

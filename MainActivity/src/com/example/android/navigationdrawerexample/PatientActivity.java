@@ -31,7 +31,9 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.model.HelperSharedPreferences;
 import com.example.model.Patient;
+import com.example.model.Preferences;
 import com.example.model.Rest;
 import com.example.parser.PatientParser;
 
@@ -40,7 +42,11 @@ public class PatientActivity extends BaseActivity {
 	private Patient patient;
 	private ArrayList<Patient> patients;
 	
-	private final String url = "http://121.97.45.242/segservice/patient/show/";
+	private String patients_url; // = Preferences.getBaseURL(this) + "/patient/show/";
+	private String encounters_url; // = Preferences.getBaseURL(this) + "/encounter/";
+
+	//private final String patients_url = "http://121.97.45.242/segservice/patient/show/";
+	//private final String encounters_url = getBaseURL() + "/encounter/";
 	
 	private int encounter_id;
 	private int patient_id;
@@ -53,10 +59,15 @@ public class PatientActivity extends BaseActivity {
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
 		if(isNetworkAvailable()){
-
+			
+			patients_url = Preferences.getBaseURL(this) + "/patient/show/";
+			
 			Rest rest = new Rest("GET",this);
-			rest.setURL(url);
+			
+			rest.setURL(patients_url);
+			
 			rest.execute();
+			
 			while(rest.getContent() == null){}
 			
 			if(rest.getResult()){
@@ -113,14 +124,21 @@ public class PatientActivity extends BaseActivity {
 				// Starting single contact activity
 				patient = patients.get(position);
 				patient_id = patient.getPid();
-				encounter_id = getLatestEncounter(patient_id);
+
 				
 				/* saves the patient_id and encounter_id to be passed to the next activity */
 				extras = new Bundle();
 				extras.putInt("EXTRA_PATIENT_ID", patient_id);
-				extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
-				
-				alertMessage(encounter_id+"");
+
+				if(!isNetworkAvailable()){
+					encounter_id = getLatestEncounter(patient_id);
+					extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
+					alertMessage(encounter_id+"");
+				}
+				else{
+					logMessage("it online");
+					encounter_id = getLatestEncounterAPI(patient_id);
+				}
 				
 				/* start next activity Patient Info (2nd Page) */
 				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
@@ -160,7 +178,7 @@ public class PatientActivity extends BaseActivity {
 		        			Rest rest = new Rest("GET");
 		        			rest.addRequestParams("name_last", last); //adds lastname as parameter to url
 		        			rest.addRequestParams("name_first", first); //adds firstname as parameter to url
-		        			rest.setURL(url);
+		        			rest.setURL(patients_url);
 		        			rest.addRequestParams("name_last", last);
 		        			rest.addRequestParams("name_first", first);
 		        			rest.execute();
@@ -173,9 +191,11 @@ public class PatientActivity extends BaseActivity {
 		        				patients = patient_parser.getPatients(); //get patients from online source
 		        			}
 		        		}
-		            	else //gets patients from the database
+		            	else{ //gets patients from the database
 		            		patients = adapter.searchPatient(searchtext);
-			            ListView listview = (ListView) findViewById(R.id.servicesList);
+		            	}
+		            	
+		            	ListView listview = (ListView) findViewById(R.id.servicesList);
 			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
 			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
 			            	@Override
@@ -247,12 +267,28 @@ public class PatientActivity extends BaseActivity {
 		return db.getLatestEncounter(patient_id);
 	}
 	
-	public boolean isNetworkAvailable() {
-	    ConnectivityManager connectivityManager 
-	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	/* retrieves latest encounter of the patient thru web service */
+	private int getLatestEncounterAPI(int patient_id) {
+		
+		encounters_url = Preferences.getBaseURL(this) + "/encounter/show/";
+		
+		Rest rest = new Rest("GET");
+		
+		rest.setURL(encounters_url + patient_id);
+		
+		rest.addRequestParams("pid", patient_id+"");
+		
+		logMessage(rest.getURL());
+		
+		rest.execute();
+		
+		while(rest.getContent() == null){} 
+		
+		System.out.println("Data Received:\n" + rest.getContent());
+		
+		return 0; //temp
 	}
+	
 	
 	public void showPatientInfo(View view){
     	Intent intent = new Intent(this, PatientInfoActivity.class);

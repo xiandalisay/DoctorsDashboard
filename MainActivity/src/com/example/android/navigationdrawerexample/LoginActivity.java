@@ -90,6 +90,8 @@ public class LoginActivity extends InitialActivity {
 	
 	
 	public void successfulLogin(){
+		//Preferences.putSharedPreferencesString(this, "key_base_url", ""); //get base_url of doctor from mobile db
+		logMessage(Preferences.getBaseURL(this));
 		intent = new Intent(getApplicationContext(), MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
 		startActivity(intent);	
@@ -117,7 +119,7 @@ public class LoginActivity extends InitialActivity {
 		
 		/* Validate inputs from user (i.e. empty field, unequal passwords) */
 		if(validateInputs()){
-			if (AuthtokenValidation()){
+			if (validateAuthtoken()){
 				successfulLogin();
 			}
 			else {
@@ -192,15 +194,14 @@ public class LoginActivity extends InitialActivity {
 			}
 		}
 	
-	public Boolean AuthtokenValidation() {
-		/* Created By: Christian Joseph Dalisay
-		 * Created On: 05/08/14
-		 * AuthtokenValidation 
-		 * 	- Validates if there is a match of generated and stored authentication
-		 *    token, then stores the authentication token, base_url, and personnel_nr
-		 *    of the user account into the preferences.
-		 */
-		
+
+	/* 
+	 * 	 checks if there is a match to the generated  token in the mobile DB
+	 * 	 then stores the authentication token, base_url, and personnel_nr of the user
+	 * 	 account into the preferences. 
+	 */
+	public boolean validateAuthtoken() {
+
 		RegistrationAdapter client = new RegistrationAdapter(this);
 		String data = client.getClientId() + "\\n" + username;
 		String key = "";

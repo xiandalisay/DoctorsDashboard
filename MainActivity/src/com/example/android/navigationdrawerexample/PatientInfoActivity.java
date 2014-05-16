@@ -52,6 +52,7 @@ public class PatientInfoActivity extends InitialActivity {
 	final String url_patient = "http://121.97.45.242/segservice/patient/show";
 	final String url_encounter = "http://121.97.45.242/segservice/encounter/show";
 	final static int FIRST_PATIENT = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,6 +63,9 @@ public class PatientInfoActivity extends InitialActivity {
 		intent = getIntent();
 		extras = intent.getExtras();
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
+		
+		tag = (Button) findViewById(R.id.TagPatientButton);
+		
 		DatabaseAdapter db = new DatabaseAdapter(this);
 		if(isNetworkAvailable()){
 			
@@ -159,7 +163,7 @@ public class PatientInfoActivity extends InitialActivity {
 	
 	/* called when "refer" button is clicked */
     public void showReferPatient(View view){
-	        intent = new Intent(this,ReferralActivity.class);
+	    intent = new Intent(this,ReferralActivity.class);
 		extras = new Bundle();
 		extras.putInt("EXTRA_PATIENT_ID", patient.getPid());
 		extras.putString("EXTRA_PATIENT_NAME_LAST", patient.getNameLast());

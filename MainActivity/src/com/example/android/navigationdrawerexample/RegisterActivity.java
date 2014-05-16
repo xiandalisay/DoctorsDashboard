@@ -96,9 +96,8 @@ public class RegisterActivity extends InitialActivity{
 		/* if inputs are all valid, submits them thru API */
 		if(prepareCredentials()){
 			if(submitCredentials()){
-				//insertDoctor();
+				insertDoctor();
 				startInitialSync();
-				//showLoginActivity();
 			}
 		}
 	}
@@ -375,7 +374,7 @@ public class RegisterActivity extends InitialActivity{
 		intent = new Intent(this, InitialSyncActivity.class);
 		intent.putExtras(extras);
 		
-		startActivityForResult(intent, 1);
+		startActivity(intent);
 	}
 
 	 
@@ -416,7 +415,6 @@ public class RegisterActivity extends InitialActivity{
 			return rootView;
 		}
 	}
-		
 		
 	@Override
 	protected void onPause() {
