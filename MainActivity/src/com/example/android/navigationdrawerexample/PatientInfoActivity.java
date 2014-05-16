@@ -71,6 +71,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
+		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
 		DatabaseAdapter db = new DatabaseAdapter(this);
 		if(isNetworkAvailable()){
 			

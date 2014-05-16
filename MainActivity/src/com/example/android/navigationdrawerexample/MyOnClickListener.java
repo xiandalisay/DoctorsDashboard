@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.example.model.Encounter;
+import com.example.model.Soap;
 
 
 public class MyOnClickListener implements OnClickListener {
@@ -32,25 +33,63 @@ public class MyOnClickListener implements OnClickListener {
 	@Override
 	public void onClick(View view) {
 		
+		Bundle bundle = new Bundle();
+		Intent intent;
+		int eid, pid, sid;
+		
 		switch (lastExpandedGroupPosition) {
 			case INDEX_MEDICAL_HISTORY:
 				
-				int pid = ((Encounter)child.get(childPos)).getPid();
-				Bundle bundle = new Bundle();
+				pid = ((Encounter)child.get(childPos)).getPid();
+				bundle = new Bundle();
 				bundle.putInt("EXTRA_PATIENT_ID", pid);
-				Intent intent = new Intent(view.getContext(), PatientInfoActivity.class);
+				intent = new Intent(view.getContext(), PatientInfoActivity.class);
 				intent.putExtras(bundle);
 				view.getContext().startActivity(intent);
 				
 				Toast.makeText(view.getContext(),"groupPos:"+lastExpandedGroupPosition+"\n"+"childPos:"+childPos, Toast.LENGTH_SHORT).show();
 				break;
 			case INDEX_PREVIOUS_REQUESTS:
+				
+				eid = ((Encounter)child.get(childPos)).getEncounterId();
+				bundle = new Bundle();
+				bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
+				//intent = new Intent(view.getContext(), PatientInfoActivity.class);
+				//intent.putExtras(bundle);
+				//view.getContext().startActivity(intent);
+				
 				Toast.makeText(view.getContext(),"groupPos:"+lastExpandedGroupPosition+"\n"+"childPos:"+childPos, Toast.LENGTH_SHORT).show();
 				break;
 			case INDEX_REFERRALS:
+				
+				eid = ((Encounter)child.get(childPos)).getEncounterId();
+				bundle = new Bundle();
+				bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
+				//intent = new Intent(view.getContext(), PatientInfoActivity.class);
+				//intent.putExtras(bundle);
+				//view.getContext().startActivity(intent);
+				
 				Toast.makeText(view.getContext(),"groupPos:"+lastExpandedGroupPosition+"\n"+"childPos:"+childPos, Toast.LENGTH_SHORT).show();
 				break;
 			case INDEX_NOTES:
+				
+				if (0 == childPos) {
+					eid = ((Encounter)child.get(childPos)).getEncounterId();
+					bundle = new Bundle();
+					bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
+					//intent = new Intent(view.getContext(), PatientInfoActivity.class);
+					//intent.putExtras(bundle);
+					//view.getContext().startActivity(intent);
+					Toast.makeText(view.getContext(),"Going to NEW NOTE PAGE", Toast.LENGTH_SHORT).show();
+				}
+				
+				sid = ((Soap)child.get(childPos)).getSoapId();
+				bundle = new Bundle();
+				bundle.putInt("EXTRA_ENCOUNTER_ID", sid);
+				//intent = new Intent(view.getContext(), PatientInfoActivity.class);
+				//intent.putExtras(bundle);
+				//view.getContext().startActivity(intent);
+				
 				Toast.makeText(view.getContext(),"groupPos:"+lastExpandedGroupPosition+"\n"+"childPos:"+childPos, Toast.LENGTH_SHORT).show();
 				break;
 			default:

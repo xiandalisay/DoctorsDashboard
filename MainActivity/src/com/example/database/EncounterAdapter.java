@@ -45,7 +45,7 @@ public class EncounterAdapter extends Data {
 			return cursor.getInt(cursor.getColumnIndex("encounter_id"));
 		} catch(Exception e) {
 			Log.d("Encounter Adapter","0 rows retrieved");
-			return (Integer) null;
+			return -1;
 		}
 	}
 	
