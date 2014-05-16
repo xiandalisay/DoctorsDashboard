@@ -5,6 +5,8 @@
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.app.ExpandableListActivity;
 import android.content.Context;
@@ -57,6 +59,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 	
 	private int patient_id;
 	private int encounter_id;
+	
 	final String url_patient = "http://121.97.45.242/segservice/patient/show";
 	final String url_encounter = "http://121.97.45.242/segservice/encounter/show";
 	final static int FIRST_PATIENT = 0;
@@ -89,37 +92,64 @@ public class PatientInfoActivity extends ExpandableListActivity {
 				PatientParser patient_parser = new PatientParser(content);
 				patients = patient_parser.getPatients();
 				patient = patients.get(FIRST_PATIENT);
-				System.out.println(patient);
+				System.out.println(patient + " lol");
 			}
 			
 			//Rest for encounter
 			Rest rest_encounter = new Rest("GET", this);
 			rest_encounter.setURL(url_encounter);
-			//rest_encounter.addRequestParams("id", Integer.toString(patient_id));
+			rest_encounter.addRequestParams("pid", Integer.toString(patient_id));
 			rest_encounter.execute();
+			
 			while(rest_encounter.getContent() == null){}
+			
+			System.out.println(rest_encounter.getContent());
+			
 			if(rest_encounter.getResult()){
 				String content = rest_encounter.getContent();
 				EncounterParser encounter_parser = new EncounterParser(content);
 				encounters = encounter_parser.getEncounters();
-				
 			}
-		
 			
+			System.out.println(encounters.size());
+		
+			Collections.sort(encounters, new CustomComparator());
+			System.out.println("sorting..");
+			
+			for(int i=0; i<encounters.size();i++){
+				encounter = encounters.get(i);
+				
+				try{
+					System.out.println(encounter.getDateEncountered());
+				}catch(Exception e){
+					System.out.println("null error");
+				}
+			}
+			System.out.println("Index: " + (encounters.size()-1));
+			encounter = encounters.get(encounters.size()-1);
+			
+			System.out.println("PID: " + encounter.getPID());
+			System.out.println("EID: " + encounter.getEncounterId());
+				
 		}		
 		else{
 		    patient = db.getPatientProfile(patient_id);
 			encounters = db.getPatientEncounter(patient_id);
 		}
 		
+		EditText HRN = (EditText) findViewById(R.id.HRN);
+		EditText CaseNo = (EditText) findViewById(R.id.CaseNo);
 		EditText nameEditText = (EditText) findViewById(R.id.FullName);
 		EditText genderEditText = (EditText) findViewById(R.id.Gender);
 		EditText addressEditText = (EditText) findViewById(R.id.Address);
 		EditText ageEditText = (EditText) findViewById(R.id.Age);
+		
 		CheckBox histOfSmokingCheckBox = (CheckBox) findViewById(R.id.HistOfSmoking);
 		CheckBox histOfDrinkingCheckBox = (CheckBox) findViewById(R.id.HistOfDrinking);
+		
 		histOfSmokingCheckBox.setChecked(true);
 		histOfDrinkingCheckBox.setChecked(true);
+		
 		String nametext = patient.getNameLast() + ", " + patient.getNameFirst();
 		String gendertext;
 		
@@ -130,12 +160,16 @@ public class PatientInfoActivity extends ExpandableListActivity {
 			gendertext = "Female";
 		}
 		
+		HRN.setText(encounter.getPID()+"");
+		CaseNo.setText(encounter.getEncounterId()+"");
 		addressEditText.setText(patient.getAddress());
 		nameEditText.setText(nametext);
 		genderEditText.setText(gendertext);
-		String age = String.valueOf(patient.getAge());
-		ageEditText.setText(age);
+
 		
+		String age = String.valueOf(patient.getAge());
+		
+		ageEditText.setText(age);
 		
 		/**
 		 * @author Jake Randolph B Muncada
@@ -335,4 +369,12 @@ public class PatientInfoActivity extends ExpandableListActivity {
     protected void alertMessage(String message){
     	Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
+    
+    public class CustomComparator implements Comparator<Encounter> {
+	    @Override
+	    public int compare(Encounter o1, Encounter o2) {
+	        return o1.getDateEncountered().compareTo(o2.getDateEncountered());
+	    }
+	}
+
 }

@@ -9,6 +9,7 @@ package com.example.model;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 
 import android.net.ParseException;
@@ -16,45 +17,42 @@ import android.net.ParseException;
 
 public class Encounter implements Comparable<Encounter> {
 	private int 	encounter_id;
-	private int 	personnel_id;
 	private int 	pid;
 	private String 	type_patient;
 	private String 	message_complaint;
 	private String 	date_encountered;
-	private String 	date_released;
 	private String 	department;
 	private String 	is_confidential;
 	
 	public Encounter(){
 		encounter_id 		= 0;
-		personnel_id 		= 0;
 		pid 				= 0;
 		type_patient 		= "";
 		message_complaint 	= "";
 		date_encountered 	= "";
-		date_released 		= "";
 		department 			= "";
 		is_confidential 	= "";
 	}
 	
-	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, String datereleased, int patientid)
+	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, int patientid)
 	{
 		encounter_id = eid;
 		type_patient = typepatient;
 		message_complaint = messagecomplaint;
 		date_encountered = dateencountered;
-		date_released = datereleased;
 		pid = patientid;
 	}
 	
-	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, String datereleased, int patientid, String department, String isconfidential)
+	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, int patientid, String department, String isconfidential)
 	{
 		encounter_id = eid;
 		type_patient = typepatient;
 		message_complaint = messagecomplaint;
 		date_encountered = dateencountered;
-		date_released = datereleased;
 		pid = patientid;
+		
+		System.out.println(pid+": here");
+		
 		//this.department = department;
 		//is_confidential = isconfidential;
 	}
@@ -97,11 +95,7 @@ public class Encounter implements Comparable<Encounter> {
 	public void setDateEncountered(String rDate_Encountered) {
 		this.date_encountered = rDate_Encountered;
 	}
-	
-	public void setDateReleased(String rDate_Released) {
-		this.date_released = rDate_Released;
-	}
-	
+
 	//Getter Methods
 	
 	public Encounter getEncounter() {
@@ -112,12 +106,8 @@ public class Encounter implements Comparable<Encounter> {
 		return this.encounter_id;
 	}
 	
-	public int getPid() {
+	public int getPID() {
 		return this.pid;
-	}
-	
-	public int getPersonnelId() {
-		return this.personnel_id;
 	}
 	
 	public String getTypePatient() {
@@ -131,15 +121,11 @@ public class Encounter implements Comparable<Encounter> {
 	public String getDateEncountered() {
 		return this.date_encountered;
 	}
-	
-	public String getDateReleased() {
-		return this.date_released;
-	}
-	
+
 	public String toString()
 	{
 		//return date_encountered + " " + type_patient + " " + message_complaint;
 		return message_complaint + " (" + date_encountered.substring(0,10) + ")";
 	}
-
+	
 }

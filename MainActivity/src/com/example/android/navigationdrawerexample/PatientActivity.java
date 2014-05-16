@@ -104,31 +104,28 @@ public class PatientActivity extends BaseActivity {
         	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
         	    Age age = new Age();
         	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
-        	    	displayinfo = displayinfo + "Male";
+        	    	displayinfo = displayinfo + "Gender: Male";
         	    	//text1.setBackgroundColor(Color.parseColor("#4C8BFF"));
         	    	//text2.setBackgroundColor(Color.parseColor("#4C8BFF"));
         	    }
         	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
-        	    	displayinfo = displayinfo + "Female";
+        	    	displayinfo = displayinfo + "Gender: Female";
         	    	//text1.setBackgroundColor(Color.parseColor("#FF99CC"));
         	    	//text2.setBackgroundColor(Color.parseColor("#FF99CC"));
         	    }
-        	    try{
-	        	    try {
-						displayinfo = "HRN: " + Integer.toString(patient.getPid()) + ", " + displayinfo + " : " + age.getAge(patient.getBirthdate().substring(0,10));
-					} catch (java.text.ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-        	    }
-        	    catch(ParseException ex){
-   
-        	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
+        	   
+        	    try {
+					displayinfo = "HRN: " + Integer.toString(patient.getPid()) +
+							", " + displayinfo + ", Age: " + age.getAge(patient.getBirthdate().substring(0,10));
+				} catch (java.text.ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         	    
         	    text1.setText(displayname);
         	    text2.setText(displayinfo);
         	    
-        	  }
+        	  
         	    return view;
         	  }
         	};
@@ -209,32 +206,47 @@ public class PatientActivity extends BaseActivity {
 		            	}
 		            	
 		            	ListView listview = (ListView) findViewById(R.id.servicesList);
-			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
-			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
-			            	@Override
-			            	public View getView(int position, View convertView, ViewGroup parent) {
-			            		View view = super.getView(position, convertView, parent);
-			            	    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-			            	    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-			            	    text1.setTextColor(Color.BLACK);
-			            	    text2.setTextColor(Color.BLACK);
-			            	    String displayname = "";
-			            	    String displayinfo = "";
-			            	    Patient patient = patients.get(position);
-			            	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
-			            	    if(patient.getSex().equals("M")){
-			            	    	displayinfo = displayinfo + "Male";
-			            	    }
-			            	    else if(patient.getSex().equals("F")){
-			            	    	displayinfo = displayinfo + "Female";
-			            	    }
-			            	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
-			            	    
-			            	    text1.setText(displayname);
-			            	    text2.setText(displayinfo);
-			            	    return view;
-			            	  }
-			            	};
+		        		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
+		                	//method to override the getView method of ArrayAdapter, this changes the color of the text view
+		                	@Override
+		                	public View getView(int position, View convertView, ViewGroup parent) {
+		                		View view = super.getView(position, convertView, parent);
+		                	    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+		                	    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+		                	    text1.setTextColor(Color.BLACK);
+		                	    text2.setTextColor(Color.BLACK);
+		                	    String displayname = "";
+		                	    String displayinfo = "";
+		                	    Patient patient = patients.get(position);
+		                	  
+		                	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
+		                	    Age age = new Age();
+		                	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
+		                	    	displayinfo = displayinfo + "Gender: Male";
+		                	    	//text1.setBackgroundColor(Color.parseColor("#4C8BFF"));
+		                	    	//text2.setBackgroundColor(Color.parseColor("#4C8BFF"));
+		                	    }
+		                	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
+		                	    	displayinfo = displayinfo + "Gender: Female";
+		                	    	//text1.setBackgroundColor(Color.parseColor("#FF99CC"));
+		                	    	//text2.setBackgroundColor(Color.parseColor("#FF99CC"));
+		                	    }
+		                	   
+		                	    try {
+		        					displayinfo = "HRN: " + Integer.toString(patient.getPid()) +
+		        							", " + displayinfo + ", Age: " + age.getAge(patient.getBirthdate().substring(0,10));
+		        				} catch (java.text.ParseException e) {
+		        					// TODO Auto-generated catch block
+		        					e.printStackTrace();
+		        				}
+		                	    
+		                	    text1.setText(displayname);
+		                	    text2.setText(displayinfo);
+		                	    
+		                	  
+		                	    return view;
+		                	  }
+		                	};
 			            	
 			            listview.setAdapter(arrayAdapter); 
 			            listview.setOnItemClickListener(new OnItemClickListener() {

@@ -357,17 +357,17 @@ public class DatabaseAdapter extends Data {
 		db = dbHandler.getWritableDatabase();
 		encounterlist = new ArrayList<Encounter>();
 		try {
-			String query = "SELECT encounter.encounter_id, encounter.date_encountered, encounter.date_released, encounter.type_patient, encounter.message_complaint, encounter.pid FROM encounter INNER JOIN patient ON encounter.pid = patient.pid WHERE patient.pid = " + patientid + " ORDER BY date_encountered";
+			String query = "SELECT encounter.encounter_id, encounter.date_encountered, encounter.type_patient, encounter.message_complaint, encounter.pid FROM encounter INNER JOIN patient ON encounter.pid = patient.pid WHERE patient.pid = " + patientid + " ORDER BY date_encountered";
+			
 			Cursor cursor = db.rawQuery(query,  null);
 			if(cursor.moveToFirst()){
 				do{
 					int eid = cursor.getInt(cursor.getColumnIndex("encounter_id"));
 					String dateencountered = cursor.getString(cursor.getColumnIndex("date_encountered"));
-					String datereleased = cursor.getString(cursor.getColumnIndex("date_released"));
 					String typepatient = cursor.getString(cursor.getColumnIndex("type_patient"));
 					String message = cursor.getString(cursor.getColumnIndex("message_complaint"));
 					int pid = cursor.getInt(cursor.getColumnIndex("pid"));
-					Encounter encounter = new Encounter(eid, typepatient, message, dateencountered, datereleased, pid);
+					Encounter encounter = new Encounter(eid, typepatient, message, dateencountered, pid);
 					encounterlist.add(encounter);
 				}while(cursor.moveToNext());
 			}
@@ -403,7 +403,7 @@ public class DatabaseAdapter extends Data {
 					String typepatient = cursor.getString(cursor.getColumnIndex("type_patient"));
 					String message = cursor.getString(cursor.getColumnIndex("message_complaint"));
 					int pid = cursor.getInt(cursor.getColumnIndex("pid"));
-					encounter = new Encounter(eid, typepatient, message, dateencountered, datereleased, pid);
+					encounter = new Encounter(eid, typepatient, message, dateencountered, pid);
 					encounterlist.add(encounter);
 			}
 		} catch (Exception e) {
@@ -443,7 +443,7 @@ public class DatabaseAdapter extends Data {
 					String typepatient = cursor.getString(cursor.getColumnIndex("type_patient"));
 					String message = cursor.getString(cursor.getColumnIndex("message_complaint"));
 					int pid = cursor.getInt(cursor.getColumnIndex("pid"));
-					encounter = new Encounter(eid, typepatient, message, dateencountered, datereleased, pid);
+					encounter = new Encounter(eid, typepatient, message, dateencountered, pid);
 					encounterlist.add(encounter);
 				} while (cursor.moveToNext());
 			}
