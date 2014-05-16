@@ -48,6 +48,3 @@ public class MainActivity extends BaseActivity {
     }
     
 }
-
-// Test comment for commit
-// Jake comment

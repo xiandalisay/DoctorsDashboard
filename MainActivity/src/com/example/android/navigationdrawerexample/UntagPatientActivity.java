@@ -57,7 +57,7 @@ public class UntagPatientActivity extends InitialActivity {
 	
 	/* retrieves base_url */
 	private int getPersonnelNumber() {
-		return Preferences.getPersonnelNumber(this);
+		return Preferences.getPersonnelPreference(this);
 	}
 
 	/* retrieve passed data from parent intent */
@@ -68,12 +68,10 @@ public class UntagPatientActivity extends InitialActivity {
 		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
 	}
 
-	/* @Author: Christian Joseph Dalisay
-	 * 
-	 */
+	/* @Author: Christian Joseph Dalisay */
 	private void deleteRelatedData() {
 		EncounterAdapter doc_ad = new EncounterAdapter(this);
-		//doc_ad.deleteDoctorEncounter(encounter_id,Preferences.getPersonnelNumber(this));
+		//doc_ad.deleteEncounter(encounter_id,Preferences.getPersonnelPreference(this));
 	}
 	
 

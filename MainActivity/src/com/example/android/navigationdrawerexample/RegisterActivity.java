@@ -97,8 +97,8 @@ public class RegisterActivity extends InitialActivity{
 		if(prepareCredentials()){
 			if(submitCredentials()){
 				//insertDoctor();
-				startInitialSync();
-				//showLoginActivity();
+				//startInitialSync();
+				showLoginActivity();
 			}
 		}
 	}
@@ -129,8 +129,8 @@ public class RegisterActivity extends InitialActivity{
 		return true;
 	}
 	
+	/* stores the retrieved doctor info and tokens to the database */
 	private void setRetrievedCredentials(Doctor rDoctor){
-		/* stores the retrieved doctor info and tokens to the database */
 		DoctorAdapter doctor = new DoctorAdapter(this);
 		doctor.addDoctor(rDoctor);
 	}
@@ -158,7 +158,7 @@ public class RegisterActivity extends InitialActivity{
 	
 	/* validate each input of user in case or missing fields and etc.*/
 	public boolean validateInputs(){
-		
+	
 		/* for flagging; will be equal to true if there are errors */
 		boolean cancel = false;
 		
@@ -198,7 +198,6 @@ public class RegisterActivity extends InitialActivity{
 			focusView = et_confirm_password;
 			cancel = true;
 		} 
-		
 		
 		if(!password.equals(confirm_password) && !cancel){
 			Toast.makeText(getApplicationContext(), "Passwords doesn't match", Toast.LENGTH_SHORT).show();
@@ -246,6 +245,7 @@ public class RegisterActivity extends InitialActivity{
 	
 	/* checks if doctor already exists in the mobile DB */
 	private boolean isDoctorExists(String license_nr) {
+		
 		DoctorAdapter _doctor = new DoctorAdapter(this);
 		if(_doctor.isDoctorExists(license_nr)) {
 			return true;

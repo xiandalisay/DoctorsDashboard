@@ -7,6 +7,7 @@ import android.content.Context;
 import com.example.model.Department;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class DepartmentAdapter extends Data {
@@ -55,7 +56,7 @@ public class DepartmentAdapter extends Data {
 				values.put(DEPT_ID, dept.get(i).getDepartmentNumber());	
 				values.put(DEPT, dept.get(i).getDepartmentName());	
 				values.put(SHORT_DEPT, dept.get(i).getDepartmentId());	
-			    db.insert(TABLE_DEPARTMENT, null, values);
+			    db.insertWithOnConflict(TABLE_DEPARTMENT, null, values,SQLiteDatabase.CONFLICT_IGNORE);
 			  }
 			  db.setTransactionSuccessful();
 				Log.d("DepartmentAdapter insertDepartments", "setTransactionSuccessful");

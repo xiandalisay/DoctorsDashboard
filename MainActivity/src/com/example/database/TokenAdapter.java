@@ -33,7 +33,7 @@ public class TokenAdapter extends Data {
 		}
 	}
 	
-	//This function gets the authentication  token from the table doctor
+	/* This function gets the authentication  token from the table doctor */
 	public String getAuthToken() {
 		db = dbHandler.getWritableDatabase();
 		String sql = "SELECT authtoken LIMIT '1' FROM 'doctor'";
@@ -86,7 +86,7 @@ public class TokenAdapter extends Data {
         }
     }
 	
-	//This function checks if the given authentication token exists
+	/* This function checks if the given authentication token exists */
 	public boolean isAuthtokenExists(String token){
 		System.out.println("Token " + token);
 		db = dbHandler.getWritableDatabase();

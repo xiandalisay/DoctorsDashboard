@@ -67,17 +67,4 @@ public class RegistrationAdapter extends Data{
 		
 		return cursor.getString(0);
 	}
-	
-	/*From old version
-	public void setClientId(String client_id){
-	
-		db = dbHandler.getWritableDatabase();
-		String query = 
-			"INSERT into " + TABLE_CLIENT + " (client_id) VALUES (" + client_id + ")";
-		
-		System.out.println("insert client");
-		db.execSQL(query);
-	} */
-	
-	
 }

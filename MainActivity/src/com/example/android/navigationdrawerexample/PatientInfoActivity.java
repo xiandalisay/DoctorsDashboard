@@ -178,7 +178,7 @@ public class PatientInfoActivity extends InitialActivity {
 		EncounterAdapter enc = new EncounterAdapter(this);
 		if(tagText.equals("Tag Patient")){
 			handleTagPatient();
-			enc.insertDoctorEncounter(encounter_id, Preferences.getPersonnelNumber(this));
+			enc.insertDoctorEncounter(encounter_id, Preferences.getPersonnelPreference(this));
 			enc.insertEncounters(encounters);
 		tag.setText("Undo Tag");
 		}

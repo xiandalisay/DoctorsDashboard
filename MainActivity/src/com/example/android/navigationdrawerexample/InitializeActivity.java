@@ -39,17 +39,6 @@ public class InitializeActivity extends InitialActivity{
 		DatabaseAdapter db = new DatabaseAdapter(this);
 		Preferences.createPreferences(this);
 		
-		/* Created By: Christian Joseph Dalisay
-		 * Created On: 05/14/14
-		 * 
-		 * checks if client_id needs to be generated 
-		 * then, stores a new client_id into the preferences
-		 * else gets the stored client_id from the preferences
-		 */
-		
-		if(Preferences.getInitializePreference(this).equals("client")) {
-			Preferences.setInitializePreference(this,generateClientId());
-		}
 		/* When dummy datum client_id is used */
 		if(!checkClientId()){
 			client_id = generateClientId();
@@ -73,7 +62,6 @@ public class InitializeActivity extends InitialActivity{
 			logMessage("Not Empty");
 		}
 		
-		
 		/*
 		 *  Check if at least one account already exists 
 		 *  If no existing accounts then proceed to Registration
@@ -94,7 +82,7 @@ public class InitializeActivity extends InitialActivity{
 	private void retrieveDepartmentsAPI() {
 		DepartmentAdapter da = new DepartmentAdapter(this);
 		
-		if(isNetworkAvailable() && !isDepartmentEmpty()){
+		if(isNetworkAvailable()){
 			Rest rest = new Rest("GET");
 			rest.setURL("http://121.97.45.242/segservice/department/show/");
 			rest.execute();

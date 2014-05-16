@@ -1,3 +1,8 @@
+/*
+ * 
+ * Updated By: Christian Joseph Dalisay\
+ * Updated On: 05/15/14
+ */
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
@@ -63,7 +68,7 @@ public class TagPatientActivity extends InitialActivity {
 	
 	/* retrieves base_url */
 	private int getPersonnelNumber() {
-		return Preferences.getPersonnelNumber(this);
+		return Preferences.getPersonnelPreference(this);
 	}
 
 	/* retrieve passed data from parent intent */
@@ -74,18 +79,18 @@ public class TagPatientActivity extends InitialActivity {
 		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
 	}
 
+	/* Gets specific encounter from the API by encounter_id */
 	public void getEncounterFromTag() {
 		if(isNetworkAvailable()){
 
 			Rest rest = new Rest("GET",this);
 			/* setup API URL */
 			rest.setURL(
-						"http://121.97.45.242/segservice"+ //getBaseURL() +
-						"/encounter/show/id/"+encounter_id
+						"http://121.97.45.242/segservice"+ 
+						"/encounter/show/"
 						);
 			
-			rest.addRequestParams("encounter_nr", encounter_id + "");
-			rest.addRequestParams("doctor_nr", getPersonnelNumber() + "");
+			rest.addRequestParams("id", encounter_id + "");
 			
 			/* process request service request */
 			rest.execute();
@@ -101,7 +106,7 @@ public class TagPatientActivity extends InitialActivity {
 				EncounterParser encounter_parser = new EncounterParser(content);
 				ArrayList<Encounter> encounters = encounter_parser.getEncounters();
 				EncounterAdapter enc = new EncounterAdapter(this);
-				enc.insertDoctorEncounter(encounters.get(0).getEncounterId(),Preferences.getPersonnelNumber(this));
+				enc.insertDoctorEncounter(encounters.get(0).getEncounterId(),Preferences.getPersonnelPreference(this));
 				enc.insertEncounters(encounters);
 			}
 		} 

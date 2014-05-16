@@ -17,6 +17,7 @@ import com.example.model.Preferences;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class EncounterAdapter extends Data {
@@ -102,9 +103,9 @@ public class EncounterAdapter extends Data {
 			values.put(ENCOUNTER_ID, encounter);	
 			values.put(PERSONNEL_ID, personnel);	
 			
-			db.insertOrThrow(TABLE_DOC_ENC, null, values);
+			db.insertWithOnConflict(TABLE_DOC_ENC, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		} catch(SQLException se) {
-			Log.d("EncounterAdapter deleteDocEnc", Log.getStackTraceString(se));
+			Log.d("EncounterAdapter insertDocEnc", Log.getStackTraceString(se));
 		} finally {
 			db.close();
 		}
@@ -125,7 +126,7 @@ public class EncounterAdapter extends Data {
 				values.put(ENCOUNTERED, enc.get(i).getDateEncountered());	
 				values.put(PATIENT, enc.get(i).getTypePatient());	
 				values.put(COMPLAINT , enc.get(i).getMessageComplaint());
-			    db.insert(TABLE_ENCOUNTER, null, values);
+				db.insertWithOnConflict(TABLE_ENCOUNTER, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			  }
 			  db.setTransactionSuccessful();
 				Log.d("DepartmentAdapter insertEncounters", "setTransactionSuccessful");
@@ -133,10 +134,24 @@ public class EncounterAdapter extends Data {
 			catch (SQLException se) {
 				Log.d("DepartmentAdapter insertEncounters", Log.getStackTraceString(se));
 			}
-			finally
-			{
+			finally	{
 			  db.endTransaction();
 			}
 	}
 
+	/* @Author: Christian Joseph Dalisay
+	 * 
+	 */
+	public void deleteEncounter(int encounter) {
+		db = dbHandler.getWritableDatabase();
+		try {
+			db.delete(TABLE_ENCOUNTER, "encounter_id = ?", new String[] {"'" + encounter + "'"});
+		}
+		catch (SQLException se) {
+			Log.d("DepartmentAdapter deleteEncounter", Log.getStackTraceString(se));
+		}
+		finally {
+		  db.close();
+		}
+	}
 }

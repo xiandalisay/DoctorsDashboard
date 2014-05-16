@@ -33,15 +33,8 @@ public class Preferences extends HelperSharedPreferences{
 	}
 	
 	/* retrieve personnel_nr for a specific doctor from preferences */
-	public static int getPersonnelNumber(Context context){
-		try{
-			return getSharedPreferencesInt(context, "key_personnel_nr", 0);			
-		} catch(Exception e){
-			System.out.println("getPersonnelNumber Error");
-			return 0;
-		}
-	}
-
+	
+	/* @Author: Christian Joseph Dalisay */
 	public static String getInitializePreference(Context context) {
 		return getSharedPreferencesString(context, "key_client", "client");
 	}
@@ -49,20 +42,6 @@ public class Preferences extends HelperSharedPreferences{
 	public static void setInitializePreference(Context context, String pref) {
 		putSharedPreferencesString(context, "key_client", pref);
 	}
-	
-	public static String[] getLoginPreference(Context context) {
-		return new String[] {
-				getSharedPreferencesString(context, "key_username", "username"),
-				getSharedPreferencesString(context, "key_password", "password"),
-				getSharedPreferencesString(context, "key_authentication", "authtoken")
-				};
-	}
-	
-	public static void setLoginPreference(Context context, String[] pref) {
-		putSharedPreferencesString(context, "key_username", pref[0]);
-		putSharedPreferencesString(context, "key_password", pref[1]);
-		putSharedPreferencesString(context, "key_authentication", pref[2]);
-	}	
 	
 	public static String getAuthenticationPreference(Context context) {
 		return getSharedPreferencesString(context, "key_authentication", "authtoken");

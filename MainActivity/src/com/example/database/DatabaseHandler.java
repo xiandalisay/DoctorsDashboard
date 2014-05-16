@@ -63,12 +63,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	public void onCreateDummy(SQLiteDatabase db) {
 		try	{ 
-			/*db.execSQL("insert into [department] values(106, '', 'Med-Rheuma', 'Medicine-Rheumatology'), " +
+			db.beginTransaction();
+			/*
+			db.execSQL("insert into [department] values(106, '', 'Med-Rheuma', 'Medicine-Rheumatology'), " +
 					" (107, '', 'Med-Neuro', 'Medicine-Neurology'), " +
 					" (131, '', 'Opthal', 'Opthalmology'), " +
 					" (133, '', 'FaMed', 'Family Medicine'), " +
 					" (136, '', 'ENT-HNS', 'ENT-HNS'), " +
-					" (153, '', 'Anesthesia', 'Anesthesia')");*/
+					" (153, '', 'Anesthesia', 'Anesthesia')");
+			*/
 			db.execSQL("insert into [patient] values(1, 'Cosare', 'Alvin', 'Ceniza', 'M', '1994-08-27', 'Cool Street', 'Davao', 'Davao', '8000', 0, null), " +
 					"(2, 'Adante', 'Jessie', 'Boi', 'M', '1992-12-13', 'That Street', 'Davao', 'Davao', '8000', null, null), " +
 					"(3, 'Ipong', 'Jose Martin', 'dela Rosa', 'M', '1994-08-29', 'The Street', 'Davao', 'Davao', '8000', null, null), " +
@@ -103,8 +106,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						"(2008000000, 1000000, 'Inpatient from ER',null, '2009-02-09 11:47:00.000',null,null)," +
 						"(2008000001, 1000000, 'OPD',null, '2008-11-24 16:05:43.000',null,null)," +
 						"(2008000002, 1000000, 'OPD',null, '2008-12-24 08:07:43.000',null,null)");
+			db.execSQL("insert into doctor_encounter (personnel_id,encounter_id) values ('0117236',2),('0117236',2),('0117236',3)");
 			db.execSQL("insert into [client] values(1, '06778975-75e3-4da2-9e1e-866b222e0fa6')");
-			db.execSQL("INSERT INTO 'reason' ('reason_id','name_reason') " +
+			/*db.execSQL("INSERT INTO 'reason' ('reason_id','name_reason') " +
 				" VALUES (1,'Surgery'), " + 
 				"   (2,'Dialysis'), " +
 				"	(3,'ER')"); 
@@ -115,12 +119,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("INSERT INTO 'notes' ('notes_id','encounter_id','title','body','date_created','sync') " + 
 					" VALUES (1,1,'First Encounter','Encountered for the first time','2013-06-02 00:12:00',0 ), " + 
 					" (2,2,'Second Encounter','Encountered for the first time','2013-08-10 12:12:00',0 ), " + 	
-					" (3,3,'Third Encounter','Encountered for the first time','2014-02-20 07:08:00',0 ) " );
+					" (3,3,'Third Encounter','Encountered for the first time','2014-02-20 07:08:00',0 ) " );*/
 			Log.d("DatabaseHandler","onCreateDummy successful");
+			db.setTransactionSuccessful();
 		} catch (SQLException se) {
 			Log.d("onCreateDummy SQLException",Log.getStackTraceString(se));
 		} catch (Exception e) {
 			Log.d("onCreateDummy Exception",Log.getStackTraceString(e));
+		} finally {
+			db.endTransaction();
+			db.close();
 		}
 	}
 	
