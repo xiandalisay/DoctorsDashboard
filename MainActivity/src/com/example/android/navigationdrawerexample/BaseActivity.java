@@ -27,7 +27,7 @@ public abstract class BaseActivity extends InitialActivity{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
+ 
     private CharSequence mDrawerTitle = "Doctor's Dashboard";
     private CharSequence mTitle;
     private String[] mDashletNames;
