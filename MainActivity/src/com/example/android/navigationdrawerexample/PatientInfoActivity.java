@@ -6,7 +6,7 @@ package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
 
-import android.app.ProgressDialog;
+import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,19 +14,19 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +35,6 @@ import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
 import com.example.model.Encounter;
 import com.example.model.Patient;
-import com.example.model.Preferences;
 import com.example.model.Rest;
 import com.example.model.Soap;
 import com.example.parser.EncounterParser;
@@ -206,7 +205,6 @@ public class PatientInfoActivity extends ExpandableListActivity {
 						startActivity(intent);
 					}
 				});
-		*/
 	}
 	
 	/**

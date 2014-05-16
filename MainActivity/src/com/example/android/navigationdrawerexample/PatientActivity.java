@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.ParseException;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -113,7 +114,12 @@ public class PatientActivity extends BaseActivity {
         	    	//text2.setBackgroundColor(Color.parseColor("#FF99CC"));
         	    }
         	    try{
-        	    displayinfo = "HRN: " + Integer.toString(patient.getPid()) + ", " + displayinfo + " : " + age.getAge(patient.getBirthdate().substring(0,10));
+	        	    try {
+						displayinfo = "HRN: " + Integer.toString(patient.getPid()) + ", " + displayinfo + " : " + age.getAge(patient.getBirthdate().substring(0,10));
+					} catch (java.text.ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
         	    }
         	    catch(ParseException ex){
    

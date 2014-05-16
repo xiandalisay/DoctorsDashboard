@@ -7,7 +7,11 @@
  */
 package com.example.model;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import android.net.ParseException;
 
 
 public class Encounter implements Comparable<Encounter> {
@@ -71,7 +75,7 @@ public class Encounter implements Comparable<Encounter> {
 	    }
 
 		
-		return (int)(date1 - date2);
+		return date1.compareTo(date2);
 	}
 	
 	public void setEncounterId(int rEncounter_id) {
