@@ -1,12 +1,13 @@
 /*
  * Edited by Jose Martin Ipong 5/15/2014, added online functionalities
+ * Edited by Jake Randolph B Muncada 5/16/2014, put Expandable List instead of ListView
  */
 
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
 
-import android.app.ProgressDialog;
+import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,30 +15,37 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
 import com.example.model.Encounter;
 import com.example.model.Patient;
-import com.example.model.Preferences;
 import com.example.model.Rest;
+import com.example.model.Soap;
 import com.example.parser.EncounterParser;
 import com.example.parser.PatientParser;
 
-public class PatientInfoActivity extends InitialActivity {
+public class PatientInfoActivity extends ExpandableListActivity {
+	
+	private ArrayList<String> parentItems = new ArrayList<String>();
+	private ArrayList<Object> childItems = new ArrayList<Object>();
+	private ArrayList<Object> child;
 	
 	private Encounter encounter;
 	private Patient patient;
@@ -53,7 +61,6 @@ public class PatientInfoActivity extends InitialActivity {
 	final String url_patient = "http://121.97.45.242/segservice/patient/show";
 	final String url_encounter = "http://121.97.45.242/segservice/encounter/show";
 	final static int FIRST_PATIENT = 0;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,12 +68,9 @@ public class PatientInfoActivity extends InitialActivity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		intent = getIntent();
-		extras = intent.getExtras();
+		Intent intent = getIntent();
+		Bundle extras = intent.getExtras();
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
-		
-		tag = (Button) findViewById(R.id.TagPatientButton);
-		
 		DatabaseAdapter db = new DatabaseAdapter(this);
 		if(isNetworkAvailable()){
 			
@@ -129,9 +133,48 @@ public class PatientInfoActivity extends InitialActivity {
 		String age = String.valueOf(patient.getAge());
 		ageEditText.setText(age);
 		
-		encounters = db.getPatientEncounter(patient_id);
+		
+		/**
+		 * @author Jake Randolph B Muncada
+		 * @date 5/16/2014
+		 * 
+		 * Edited: Put the expandable list here, instead of listview
+		 */
+		final ExpandableListView expandableList = getExpandableListView(); // you can use (ExpandableListView) findViewById(R.id.list)
+		//final ExpandableListView expandableList = (ExpandableListView) findViewById(R.id.list);
+
+		expandableList.setDividerHeight(2);
+		expandableList.setGroupIndicator(null);
+		expandableList.setClickable(true);
+		
+		setGroupParents();
+		setChildData(patient_id, encounter_id);
+		
+		final ExpListAdapter adapter = new ExpListAdapter(parentItems, childItems);
+
+		adapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
+		expandableList.setAdapter(adapter);
+		
+		expandableList.setOnGroupExpandListener(new OnGroupExpandListener(){
+			@Override
+			public void onGroupExpand(int groupPosition){
+				MyOnClickListener.setLastExpandedGroupPosition(groupPosition);
+				int len = adapter.getGroupCount();
+				
+				for(int i=0; i<len; i++){
+					if(i != groupPosition){
+						expandableList.collapseGroup(i);
+					}
+				}
+				
+				//Toast.makeText(getApplicationContext(),"groupPosition:"+groupPosition+" ", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		
 		
 		/* duplicate code with LINE 41  */
+		/*
 		patient = db.getPatientProfile(patient_id);
 		ListView listview = (ListView) findViewById(R.id.servicesList);
 		ArrayAdapter<Encounter> arrayAdapter = new ArrayAdapter<Encounter>(getApplicationContext(), android.R.layout.simple_list_item_1, encounters){
@@ -160,12 +203,98 @@ public class PatientInfoActivity extends InitialActivity {
 						startActivity(intent);
 					}
 				});
+		*/
+	}
+	
+	/**
+	 * @author Jake Randolph B Muncada
+	 * @date 5/16/2014
+	 */
+	public void setGroupParents() {
+		parentItems.add("Medical History");
+		parentItems.add("Previous Requests");
+		parentItems.add("Referrals");
+		parentItems.add("Notes");
+	}
+	
+	/**
+	 * @author Jake Randolph B Muncada
+	 * @date 5/16/2014
+	 * @param patient_id
+	 * @param encounter_id
+	 * @param date_encountered
+	 */
+	public void setChildData(int patient_id, int encounter_id) {
+
+		ArrayList<Object> child = new ArrayList<Object>();
+		DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
+		
+		ArrayList<Encounter> encounterList = db.getPatientEncounter(patient_id);
+		for (int i = 0; i < encounterList.size(); i++) {
+			child.add(encounterList.get(i));
+		}
+		childItems.add(child);
+		child = new ArrayList<Object>();
+		
+		for (int i = 0; i < encounterList.size(); i++) {
+			child.add(encounterList.get(i));
+		}
+		childItems.add(child);
+		child = new ArrayList<Object>();
+		
+		for (int i = 0; i < encounterList.size(); i++) {
+			child.add(encounterList.get(i));
+		}
+		childItems.add(child);
+		child = new ArrayList<Object>();
+		
+		ArrayList<Soap> soapList = db.getDoctorNotes(encounter_id);
+		child.add("ADD NEW NOTES");
+		for (int i = 0; i < soapList.size(); i++) {
+			child.add(soapList.get(i));
+		}
+		childItems.add(child);
+		
+		/*
+		// Android
+		ArrayList<String> child = new ArrayList<String>();
+		child.add("Core");
+		child.add("Games");
+		childItems.add(child);
+		*/
+
+		/*
+		// Core Java
+		child = new ArrayList<String>();
+		child.add("Apache");
+		child.add("Applet");
+		child.add("AspectJ");
+		child.add("Beans");
+		child.add("Crypto");
+		childItems.add(child);
+
+		// Desktop Java
+		child = new ArrayList<String>();
+		child.add("Accessibility");
+		child.add("AWT");
+		child.add("ImageIO");
+		child.add("Print");
+		childItems.add(child);
+
+		// Enterprise Java
+		child = new ArrayList<String>();
+		child.add("EJB3");
+		child.add("GWT");
+		child.add("Hibernate");
+		child.add("JSP");
+		childItems.add(child);
+		*/
 	}
 	
 	/* called when "refer" button is clicked */
     public void showReferPatient(View view){
-	    intent = new Intent(this,ReferralActivity.class);
-		extras = new Bundle();
+	        Intent intent = new Intent(this,ReferralActivity.class);
+		Bundle extras = new Bundle();
 		extras.putInt("EXTRA_PATIENT_ID", patient.getPid());
 		extras.putString("EXTRA_PATIENT_NAME_LAST", patient.getNameLast());
 		extras.putString("EXTRA_PATIENT_NAME_FIRST", patient.getNameFirst());
@@ -178,27 +307,26 @@ public class PatientInfoActivity extends InitialActivity {
 		tagText = tag.getText().toString();
 		
 		alertMessage("clicked");
-
-		EncounterAdapter enc = new EncounterAdapter(this);
+		
 		if(tagText.equals("Tag Patient")){
 			handleTagPatient();
-			enc.insertDoctorEncounter(encounter_id, Preferences.getPersonnelPreference(this));
-			enc.insertEncounters(encounters);
+			//Add here code to save encounter details to mobile DB
+		
 		tag.setText("Undo Tag");
 		}
 		else{
 			handleUntagPatient();
 			//Add here code to remove encounter details from mobile DB
-			enc.deleteDoctorEncounter(encounter_id);
+		
 			tag.setText("Tag Patient");
 		}		
 	}
 		
 	/* handles tagging patient process */
 	private void handleTagPatient() {
+		Bundle extras = new Bundle();
 		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
-		
-		intent = new Intent(this, TagPatientActivity.class);
+		Intent intent = new Intent(this, TagPatientActivity.class);
 		intent.putExtras(extras);
 		
 		startActivity(intent);
@@ -208,9 +336,10 @@ public class PatientInfoActivity extends InitialActivity {
 		
 	/* handles untagging patient process */
 	private void handleUntagPatient() {
+		Bundle extras = new Bundle();
 		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 		
-		intent = new Intent(this, UntagPatientActivity.class);
+		Intent intent = new Intent(this, UntagPatientActivity.class);
 		intent.putExtras(extras);
 		
 		startActivity(intent);
@@ -257,4 +386,15 @@ public class PatientInfoActivity extends InitialActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	public boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+	
+	/* displays message dialog */
+    protected void alertMessage(String message){
+    	Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
 }

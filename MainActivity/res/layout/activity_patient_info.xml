@@ -131,14 +131,14 @@
                 android:text="HRN"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <ListView
-                android:id="@+id/servicesList"
+            <ExpandableListView
+                android:id="@android:id/list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textView2"
                 android:layout_below="@+id/TagPatientButton"
-                android:orientation="vertical" >
-            </ListView>
+                android:groupIndicator="@null"
+                android:orientation="vertical" />
 
             <EditText
                 android:id="@+id/Address"
