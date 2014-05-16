@@ -7,7 +7,11 @@
  */
 package com.example.model;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import android.net.ParseException;
 
 
 public class Encounter implements Comparable<Encounter> {
@@ -55,12 +59,23 @@ public class Encounter implements Comparable<Encounter> {
 		//is_confidential = isconfidential;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public int compareTo(Encounter e){
-		long date1 = Date.parse(this.date_encountered);
-		long date2 = Date.parse(e.date_encountered);
+	public int compareTo(Encounter encounter){
+		Date date1 = new Date();
+		Date date2 = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
-		return (int)(date1 - date2);
+		try {
+		    
+			ParsePosition position = new ParsePosition(0);
+	        date1 = dateFormat.parse(this.date_encountered,position); 
+	        date2 = dateFormat.parse(encounter.date_encountered,position);
+	        //System.out.println(t); 
+	    } catch (ParseException e) { 
+	        System.out.println(e.toString()); 
+	    }
+
+		
+		return date1.compareTo(date2);
 	}
 	
 	public void setEncounterId(int rEncounter_id) {
