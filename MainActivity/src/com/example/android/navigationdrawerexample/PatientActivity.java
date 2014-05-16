@@ -6,9 +6,7 @@
 
 package com.example.android.navigationdrawerexample;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -48,6 +46,7 @@ public class PatientActivity extends BaseActivity {
 	private ArrayList<Patient> patients;
 	private ArrayList<Encounter> encounters;
 	
+	
 	private String patients_url; // = Preferences.getBaseURL(this) + "/patient/show/";
 	private String encounters_url; // = Preferences.getBaseURL(this) + "/encounter/";
 
@@ -65,7 +64,7 @@ public class PatientActivity extends BaseActivity {
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
 		if(isNetworkAvailable()){
-
+			
 			patients_url = Preferences.getBaseURL(this) + "/patient/show/";
 			
 			Rest rest = new Rest("GET",this);
@@ -87,7 +86,7 @@ public class PatientActivity extends BaseActivity {
 			patients = db.searchPatient("");
 		}
 		
-		final ListView listview = (ListView) findViewById(R.id.servicesList);
+		ListView listview = (ListView) findViewById(R.id.servicesList);
 		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
         	//method to override the getView method of ArrayAdapter, this changes the color of the text view
         	@Override
@@ -124,10 +123,10 @@ public class PatientActivity extends BaseActivity {
         	    text2.setText(displayinfo);
         	    
         	  }
-        	  return view;
-        }};
-		
-		
+        	    return view;
+        	  }
+        	};
+        	
         listview.setAdapter(arrayAdapter); 
         listview.setOnItemClickListener(new OnItemClickListener() {
 
@@ -141,31 +140,18 @@ public class PatientActivity extends BaseActivity {
 				// Starting single contact activity
 				patient = patients.get(position);
 				patient_id = patient.getPid();
-				encounter_id = getLatestEncounter(patient_id);
+
 				
 				/* saves the patient_id and encounter_id to be passed to the next activity */
 				extras = new Bundle();
 				extras.putInt("EXTRA_PATIENT_ID", patient_id);
 
-				if(!isNetworkAvailable()){
-					encounter_id = getLatestEncounter(patient_id);
-					extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
-					alertMessage(encounter_id+"");
 				
-					alertMessage(encounter_id+"");
+				/* start next activity Patient Info (2nd Page) */
+				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
+				intent.putExtras(extras);
 				
-					/* start next activity Patient Info (2nd Page) */
-					intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
-					intent.putExtras(extras);
-				
-					startActivity(intent);
-			}
-				else{
-					logMessage("it online");
-					getLatestEncounterAPI(patient_id);
-					logMessage("Saved into arraylist");
-				}
-				
+				startActivity(intent);
 			}
 		});
    
@@ -216,7 +202,7 @@ public class PatientActivity extends BaseActivity {
 		            		patients = adapter.searchPatient(searchtext);
 		            	}
 		            	
-			            ListView listview = (ListView) findViewById(R.id.servicesList);
+		            	ListView listview = (ListView) findViewById(R.id.servicesList);
 			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
 			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
 			            	@Override
@@ -260,6 +246,7 @@ public class PatientActivity extends BaseActivity {
 			    				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
 			    				extras = new Bundle();
 			    				extras.putInt("EXTRA_PATIENT_ID", patient_id);
+			    				
 			    				intent.putExtras(extras);
 			    				startActivity(intent);
 
@@ -286,11 +273,10 @@ public class PatientActivity extends BaseActivity {
 		EncounterAdapter db = new EncounterAdapter(this);
 		
 		return db.getLatestEncounter(patient_id);
-		
 	}
 	
 	/* retrieves latest encounter of the patient thru web service */
-	private void getLatestEncounterAPI(int patient_id) {
+	private int getLatestEncounterAPI(int patient_id) {
 		
 		encounters_url = Preferences.getBaseURL(this) + "/encounter/show/";
 		
@@ -308,19 +294,9 @@ public class PatientActivity extends BaseActivity {
 		
 		System.out.println("Data Received:\n" + rest.getContent());
 		
-		EncounterParser parser = new EncounterParser(rest.getContent());
-		
-		encounters = parser.getEncounters();
-		
-		//sortEncountersList();
-		
-		//Collections.sort(encounters);
-		
-		
-		for(int i=0; i<encounters.size();i++){
-			logMessage(encounters.get(i).getDateEncountered());
-		}
+		return 0; //temp
 	}
+	
 	
 	public void showPatientInfo(View view){
     	Intent intent = new Intent(this, PatientInfoActivity.class);

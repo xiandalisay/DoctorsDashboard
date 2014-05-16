@@ -1,13 +1,12 @@
 /*
  * Edited by Jose Martin Ipong 5/15/2014, added online functionalities
- * Edited by Jake Randolph B Muncada 5/16/2014, put Expandable List instead of ListView
  */
 
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
 
-import android.app.ExpandableListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,7 +14,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +61,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 	final String url_patient = "http://121.97.45.242/segservice/patient/show";
 	final String url_encounter = "http://121.97.45.242/segservice/encounter/show";
 	final static int FIRST_PATIENT = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -178,7 +178,6 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 		
 		/* duplicate code with LINE 41  */
-		/*
 		patient = db.getPatientProfile(patient_id);
 		ListView listview = (ListView) findViewById(R.id.servicesList);
 		ArrayAdapter<Encounter> arrayAdapter = new ArrayAdapter<Encounter>(getApplicationContext(), android.R.layout.simple_list_item_1, encounters){
@@ -259,40 +258,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		}
 		childItems.add(child);
 		
-		/*
-		// Android
-		ArrayList<String> child = new ArrayList<String>();
-		child.add("Core");
-		child.add("Games");
-		childItems.add(child);
-		*/
-
-		/*
-		// Core Java
-		child = new ArrayList<String>();
-		child.add("Apache");
-		child.add("Applet");
-		child.add("AspectJ");
-		child.add("Beans");
-		child.add("Crypto");
-		childItems.add(child);
-
-		// Desktop Java
-		child = new ArrayList<String>();
-		child.add("Accessibility");
-		child.add("AWT");
-		child.add("ImageIO");
-		child.add("Print");
-		childItems.add(child);
-
-		// Enterprise Java
-		child = new ArrayList<String>();
-		child.add("EJB3");
-		child.add("GWT");
-		child.add("Hibernate");
-		child.add("JSP");
-		childItems.add(child);
-		*/
+	
 	}
 	
 	/* called when "refer" button is clicked */
@@ -311,7 +277,8 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		tagText = tag.getText().toString();
 		
 		alertMessage("clicked");
-		
+
+		EncounterAdapter enc = new EncounterAdapter(this);
 		if(tagText.equals("Tag Patient")){
 			handleTagPatient();
 			//Add here code to save encounter details to mobile DB
@@ -321,7 +288,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		else{
 			handleUntagPatient();
 			//Add here code to remove encounter details from mobile DB
-		
+			enc.deleteDoctorEncounter(encounter_id);
 			tag.setText("Tag Patient");
 		}		
 	}
