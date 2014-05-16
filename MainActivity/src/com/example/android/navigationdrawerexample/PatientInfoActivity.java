@@ -100,6 +100,7 @@ public class PatientInfoActivity extends InitialActivity {
 			encounters = db.getPatientEncounter(patient_id);
 		}
 		
+		EditText hrnEditText = (EditText) findViewById(R.id.HRN); 
 		EditText nameEditText = (EditText) findViewById(R.id.FullName);
 		EditText genderEditText = (EditText) findViewById(R.id.Gender);
 		EditText addressEditText = (EditText) findViewById(R.id.Address);
@@ -117,7 +118,7 @@ public class PatientInfoActivity extends InitialActivity {
 		else{
 			gendertext = "Female";
 		}
-		
+		hrnEditText.setText(Integer.toString(patient.getPid()));
 		addressEditText.setText(patient.getAddress());
 		nameEditText.setText(nametext);
 		genderEditText.setText(gendertext);
