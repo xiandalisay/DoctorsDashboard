@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 
 import com.example.database.DatabaseAdapter;
@@ -61,6 +62,11 @@ public class LaboratoryActivity extends Activity {
 		pid_edittext.setText(pid);
 		fullname_edittext.setText(fullname);
 		
+	}
+	
+	public void showNewRequest(View view){
+		Intent intent = new Intent(getApplicationContext(), LaboratoryRequest.class);
+		startActivity(intent);
 	}
 	
 	private void setupActionBar() {
