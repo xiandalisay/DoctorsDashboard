@@ -21,7 +21,6 @@ public class Encounter implements Comparable<Encounter> {
 	private String 	type_patient;
 	private String 	message_complaint;
 	private String 	date_encountered;
-	private String 	date_released;
 	private String 	department;
 	private String 	is_confidential;
 	
@@ -32,7 +31,6 @@ public class Encounter implements Comparable<Encounter> {
 		type_patient 		= "";
 		message_complaint 	= "";
 		date_encountered 	= "";
-		date_released 		= "";
 		department 			= "";
 		is_confidential 	= "";
 	}
@@ -43,7 +41,6 @@ public class Encounter implements Comparable<Encounter> {
 		type_patient = typepatient;
 		message_complaint = messagecomplaint;
 		date_encountered = dateencountered;
-		date_released = datereleased;
 		pid = patientid;
 	}
 	
@@ -53,7 +50,6 @@ public class Encounter implements Comparable<Encounter> {
 		type_patient = typepatient;
 		message_complaint = messagecomplaint;
 		date_encountered = dateencountered;
-		date_released = datereleased;
 		pid = patientid;
 		//this.department = department;
 		//is_confidential = isconfidential;
@@ -98,9 +94,6 @@ public class Encounter implements Comparable<Encounter> {
 		this.date_encountered = rDate_Encountered;
 	}
 	
-	public void setDateReleased(String rDate_Released) {
-		this.date_released = rDate_Released;
-	}
 	
 	//Getter Methods
 	
@@ -131,10 +124,7 @@ public class Encounter implements Comparable<Encounter> {
 	public String getDateEncountered() {
 		return this.date_encountered;
 	}
-	
-	public String getDateReleased() {
-		return this.date_released;
-	}
+
 	
 	public String toString()
 	{
