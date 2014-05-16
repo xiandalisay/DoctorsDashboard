@@ -32,6 +32,7 @@ import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
 import com.example.model.Encounter;
 import com.example.model.Patient;
+import com.example.model.Preferences;
 import com.example.model.Rest;
 import com.example.parser.EncounterParser;
 import com.example.parser.PatientParser;
@@ -177,17 +178,18 @@ public class PatientInfoActivity extends InitialActivity {
 		tagText = tag.getText().toString();
 		
 		alertMessage("clicked");
-		
+
+		EncounterAdapter enc = new EncounterAdapter(this);
 		if(tagText.equals("Tag Patient")){
 			handleTagPatient();
-			//Add here code to save encounter details to mobile DB
-		
+			enc.insertDoctorEncounter(encounter_id, Preferences.getPersonnelPreference(this));
+			enc.insertEncounters(encounters);
 		tag.setText("Undo Tag");
 		}
 		else{
 			handleUntagPatient();
 			//Add here code to remove encounter details from mobile DB
-		
+			enc.deleteDoctorEncounter(encounter_id);
 			tag.setText("Tag Patient");
 		}		
 	}

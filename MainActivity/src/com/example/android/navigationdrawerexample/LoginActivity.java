@@ -84,16 +84,12 @@ public class LoginActivity extends InitialActivity {
 	}
 	
 	public void showRegisterActivity(View view){
-		intent = new Intent(this, RegisterActivity.class);
+		Intent intent = new Intent(this, RegisterActivity.class);
 		startActivity(intent);
 	}
 	
-	
 	public void successfulLogin(){
-		//Preferences.putSharedPreferencesString(this, "key_base_url", ""); //get base_url of doctor from mobile db
-		logMessage(Preferences.getBaseURL(this));
-		intent = new Intent(getApplicationContext(), MainActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
+		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 		startActivity(intent);	
 	}
 	
@@ -119,38 +115,17 @@ public class LoginActivity extends InitialActivity {
 		
 		/* Validate inputs from user (i.e. empty field, unequal passwords) */
 		if(validateInputs()){
-			if (validateAuthtoken()){
+			if (AuthtokenValidation()){
 				successfulLogin();
 			}
 			else {
 				Toast.makeText(getApplicationContext(), "Failed to Authenticate", Toast.LENGTH_SHORT).show();
 			}
 		}
-
-		Registration reg = new Registration();
-
-		/* Retrieve inputted data in textbox */
-		//reg.setLicenseNumber(license_nr);
-		reg.setUsername(username);
-		reg.setPassword (password);
-		
-		/* Retrieve client_id from mobile DB */
-		//reg.setClientId(getClientId());
-		
-		//System.out.println(getClientId());
-		//finish();
-
-		
-		TokenValidate token = new TokenValidate();
-		token.getAuthToken();
-		token.getAccessToken();
 	}
 	
+	/* validatesInputs - Validates the input of the user for logging in */		 
 	public boolean validateInputs(){
-		/*Created By: Christian Joseph Dalisay
-		 * Created On: 05/08/14
-		 * ValidatesInputs - Validates the input of the user for logging in
-		 */
 			boolean cancel = false; //for flagging; will be equal to true if there are errors
 			View focusView = null; //refers to the EditText View that will be focused if there are errors
 			
@@ -195,13 +170,13 @@ public class LoginActivity extends InitialActivity {
 		}
 	
 
-	/* 
-	 * 	 checks if there is a match to the generated  token in the mobile DB
+        	/* 
+	       * 	 checks if there is a match to the generated  token in the mobile DB
 	 * 	 then stores the authentication token, base_url, and personnel_nr of the user
 	 * 	 account into the preferences. 
-	 */
+		 */
 	public boolean validateAuthtoken() {
-
+		
 		RegistrationAdapter client = new RegistrationAdapter(this);
 		String data = client.getClientId() + "\\n" + username;
 		String key = "";
@@ -238,51 +213,11 @@ public class LoginActivity extends InitialActivity {
 	
 	private boolean isAuthtokenExists(String token) {
 		TokenAdapter _token = new TokenAdapter(this);
+		 
 		if(_token.isAuthtokenExists(token)) {
 			return true;
 		} else {
 			return false;
-		}
-	}
-	
-	/**
-	 * Shows the progress UI and hides the login form.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	private void showProgress(final boolean show) {
-		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-		// for very easy animations. If available, use these APIs to fade-in
-		// the progress spinner.
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-			int shortAnimTime = getResources().getInteger(
-					android.R.integer.config_shortAnimTime);
-
-			mLoginStatusView.setVisibility(View.VISIBLE);
-			mLoginStatusView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 1 : 0)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginStatusView.setVisibility(show ? View.VISIBLE
-									: View.GONE);
-						}
-					});
-
-			mLoginFormView.setVisibility(View.VISIBLE);
-			mLoginFormView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 0 : 1)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginFormView.setVisibility(show ? View.GONE
-									: View.VISIBLE);
-						}
-					});
-		} else {
-			// The ViewPropertyAnimator APIs are not available, so simply show
-			// and hide the relevant UI components.
-			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
 	

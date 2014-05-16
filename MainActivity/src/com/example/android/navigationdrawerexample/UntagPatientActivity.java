@@ -38,7 +38,7 @@ public class UntagPatientActivity extends InitialActivity {
 					);
 		
 		rest.addRequestParams("encounter_nr", encounter_id + "");
-		rest.addRequestParams("doctor_nr", Preferences.getPersonnelNumber(this) + "");
+		rest.addRequestParams("doctor_nr", getPersonnelNumber() + "");
 		
 		/* process request service request */
 		rest.execute();
@@ -50,6 +50,16 @@ public class UntagPatientActivity extends InitialActivity {
 			
 	}
 
+	/* retrieves base_url */
+	private String getBaseURL() {
+		return Preferences.getBaseURL(this);
+	}
+	
+	/* retrieves base_url */
+	private int getPersonnelNumber() {
+		return Preferences.getPersonnelNumber(this);
+	}
+
 	/* retrieve passed data from parent intent */
 	private void retrieveBundle() {
 		intent = getIntent();
@@ -59,14 +69,8 @@ public class UntagPatientActivity extends InitialActivity {
 	}
 
 	private void deleteRelatedData() {
-		DoctorAdapter doc_ad = new DoctorAdapter(this);
-		//doc_ad.deleteDoctorEncounter(encounter_id);
-		/*ReferralAdapter ra = new ReferralAdapter(this);
-		ra.deleteReferrals(encounter_id);
-		CanvasAdapter ca = new CanvasAdapter(this);
-		ca.deleteCanvas(encounter_id);
-		LabRequestAdapter lra = new LabRequestAdapter(this);
-		lra.deleteLabRequests(encounter_id);*/
+		EncounterAdapter doc_ad = new EncounterAdapter(this);
+		//doc_ad.deleteEncounter(encounter_id,Preferences.getPersonnelPreference(this));
 	}
 	
 

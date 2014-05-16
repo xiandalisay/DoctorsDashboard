@@ -7,6 +7,7 @@ import android.content.Context;
 import com.example.model.Department;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class DepartmentAdapter extends Data {
@@ -41,6 +42,10 @@ public class DepartmentAdapter extends Data {
 		}
 	}
 	
+	/*
+	 * @Author: Christian Joseph Dalisay
+	 * 
+	 */
 	public void insertDepartments(ArrayList<Department> dept){
 		db = dbHandler.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -51,7 +56,7 @@ public class DepartmentAdapter extends Data {
 				values.put(DEPT_ID, dept.get(i).getDepartmentNumber());	
 				values.put(DEPT, dept.get(i).getDepartmentName());	
 				values.put(SHORT_DEPT, dept.get(i).getDepartmentId());	
-			    db.insert(TABLE_DEPARTMENT, null, values);
+			    db.insertWithOnConflict(TABLE_DEPARTMENT, null, values,SQLiteDatabase.CONFLICT_IGNORE);
 			  }
 			  db.setTransactionSuccessful();
 				Log.d("DepartmentAdapter insertDepartments", "setTransactionSuccessful");
@@ -62,9 +67,14 @@ public class DepartmentAdapter extends Data {
 			finally
 			{
 			  db.endTransaction();
+			  db.close();
 			}
 	}
 	
+	/*
+	 * @Author: Christian Joseph Dalisay
+	 * 
+	 */
 	public ArrayList<Department> getDepartments() {
 		db = dbHandler.getWritableDatabase();
 		ArrayList<Department> deptlist = new ArrayList<Department>();
@@ -83,6 +93,7 @@ public class DepartmentAdapter extends Data {
 					deptlist.add(dept);
 				}while(cursor.moveToNext());
 				Log.d("DepartmentAdapter getDepartments", "successful");
+				db.close();
 				return deptlist;
 			}
 			

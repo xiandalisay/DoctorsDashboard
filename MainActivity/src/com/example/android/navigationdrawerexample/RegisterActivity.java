@@ -96,8 +96,9 @@ public class RegisterActivity extends InitialActivity{
 		/* if inputs are all valid, submits them thru API */
 		if(prepareCredentials()){
 			if(submitCredentials()){
-				insertDoctor();
+				//insertDoctor();
 				startInitialSync();
+				//showLoginActivity();
 			}
 		}
 	}
@@ -128,8 +129,8 @@ public class RegisterActivity extends InitialActivity{
 		return true;
 	}
 	
+	/* stores the retrieved doctor info and tokens to the database */
 	private void setRetrievedCredentials(Doctor rDoctor){
-		/* stores the retrieved doctor info and tokens to the database */
 		DoctorAdapter doctor = new DoctorAdapter(this);
 		doctor.addDoctor(rDoctor);
 	}
@@ -197,7 +198,6 @@ public class RegisterActivity extends InitialActivity{
 			focusView = et_confirm_password;
 			cancel = true;
 		} 
-		
 		
 		if(!password.equals(confirm_password) && !cancel){
 			Toast.makeText(getApplicationContext(), "Passwords doesn't match", Toast.LENGTH_SHORT).show();
@@ -374,7 +374,7 @@ public class RegisterActivity extends InitialActivity{
 		intent = new Intent(this, InitialSyncActivity.class);
 		intent.putExtras(extras);
 		
-		startActivity(intent);
+		startActivityForResult(intent, 1);
 	}
 
 	 
@@ -415,6 +415,7 @@ public class RegisterActivity extends InitialActivity{
 			return rootView;
 		}
 	}
+		
 		
 	@Override
 	protected void onPause() {
