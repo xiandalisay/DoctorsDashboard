@@ -41,6 +41,11 @@
         <activity
             android:name="com.example.android.navigationdrawerexample.PatientActivity"
             android:label="@string/title_activity_patient" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.example.android.navigationdrawerexample.LaboratoryActivity"
@@ -160,11 +165,7 @@
         <activity
             android:name="com.example.android.navigationdrawerexample.LaboratorySearchActivity"
             android:label="@string/title_activity_laboratory_search" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
     </application>
 

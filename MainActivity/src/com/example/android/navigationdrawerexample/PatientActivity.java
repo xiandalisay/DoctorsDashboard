@@ -6,8 +6,8 @@
 
 package com.example.android.navigationdrawerexample;
 
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import android.content.Context;
@@ -31,6 +31,7 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.model.Age;
 import com.example.model.Patient;
 import com.example.model.Rest;
 import com.example.parser.PatientParser;
@@ -70,7 +71,7 @@ public class PatientActivity extends BaseActivity {
 			patients = db.searchPatient("");
 		}
 		
-		ListView listview = (ListView) findViewById(R.id.servicesList);
+		final ListView listview = (ListView) findViewById(R.id.servicesList);
 		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
         	//method to override the getView method of ArrayAdapter, this changes the color of the text view
         	@Override
@@ -85,15 +86,23 @@ public class PatientActivity extends BaseActivity {
         	    Patient patient = patients.get(position);
         	  
         	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
+        	    Age age = new Age();
         	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
         	    	displayinfo = displayinfo + "Male";
+        	    	//text1.setBackgroundColor(Color.parseColor("#4C8BFF"));
+        	    	//text2.setBackgroundColor(Color.parseColor("#4C8BFF"));
         	    }
         	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
         	    	displayinfo = displayinfo + "Female";
+        	    	//text1.setBackgroundColor(Color.parseColor("#FF99CC"));
+        	    	//text2.setBackgroundColor(Color.parseColor("#FF99CC"));
         	    }
-   
-        	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
-        	    
+        	    try{
+        	    displayinfo = "HRN: " + Integer.toString(patient.getPid()) + ", " + displayinfo + " : " + age.getAge(patient.getBirthdate().substring(0,10));
+        	    }
+        	    catch(ParseException ex){
+        	    	
+        	    }
         	    text1.setText(displayname);
         	    text2.setText(displayinfo);
         	    return view;
