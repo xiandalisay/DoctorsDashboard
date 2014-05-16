@@ -6,6 +6,7 @@
 
 package com.example.android.navigationdrawerexample;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +64,7 @@ public class PatientActivity extends BaseActivity {
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
 		if(isNetworkAvailable()){
-			
+
 			patients_url = Preferences.getBaseURL(this) + "/patient/show/";
 			
 			Rest rest = new Rest("GET",this);
@@ -85,7 +86,7 @@ public class PatientActivity extends BaseActivity {
 			patients = db.searchPatient("");
 		}
 		
-		ListView listview = (ListView) findViewById(R.id.servicesList);
+		final ListView listview = (ListView) findViewById(R.id.servicesList);
 		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
         	//method to override the getView method of ArrayAdapter, this changes the color of the text view
         	@Override
@@ -100,12 +101,21 @@ public class PatientActivity extends BaseActivity {
         	    Patient patient = patients.get(position);
         	  
         	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
+        	    Age age = new Age();
         	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
         	    	displayinfo = displayinfo + "Male";
+        	    	//text1.setBackgroundColor(Color.parseColor("#4C8BFF"));
+        	    	//text2.setBackgroundColor(Color.parseColor("#4C8BFF"));
         	    }
         	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
         	    	displayinfo = displayinfo + "Female";
+        	    	//text1.setBackgroundColor(Color.parseColor("#FF99CC"));
+        	    	//text2.setBackgroundColor(Color.parseColor("#FF99CC"));
         	    }
+        	    try{
+        	    displayinfo = "HRN: " + Integer.toString(patient.getPid()) + ", " + displayinfo + " : " + age.getAge(patient.getBirthdate().substring(0,10));
+        	    }
+        	    catch(ParseException ex){
    
         	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
         	    
@@ -128,7 +138,7 @@ public class PatientActivity extends BaseActivity {
 				// Starting single contact activity
 				patient = patients.get(position);
 				patient_id = patient.getPid();
-
+				encounter_id = getLatestEncounter(patient_id);
 				
 				/* saves the patient_id and encounter_id to be passed to the next activity */
 				extras = new Bundle();
@@ -136,16 +146,17 @@ public class PatientActivity extends BaseActivity {
 
 				if(!isNetworkAvailable()){
 					encounter_id = getLatestEncounter(patient_id);
-					extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
+				extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 					alertMessage(encounter_id+"");
-					
-
-					/* start next activity Patient Info (2nd Page) */
-					intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
-					intent.putExtras(extras);
-					
-					startActivity(intent);
-				}
+				
+				alertMessage(encounter_id+"");
+				
+				/* start next activity Patient Info (2nd Page) */
+				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
+				intent.putExtras(extras);
+				
+				startActivity(intent);
+			}
 				else{
 					logMessage("it online");
 					getLatestEncounterAPI(patient_id);
@@ -185,7 +196,7 @@ public class PatientActivity extends BaseActivity {
 		        			Rest rest = new Rest("GET");
 		        			rest.addRequestParams("name_last", last); //adds lastname as parameter to url
 		        			rest.addRequestParams("name_first", first); //adds firstname as parameter to url
-		        			rest.setURL(patients_url);
+		        			rest.setURL(url);
 		        			rest.addRequestParams("name_last", last);
 		        			rest.addRequestParams("name_first", first);
 		        			rest.execute();
@@ -202,7 +213,7 @@ public class PatientActivity extends BaseActivity {
 		            		patients = adapter.searchPatient(searchtext);
 		            	}
 		            	
-		            	ListView listview = (ListView) findViewById(R.id.servicesList);
+			            ListView listview = (ListView) findViewById(R.id.servicesList);
 			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
 			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
 			            	@Override
@@ -270,6 +281,7 @@ public class PatientActivity extends BaseActivity {
 	/* retrieves latest encounter of the patient */
 	private int getLatestEncounter(int patient_id) {
 		EncounterAdapter db = new EncounterAdapter(this);
+		
 		return db.getLatestEncounter(patient_id);
 		
 	}
@@ -306,7 +318,6 @@ public class PatientActivity extends BaseActivity {
 			logMessage(encounters.get(i).getDateEncountered());
 		}
 	}
-	
 	
 	public void showPatientInfo(View view){
     	Intent intent = new Intent(this, PatientInfoActivity.class);
