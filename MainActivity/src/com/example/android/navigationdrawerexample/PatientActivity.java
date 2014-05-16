@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.ParseException;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,16 +32,21 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.model.Age;
+import com.example.model.Encounter;
 import com.example.model.HelperSharedPreferences;
 import com.example.model.Patient;
 import com.example.model.Preferences;
 import com.example.model.Rest;
+import com.example.parser.EncounterParser;
 import com.example.parser.PatientParser;
 
 public class PatientActivity extends BaseActivity {
 	
 	private Patient patient;
 	private ArrayList<Patient> patients;
+	private ArrayList<Encounter> encounters;
+	
 	
 	private String patients_url; // = Preferences.getBaseURL(this) + "/patient/show/";
 	private String encounters_url; // = Preferences.getBaseURL(this) + "/encounter/";
@@ -96,17 +102,30 @@ public class PatientActivity extends BaseActivity {
         	    Patient patient = patients.get(position);
         	  
         	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
+        	    Age age = new Age();
         	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
-        	    	displayinfo = displayinfo + "Male";
+        	    	displayinfo = displayinfo + "Gender: Male";
+        	    	//text1.setBackgroundColor(Color.parseColor("#4C8BFF"));
+        	    	//text2.setBackgroundColor(Color.parseColor("#4C8BFF"));
         	    }
         	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
-        	    	displayinfo = displayinfo + "Female";
+        	    	displayinfo = displayinfo + "Gender: Female";
+        	    	//text1.setBackgroundColor(Color.parseColor("#FF99CC"));
+        	    	//text2.setBackgroundColor(Color.parseColor("#FF99CC"));
         	    }
-   
-        	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
+        	   
+        	    try {
+					displayinfo = "HRN: " + Integer.toString(patient.getPid()) +
+							", " + displayinfo + ", Age: " + age.getAge(patient.getBirthdate().substring(0,10));
+				} catch (java.text.ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         	    
         	    text1.setText(displayname);
         	    text2.setText(displayinfo);
+        	    
+        	  
         	    return view;
         	  }
         	};
@@ -130,15 +149,6 @@ public class PatientActivity extends BaseActivity {
 				extras = new Bundle();
 				extras.putInt("EXTRA_PATIENT_ID", patient_id);
 
-				if(!isNetworkAvailable()){
-					encounter_id = getLatestEncounter(patient_id);
-					extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
-					alertMessage(encounter_id+"");
-				}
-				else{
-					logMessage("it online");
-					encounter_id = getLatestEncounterAPI(patient_id);
-				}
 				
 				/* start next activity Patient Info (2nd Page) */
 				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
@@ -196,32 +206,47 @@ public class PatientActivity extends BaseActivity {
 		            	}
 		            	
 		            	ListView listview = (ListView) findViewById(R.id.servicesList);
-			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
-			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
-			            	@Override
-			            	public View getView(int position, View convertView, ViewGroup parent) {
-			            		View view = super.getView(position, convertView, parent);
-			            	    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-			            	    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-			            	    text1.setTextColor(Color.BLACK);
-			            	    text2.setTextColor(Color.BLACK);
-			            	    String displayname = "";
-			            	    String displayinfo = "";
-			            	    Patient patient = patients.get(position);
-			            	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
-			            	    if(patient.getSex().equals("M")){
-			            	    	displayinfo = displayinfo + "Male";
-			            	    }
-			            	    else if(patient.getSex().equals("F")){
-			            	    	displayinfo = displayinfo + "Female";
-			            	    }
-			            	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
-			            	    
-			            	    text1.setText(displayname);
-			            	    text2.setText(displayinfo);
-			            	    return view;
-			            	  }
-			            	};
+		        		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
+		                	//method to override the getView method of ArrayAdapter, this changes the color of the text view
+		                	@Override
+		                	public View getView(int position, View convertView, ViewGroup parent) {
+		                		View view = super.getView(position, convertView, parent);
+		                	    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+		                	    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+		                	    text1.setTextColor(Color.BLACK);
+		                	    text2.setTextColor(Color.BLACK);
+		                	    String displayname = "";
+		                	    String displayinfo = "";
+		                	    Patient patient = patients.get(position);
+		                	  
+		                	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
+		                	    Age age = new Age();
+		                	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
+		                	    	displayinfo = displayinfo + "Gender: Male";
+		                	    	//text1.setBackgroundColor(Color.parseColor("#4C8BFF"));
+		                	    	//text2.setBackgroundColor(Color.parseColor("#4C8BFF"));
+		                	    }
+		                	    else if(patient.getSex().equals("F") || patient.getSex().equals("f")){
+		                	    	displayinfo = displayinfo + "Gender: Female";
+		                	    	//text1.setBackgroundColor(Color.parseColor("#FF99CC"));
+		                	    	//text2.setBackgroundColor(Color.parseColor("#FF99CC"));
+		                	    }
+		                	   
+		                	    try {
+		        					displayinfo = "HRN: " + Integer.toString(patient.getPid()) +
+		        							", " + displayinfo + ", Age: " + age.getAge(patient.getBirthdate().substring(0,10));
+		        				} catch (java.text.ParseException e) {
+		        					// TODO Auto-generated catch block
+		        					e.printStackTrace();
+		        				}
+		                	    
+		                	    text1.setText(displayname);
+		                	    text2.setText(displayinfo);
+		                	    
+		                	  
+		                	    return view;
+		                	  }
+		                	};
 			            	
 			            listview.setAdapter(arrayAdapter); 
 			            listview.setOnItemClickListener(new OnItemClickListener() {
@@ -239,6 +264,7 @@ public class PatientActivity extends BaseActivity {
 			    				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
 			    				extras = new Bundle();
 			    				extras.putInt("EXTRA_PATIENT_ID", patient_id);
+			    				
 			    				intent.putExtras(extras);
 			    				startActivity(intent);
 

@@ -55,7 +55,7 @@ public class EncounterAdapter extends Data {
 			return cursor.getInt(cursor.getColumnIndex("encounter_id"));
 		} catch(Exception e) {
 			Log.d("Encounter Adapter","0 rows retrieved");
-			return (Integer) null;
+			return -1;
 		}
 	}
 	
@@ -117,7 +117,7 @@ public class EncounterAdapter extends Data {
 			db.beginTransaction();
 			for(int i = 0; i < enc.size(); i++) {
 				values.put(ENCOUNTER_ID, enc.get(i).getEncounterId());	
-				values.put(PID, enc.get(i).getPid());	
+				values.put(PID, enc.get(i).getPID());	
 				values.put(ENCOUNTERED, enc.get(i).getDateEncountered());	
 				values.put(PATIENT, enc.get(i).getTypePatient());	
 				values.put(COMPLAINT , enc.get(i).getMessageComplaint());
