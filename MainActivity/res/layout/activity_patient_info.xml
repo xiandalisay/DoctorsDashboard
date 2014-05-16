@@ -140,28 +140,6 @@
                 android:groupIndicator="@null"
                 android:orientation="vertical" />
 
-            <EditText
-                android:id="@+id/Address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/TextView02"
-                android:layout_toRightOf="@+id/TextView02"
-                android:ems="10"
-                android:inputType="number"
-                android:clickable="false"
-				android:focusable="false"
-				android:focusableInTouchMode="false" />
-
-            <TextView
-                android:id="@+id/TextView03"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/Address"
-                android:layout_alignParentLeft="true"
-                android:text="Address"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
             <TextView
                 android:id="@+id/TextView05"
                 android:layout_width="wrap_content"
@@ -225,6 +203,29 @@
                 android:layout_marginTop="13dp"
                 android:text="Case No."
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/TextView03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/TextView01"
+                android:layout_below="@+id/FullName"
+                android:layout_marginTop="16dp"
+                android:text="Address"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/Address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/FullName"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/FullName"
+                android:ems="10"
+                android:inputType="textMultiLine" >
+
+                <requestFocus />
+            </EditText>
 
         </RelativeLayout>
     </GridLayout>

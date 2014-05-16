@@ -50,7 +50,7 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 		
 		int encounter_id = bundle.getInt("EXTRA_ENCOUNTER_ID");
 		Encounter encounter = db.getEncounter(encounter_id);
-		int patient_id = encounter.getPid();
+		int patient_id = encounter.getPID();
 		String date_encountered = encounter.getDateEncountered().trim().substring(0,10);
 		
 		setGroupParents();

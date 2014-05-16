@@ -9,6 +9,7 @@ package com.example.model;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 
 import android.net.ParseException;
@@ -16,7 +17,6 @@ import android.net.ParseException;
 
 public class Encounter implements Comparable<Encounter> {
 	private int 	encounter_id;
-	private int 	personnel_id;
 	private int 	pid;
 	private String 	type_patient;
 	private String 	message_complaint;
@@ -26,7 +26,6 @@ public class Encounter implements Comparable<Encounter> {
 	
 	public Encounter(){
 		encounter_id 		= 0;
-		personnel_id 		= 0;
 		pid 				= 0;
 		type_patient 		= "";
 		message_complaint 	= "";
@@ -35,7 +34,7 @@ public class Encounter implements Comparable<Encounter> {
 		is_confidential 	= "";
 	}
 	
-	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, String datereleased, int patientid)
+	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, int patientid)
 	{
 		encounter_id = eid;
 		type_patient = typepatient;
@@ -44,7 +43,7 @@ public class Encounter implements Comparable<Encounter> {
 		pid = patientid;
 	}
 	
-	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, String datereleased, int patientid, String department, String isconfidential)
+	public Encounter(int eid, String typepatient, String messagecomplaint, String dateencountered, int patientid, String department, String isconfidential)
 	{
 		encounter_id = eid;
 		type_patient = typepatient;
@@ -94,7 +93,6 @@ public class Encounter implements Comparable<Encounter> {
 		this.date_encountered = rDate_Encountered;
 	}
 	
-	
 	//Getter Methods
 	
 	public Encounter getEncounter() {
@@ -105,12 +103,8 @@ public class Encounter implements Comparable<Encounter> {
 		return this.encounter_id;
 	}
 	
-	public int getPid() {
+	public int getPID() {
 		return this.pid;
-	}
-	
-	public int getPersonnelId() {
-		return this.personnel_id;
 	}
 	
 	public String getTypePatient() {
@@ -124,7 +118,6 @@ public class Encounter implements Comparable<Encounter> {
 	public String getDateEncountered() {
 		return this.date_encountered;
 	}
-
 	
 	public String toString()
 	{
