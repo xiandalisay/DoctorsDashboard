@@ -35,10 +35,10 @@ public class MyOnClickListener implements OnClickListener {
 		switch (lastExpandedGroupPosition) {
 			case INDEX_MEDICAL_HISTORY:
 				
-				int eid = ((Encounter)child.get(childPos)).getEncounterId();
+				int pid = ((Encounter)child.get(childPos)).getPid();
 				Bundle bundle = new Bundle();
-				bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
-				Intent intent = new Intent(view.getContext(), PatientEncounterActivity.class);
+				bundle.putInt("EXTRA_PATIENT_ID", pid);
+				Intent intent = new Intent(view.getContext(), PatientInfoActivity.class);
 				intent.putExtras(bundle);
 				view.getContext().startActivity(intent);
 				
