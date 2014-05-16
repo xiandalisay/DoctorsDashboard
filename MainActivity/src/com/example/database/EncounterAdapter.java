@@ -3,8 +3,10 @@
  * @date created: 05/13/14
  * @description: 
  * 			Class that handles all database 
- * 			processes related to encounterss
+ * 			processes related to encounters
  * 
+ * @update: Christian Joseph Dalisay
+ * @date updated: 05/15/14
  */
 
 package com.example.database;
@@ -35,7 +37,6 @@ public class EncounterAdapter extends Data {
 	}
 	
 	/* retrieves the encounter_id of the latest encounter of a patient */
-	@SuppressWarnings("null")
 	public int getLatestEncounter(int patient_id){
 	
 		db = dbHandler.getReadableDatabase();
@@ -78,9 +79,6 @@ public class EncounterAdapter extends Data {
 		}
 	}
 	
-	/* @Author: Christian Joseph Dalisay
-	 * 
-	 */
 	public void deleteDoctorEncounter(Integer encounter) {
 		db = dbHandler.getWritableDatabase();
 		try {
@@ -112,9 +110,6 @@ public class EncounterAdapter extends Data {
 		
 	}
 	
-	/* @Author: Christian Joseph Dalisay
-	 * 
-	 */
 	public void insertEncounters(ArrayList<Encounter> enc) {
 		db = dbHandler.getWritableDatabase();
 		values = new ContentValues();
@@ -139,13 +134,10 @@ public class EncounterAdapter extends Data {
 			}
 	}
 
-	/* @Author: Christian Joseph Dalisay
-	 * 
-	 */
-	public void deleteEncounter(int encounter) {
+	public void deleteEncounter(int encounter,int personnel) {
 		db = dbHandler.getWritableDatabase();
 		try {
-			db.delete(TABLE_ENCOUNTER, "encounter_id = ?", new String[] {"'" + encounter + "'"});
+			db.delete(TABLE_ENCOUNTER, "encounter_id = ?, personnel_id = ?", new String[] {"'" + encounter + "'","'" + personnel + "'"});
 		}
 		catch (SQLException se) {
 			Log.d("DepartmentAdapter deleteEncounter", Log.getStackTraceString(se));

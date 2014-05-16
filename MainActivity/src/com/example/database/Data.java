@@ -9,12 +9,9 @@
 
 package com.example.database;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class Data {
-
-	protected Cursor cursor;
 	
 	protected  SQLiteDatabase db;
 	protected DatabaseHandler dbHandler;
@@ -206,13 +203,13 @@ public class Data {
 		
 	static final String CREATE_TABLE_LAB_REQUEST = 
 		"CREATE TABLE " + TABLE_LAB_REQUEST + " ( " +
-		REQUEST_ID 		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		REQUEST_ID 		+ " INTEGER PRIMARY KEY, " +
 		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES " + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", " +
 		REQUESTED 		+ " DATETIME NOT NULL " +	" ) ";
 		
 	 static final String CREATE_TABLE_LAB_SERVICE =
 		"CREATE TABLE " + TABLE_LAB_SERVICE + " ( " +
-		SERVICE_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		SERVICE_ID 	+ " CHAR(10) PRIMARY KEY , " +
 		SECTION 	+ " NVARCHAR(20) NOT NULL, " +
 		SERVICE 	+ " NVARCHAR(20) NOT NULL UNIQUE " +	")";
 			
@@ -224,16 +221,16 @@ public class Data {
 	
 	 static final String CREATE_TABLE_LAB_RESULT = 
 		"CREATE TABLE " + TABLE_LAB_RESULT + "(" +
-		RESULT_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		RESULT_ID 	+ " INTEGER PRIMARY KEY, " +
 		REQUEST_ID 	+ " INTEGER NOT NULL REFERENCES " 	+ TABLE_LAB_REQUEST + "(" + REQUEST_ID + ")" + ", "	+
 		RECEIVED 	+ " DATETIME NOT NULL, " 	+
-		TEST 		+ " NVARCHAR(20) NOT NULL, " +
+		TEST 		+ " NVARCHAR(20), " +
 		HL7 		+ " TEXT NOT NULL, " +
-		PATHO 		+ " NVARCHAR(50) NOT NULL " + ")";
+		PATHO 		+ " NVARCHAR(30) NOT NULL " + ")";
 	
 	 static final String CREATE_TABLE_NOTES = 
 		"CREATE TABLE " + TABLE_NOTES + "(" +
-		NOTES_ID		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		NOTES_ID	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID + " INTEGER NOT NULL REFERENCES " 	+ TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
 		TITLE 		+ " NVARCHAR(30) NOT NULL, " 	+ 
 		BODY 		+ " TEXT, " 	+ 
