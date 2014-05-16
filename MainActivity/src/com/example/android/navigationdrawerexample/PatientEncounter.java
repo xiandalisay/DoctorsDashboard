@@ -1,3 +1,5 @@
+// NOTE BY JAKE: THIS CAN BE DELETED; IT HAS NO USE
+
 package com.example.android.navigationdrawerexample;
 
 import android.os.Bundle;
