@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.database.PatientAdapter;
 import com.example.model.Encounter;
 import com.example.model.Patient;
 import com.example.model.Rest;
@@ -62,7 +63,8 @@ public class EncounterPatientInfoActivity extends InitialActivity {
 		intent = getIntent();
 		extras = intent.getExtras();
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
-		DatabaseAdapter db = new DatabaseAdapter(this);
+		PatientAdapter db = new PatientAdapter(this);
+		
 		if(isNetworkAvailable()){
 			
 			//Rest for patient

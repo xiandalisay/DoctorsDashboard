@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.database.DatabaseAdapter;
+import com.example.database.PatientAdapter;
 import com.example.model.Patient;
 import com.example.model.Rest;
 import com.example.parser.PatientParser;
@@ -32,7 +32,8 @@ public class LaboratoryActivity extends Activity {
 		intent = getIntent();
 		extras = intent.getExtras();
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
-		DatabaseAdapter db = new DatabaseAdapter(this);
+		PatientAdapter db = new PatientAdapter(this);
+		
 		if(isNetworkAvailable()){
 					
 			//Rest for patient

@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.database.PatientAdapter;
 import com.example.model.Encounter;
 import com.example.model.Patient;
 import com.example.model.Rest;
@@ -77,7 +78,8 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 		tag = (Button) findViewById(R.id.TagPatientButton);
 		
-		DatabaseAdapter db = new DatabaseAdapter(this);
+		PatientAdapter db = new PatientAdapter(this);
+		
 		if(isNetworkAvailable()){
 			
 			//Rest for patient
@@ -125,12 +127,15 @@ public class PatientInfoActivity extends ExpandableListActivity {
 					System.out.println("null error");
 				}
 			}
+			
 			System.out.println("Index: " + (encounters.size()-1));
 			encounter = encounters.get(encounters.size()-1);
 			
 			System.out.println("PID: " + encounter.getPID());
 			System.out.println("EID: " + encounter.getEncounterId());
-				
+			
+			/* set the current encounter_id to be associated with Patient Info Page */ 
+			encounter_id = encounter.getEncounterId();
 		}		
 		else{
 		    patient = db.getPatientProfile(patient_id);
@@ -231,7 +236,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 	public void setChildData(int patient_id, int encounter_id) {
 
 		ArrayList<Object> child = new ArrayList<Object>();
-		DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
+		PatientAdapter db = new PatientAdapter(this);
 		
 		ArrayList<Encounter> encounterList = db.getPatientEncounter(patient_id);
 		for (int i = 0; i < encounterList.size(); i++) {
@@ -252,7 +257,10 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
-		ArrayList<Soap> soapList = db.getDoctorNotes(encounter_id);
+		/* should be changed to DoctorAdapter */
+		DatabaseAdapter db1 = new DatabaseAdapter(this);
+		
+		ArrayList<Soap> soapList = db1.getDoctorNotes(encounter_id);
 		child.add("ADD NEW NOTES");
 		for (int i = 0; i < soapList.size(); i++) {
 			child.add(soapList.get(i));
