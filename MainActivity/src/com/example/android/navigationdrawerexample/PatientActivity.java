@@ -33,6 +33,7 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.model.Age;
 import com.example.model.Encounter;
 import com.example.model.HelperSharedPreferences;
 import com.example.model.Patient;
@@ -121,10 +122,12 @@ public class PatientActivity extends BaseActivity {
         	    
         	    text1.setText(displayname);
         	    text2.setText(displayinfo);
-        	    return view;
+        	    
         	  }
-        	};
-        	
+        	  return view;
+        }};
+		
+		
         listview.setAdapter(arrayAdapter); 
         listview.setOnItemClickListener(new OnItemClickListener() {
 
@@ -146,16 +149,16 @@ public class PatientActivity extends BaseActivity {
 
 				if(!isNetworkAvailable()){
 					encounter_id = getLatestEncounter(patient_id);
-				extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
+					extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 					alertMessage(encounter_id+"");
 				
-				alertMessage(encounter_id+"");
+					alertMessage(encounter_id+"");
 				
-				/* start next activity Patient Info (2nd Page) */
-				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
-				intent.putExtras(extras);
+					/* start next activity Patient Info (2nd Page) */
+					intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
+					intent.putExtras(extras);
 				
-				startActivity(intent);
+					startActivity(intent);
 			}
 				else{
 					logMessage("it online");
@@ -196,7 +199,7 @@ public class PatientActivity extends BaseActivity {
 		        			Rest rest = new Rest("GET");
 		        			rest.addRequestParams("name_last", last); //adds lastname as parameter to url
 		        			rest.addRequestParams("name_first", first); //adds firstname as parameter to url
-		        			rest.setURL(url);
+		        			rest.setURL(patients_url);
 		        			rest.addRequestParams("name_last", last);
 		        			rest.addRequestParams("name_first", first);
 		        			rest.execute();
