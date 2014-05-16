@@ -10,7 +10,7 @@ package com.example.model;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
 import android.net.ParseException;
 
 
@@ -59,6 +59,7 @@ public class Encounter implements Comparable<Encounter> {
 		//is_confidential = isconfidential;
 	}
 	
+	@SuppressLint("SimpleDateFormat")
 	public int compareTo(Encounter encounter){
 		Date date1 = new Date();
 		Date date2 = new Date();
