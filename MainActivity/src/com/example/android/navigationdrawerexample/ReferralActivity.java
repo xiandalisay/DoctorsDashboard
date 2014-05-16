@@ -42,11 +42,11 @@ public class ReferralActivity extends Activity {
 		textView.setText(name_last + ", " + name_first);
 		
 		Spinner spinner = (Spinner) findViewById(R.id.referDepartment);
-		DepartmentAdapter departmentAdapter = new DepartmentAdapter(this);
+		DepartmentAdapter db = new DepartmentAdapter(this);
 		
 		
 		departments = new ArrayList<Department>();
-		departments = departmentAdapter.getDepartments();
+		departments = db.getDepartments();
 		
 		System.out.println(departments.get(0).getDepartmentName());
 		ArrayAdapter<Department> array_adapter = new ArrayAdapter<Department>(this, android.R.layout.simple_spinner_item, departments);
@@ -71,7 +71,7 @@ public class ReferralActivity extends Activity {
         	
 	}
 	
-	/* Called when submit button is clicked */
+	/* called when submit button is clicked */
 	public void referPatient(View view){
 		Intent intent = new Intent(this,PatientInfoActivity.class);
 		Bundle extras = new Bundle();

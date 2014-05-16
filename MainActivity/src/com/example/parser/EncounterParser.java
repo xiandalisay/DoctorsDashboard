@@ -59,17 +59,18 @@ public class EncounterParser extends JSONParser{
 	                         /******* Fetch node values **********/
 	            int    case_nr      	= Integer.parseInt(jsonChildNode.optString(CASE_NR).toString());
 	            int    pid       	= Integer.parseInt(jsonChildNode.optString(PID).toString());
+	            System.out.println(pid+"");
 				String name_last		= jsonChildNode.optString(NAME_LAST).toString();
 				String name_first = jsonChildNode.optString(NAME_FIRST).toString();
 				String name_middle = jsonChildNode.optString(NAME_MIDDLE).toString();
 				String department = jsonChildNode.optString(DEPARTMENT).toString();
-				String encounter_date = jsonChildNode.optString(ENCOUNTER_DATE).toString().substring(0,10);
+				String encounter_date = jsonChildNode.optString(ENCOUNTER_DATE).toString();
 				String patient_type = jsonChildNode.optString(PATIENT_TYPE).toString();
 				String official_receipt_nr = jsonChildNode.optString(OFFICIAL_RECEIPT_NR).toString();
 				String chief_complaint = jsonChildNode.optString(CHIEF_COMPLAINT).toString();
 				String is_confidential = jsonChildNode.optString(IS_CONFIDENTIAL).toString();
 				
-				Encounter encounter = new Encounter(case_nr, patient_type, chief_complaint, encounter_date, "", pid, department, is_confidential);
+				Encounter encounter = new Encounter(case_nr, patient_type, chief_complaint, encounter_date, pid, department, is_confidential);
 				encounters.add(encounter);
 				//System.out.println(pid);			
 	        }

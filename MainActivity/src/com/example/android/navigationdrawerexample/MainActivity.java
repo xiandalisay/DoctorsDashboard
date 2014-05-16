@@ -18,12 +18,12 @@ public class MainActivity extends BaseActivity {
     }
     
     public void showLaboratoryActivity(View view){
-    	Intent intent = new Intent(this, LaboratoryActivity.class);
+    	Intent intent = new Intent(this, LaboratorySearchActivity.class);
     	startActivity(intent);
     }
     
     public void showMedicalHistoryActivity(View view){
-    	Intent intent = new Intent(this, MedicalHistoryActivity.class);
+    	Intent intent = new Intent(this, CanvassActivity.class);
     	startActivity(intent);
     }
     
@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity {
     }
     
     public void showEncountersActivity(View view){
-    	Intent intent = new Intent(this, EncountersActivity.class);
+    	Intent intent = new Intent(this, EncounterPatientActivity.class);
     	startActivity(intent);
     }
     
@@ -48,6 +48,3 @@ public class MainActivity extends BaseActivity {
     }
     
 }
-
-// Test comment for commit
-// Jake comment

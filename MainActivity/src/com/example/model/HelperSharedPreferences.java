@@ -1,3 +1,7 @@
+/* @Author: Christian Joseph Dalisay
+ * @Created: 5/13/14
+ * @used for Referencing Preferences
+ */
 package com.example.model;
 
 import android.content.Context;
@@ -13,9 +17,8 @@ public class HelperSharedPreferences {
         public static final String key1="key1";
         public static final String key2="key2";
     }
-
     
-     public static void createPreferences(Context context) {
+    public static void createPreferences(Context context) {
     	SharedPreferences pref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     	 Editor editor = pref.edit();
     	 editor.commit();

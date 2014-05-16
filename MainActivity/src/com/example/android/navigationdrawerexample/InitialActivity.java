@@ -1,5 +1,6 @@
 package com.example.android.navigationdrawerexample;
 
+import com.example.model.HelperSharedPreferences;
 import com.example.model.Preferences;
 
 import android.app.Activity;
@@ -34,13 +35,12 @@ public class InitialActivity extends Activity{
 			
 	}
     
-    public boolean isNetworkAvailable() {
+    protected boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
 	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
-	
     
     /* displays message dialog */
     protected void alertMessage(String message){

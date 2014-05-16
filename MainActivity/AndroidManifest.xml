@@ -48,6 +48,11 @@
         <activity
             android:name="com.example.android.navigationdrawerexample.MainActivity"
             android:label="@string/app_name" >
+        <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.example.android.navigationdrawerexample.PatientActivity"
@@ -138,6 +143,7 @@
     <activity
             android:name="com.example.android.navigationdrawerexample.LaboratoryRequest"
             android:label="@string/title_activity_laboratory_request"
+       		android:windowSoftInputMode="adjustPan"
             android:parentActivityName="com.example.android.navigationdrawerexample.LaboratoryActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -166,6 +172,14 @@
         <activity
             android:name="com.example.android.navigationdrawerexample.ReferralActivity"
             android:label="@string/title_activity_referral" >
+        </activity>
+    <activity
+            android:name="com.example.android.navigationdrawerexample.EncounterPatientActivity"
+            android:label="@string/title_activity_encounter_patient" >
+        </activity>
+        <activity
+            android:name="com.example.android.navigationdrawerexample.EncounterPatientInfoActivity"
+            android:label="@string/title_activity_encounter_patient_info" >
         </activity>
     </application>
 

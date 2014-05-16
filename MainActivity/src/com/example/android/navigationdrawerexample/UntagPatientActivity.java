@@ -3,6 +3,8 @@ package com.example.android.navigationdrawerexample;
 import com.example.database.CanvasAdapter;
 import com.example.database.DatabaseAdapter;
 import com.example.database.DoctorAdapter;
+import com.example.database.EncounterAdapter;
+import com.example.model.HelperSharedPreferences;
 import com.example.model.Preferences;
 import com.example.model.Rest;
 
@@ -68,14 +70,8 @@ public class UntagPatientActivity extends InitialActivity {
 	}
 
 	private void deleteRelatedData() {
-		DoctorAdapter doc_ad = new DoctorAdapter(this);
-		//doc_ad.deleteDoctorEncounter(encounter_id);
-		/*ReferralAdapter ra = new ReferralAdapter(this);
-		ra.deleteReferrals(encounter_id);
-		CanvasAdapter ca = new CanvasAdapter(this);
-		ca.deleteCanvas(encounter_id);
-		LabRequestAdapter lra = new LabRequestAdapter(this);
-		lra.deleteLabRequests(encounter_id);*/
+		EncounterAdapter doc_ad = new EncounterAdapter(this);
+		//doc_ad.deleteEncounter(encounter_id,Preferences.getPersonnelPreference(this));
 	}
 	
 

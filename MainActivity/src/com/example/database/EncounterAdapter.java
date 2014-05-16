@@ -9,11 +9,20 @@
 
 package com.example.database;
 
+import java.util.ArrayList;
+
+import com.example.model.Encounter;
+import com.example.model.Preferences;
+
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class EncounterAdapter extends Data {
 	
+	ContentValues values;
 	/* _constructor */
 	public  EncounterAdapter(Context context) 
 	{
@@ -45,7 +54,7 @@ public class EncounterAdapter extends Data {
 			return cursor.getInt(cursor.getColumnIndex("encounter_id"));
 		} catch(Exception e) {
 			Log.d("Encounter Adapter","0 rows retrieved");
-			return (Integer) null;
+			return -1;
 		}
 	}
 	
@@ -68,5 +77,81 @@ public class EncounterAdapter extends Data {
 			return false;
 		}
 	}
+	
+	/* @Author: Christian Joseph Dalisay
+	 * 
+	 */
+	public void deleteDoctorEncounter(Integer encounter) {
+		db = dbHandler.getWritableDatabase();
+		try {
+			db.delete(TABLE_DOC_ENC, " encounter_id = ?", new String[] {encounter + ""});
+		} catch(SQLException se) {
+			Log.d("EncounterAdapter deleteDocEnc", Log.getStackTraceString(se));
+		} finally {
+			db.close();
+		}
+		
+	}
+	
+	/* @Author: Christian Joseph Dalisay
+	 * 
+	 */
+	public void insertDoctorEncounter(Integer encounter,Integer personnel) {
+		db = dbHandler.getWritableDatabase();
+		values = new ContentValues();
+		try {
+			values.put(ENCOUNTER_ID, encounter);	
+			values.put(PERSONNEL_ID, personnel);	
+			
+			db.insertWithOnConflict(TABLE_DOC_ENC, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		} catch(SQLException se) {
+			Log.d("EncounterAdapter insertDocEnc", Log.getStackTraceString(se));
+		} finally {
+			db.close();
+		}
+		
+	}
+	
+	/* @Author: Christian Joseph Dalisay
+	 * 
+	 */
+	public void insertEncounters(ArrayList<Encounter> enc) {
+		db = dbHandler.getWritableDatabase();
+		values = new ContentValues();
+		try {
+			db.beginTransaction();
+			for(int i = 0; i < enc.size(); i++) {
+				values.put(ENCOUNTER_ID, enc.get(i).getEncounterId());	
+				values.put(PID, enc.get(i).getPID());	
+				values.put(ENCOUNTERED, enc.get(i).getDateEncountered());	
+				values.put(PATIENT, enc.get(i).getTypePatient());	
+				values.put(COMPLAINT , enc.get(i).getMessageComplaint());
+				db.insertWithOnConflict(TABLE_ENCOUNTER, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+			  }
+			  db.setTransactionSuccessful();
+				Log.d("DepartmentAdapter insertEncounters", "setTransactionSuccessful");
+			}
+			catch (SQLException se) {
+				Log.d("DepartmentAdapter insertEncounters", Log.getStackTraceString(se));
+			}
+			finally	{
+			  db.endTransaction();
+			}
+	}
 
+	/* @Author: Christian Joseph Dalisay
+	 * 
+	 */
+	public void deleteEncounter(int encounter) {
+		db = dbHandler.getWritableDatabase();
+		try {
+			db.delete(TABLE_ENCOUNTER, "encounter_id = ?", new String[] {"'" + encounter + "'"});
+		}
+		catch (SQLException se) {
+			Log.d("DepartmentAdapter deleteEncounter", Log.getStackTraceString(se));
+		}
+		finally {
+		  db.close();
+		}
+	}
 }
