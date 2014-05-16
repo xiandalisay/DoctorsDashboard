@@ -55,11 +55,21 @@ public class Encounter implements Comparable<Encounter> {
 		//is_confidential = isconfidential;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public int compareTo(Encounter e){
-		String[] date =this.date_encountered.split(" ");
-		long date1 = Date.parse(date[0]);
-		long date2 = Date.parse(e.date_encountered);
+	public int compareTo(Encounter encounter){
+		Date date1 = new Date();
+		Date date2 = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		try {
+		    
+			ParsePosition position = new ParsePosition(0);
+	        date1 = dateFormat.parse(this.date_encountered,position); 
+	        date2 = dateFormat.parse(encounter.date_encountered,position);
+	        //System.out.println(t); 
+	    } catch (ParseException e) { 
+	        System.out.println(e.toString()); 
+	    }
+
 		
 		return (int)(date1 - date2);
 	}
