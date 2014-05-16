@@ -136,10 +136,10 @@ public abstract class BaseActivity extends InitialActivity{
         		intent = new Intent(context, PatientActivity.class);
         	}
         	else if(position == 1){
-        		intent = new Intent(context, CanvassActivity.class);
+        		intent = new Intent(context, LaboratorySearchActivity.class);
         	}
         	else if(position == 2){
-        		intent = new Intent(context, MedicalHistoryActivity.class);
+        		intent = new Intent(context, CanvassActivity.class);
         	}
         	else if(position == 3){
         		intent = new Intent(context, ResultsActivity.class);
