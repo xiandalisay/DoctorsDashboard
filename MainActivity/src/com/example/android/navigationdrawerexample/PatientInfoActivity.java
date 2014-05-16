@@ -174,37 +174,6 @@ public class PatientInfoActivity extends ExpandableListActivity {
 			}
 		});
 		
-		
-		
-		/* duplicate code with LINE 41  */
-		patient = db.getPatientProfile(patient_id);
-		ListView listview = (ListView) findViewById(R.id.servicesList);
-		ArrayAdapter<Encounter> arrayAdapter = new ArrayAdapter<Encounter>(getApplicationContext(), android.R.layout.simple_list_item_1, encounters){
-			@Override
-			public View getView(int position, View ConvertView, ViewGroup parent){
-				View view = super.getView(position, ConvertView, parent);
-				TextView text = (TextView) view.findViewById(android.R.id.text1);
-				text.setTextColor(Color.BLACK);
-				return view;
-			}
-		};
-		listview.setAdapter(arrayAdapter);
-		listview.setOnItemClickListener(new OnItemClickListener() {
-					
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view, int position,
-							long id) {
-						TextView text 	= (TextView) view.findViewById(android.R.id.text1);
-						encounter = encounters.get(position);
-						int eid = encounter.getEncounterId();
-						Bundle extras = new Bundle();
-						extras.putInt("EXTRA_ENCOUNTER_ID", eid);
-						
-						Intent intent = new Intent(getApplicationContext(), PatientEncounterActivity.class);
-						intent.putExtras(extras);
-						startActivity(intent);
-					}
-				});
 	}
 	
 	/**
