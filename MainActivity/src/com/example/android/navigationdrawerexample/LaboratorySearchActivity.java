@@ -1,10 +1,12 @@
 package com.example.android.navigationdrawerexample;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.model.Age;
 import com.example.model.Patient;
 import com.example.model.Rest;
 import com.example.parser.PatientParser;
@@ -93,7 +95,13 @@ public class LaboratorySearchActivity extends BaseActivity {
         	    	displayinfo = displayinfo + "Female";
         	    }
         	    //System.out.println(displayinfo);
-        	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
+        	    try{
+        	    	Age age = new Age();
+        	    	displayinfo = "HRN: " + Integer.toString(patient.getPid()) + ", " + displayinfo + " : " + age.getAge(patient.getBirthdate().substring(0,10));
+        	    }
+        	    catch(ParseException ex){
+        	    	
+        	    }
         	    
         	    text1.setText(displayname);
         	    text2.setText(displayinfo);
@@ -196,7 +204,13 @@ public class LaboratorySearchActivity extends BaseActivity {
 			            	    else if(patient.getSex().equals("F")){
 			            	    	displayinfo = displayinfo + "Female";
 			            	    }
-			            	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
+			            	    try{
+			            	    	Age age = new Age();
+			            	    	displayinfo = "HRN: " + Integer.toString(patient.getPid()) + ", " + displayinfo + " : " + age.getAge(patient.getBirthdate().substring(0,10));
+			            	    }
+			            	    catch(ParseException ex){
+			            	    	
+			            	    }
 			            	    
 			            	    text1.setText(displayname);
 			            	    text2.setText(displayinfo);

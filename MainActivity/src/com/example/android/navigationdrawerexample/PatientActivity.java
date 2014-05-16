@@ -86,7 +86,7 @@ public class PatientActivity extends BaseActivity {
         	    Patient patient = patients.get(position);
         	  
         	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
-        	    Age age = new Age();
+        	    
         	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
         	    	displayinfo = displayinfo + "Male";
         	    	//text1.setBackgroundColor(Color.parseColor("#4C8BFF"));
@@ -98,7 +98,8 @@ public class PatientActivity extends BaseActivity {
         	    	//text2.setBackgroundColor(Color.parseColor("#FF99CC"));
         	    }
         	    try{
-        	    displayinfo = "HRN: " + Integer.toString(patient.getPid()) + ", " + displayinfo + " : " + age.getAge(patient.getBirthdate().substring(0,10));
+        	    	Age age = new Age();
+        	    	displayinfo = "HRN: " + Integer.toString(patient.getPid()) + ", " + displayinfo + " : " + age.getAge(patient.getBirthdate().substring(0,10));
         	    }
         	    catch(ParseException ex){
         	    	
@@ -204,7 +205,13 @@ public class PatientActivity extends BaseActivity {
 			            	    else if(patient.getSex().equals("F")){
 			            	    	displayinfo = displayinfo + "Female";
 			            	    }
-			            	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
+			            	    try{
+			            	    	Age age = new Age();
+			            	    	displayinfo = "HRN: " + Integer.toString(patient.getPid()) + ", " + displayinfo + " : " + age.getAge(patient.getBirthdate().substring(0,10));
+			            	    }
+			            	    catch(ParseException ex){
+			            	    	
+			            	    }
 			            	    
 			            	    text1.setText(displayname);
 			            	    text2.setText(displayinfo);

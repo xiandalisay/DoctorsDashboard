@@ -133,6 +133,7 @@
         <activity
             android:name="com.example.android.navigationdrawerexample.LaboratoryRequest"
             android:label="@string/title_activity_laboratory_request"
+       		android:windowSoftInputMode="adjustPan"
             android:parentActivityName="com.example.android.navigationdrawerexample.LaboratoryActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
