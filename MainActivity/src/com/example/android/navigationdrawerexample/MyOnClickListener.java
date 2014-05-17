@@ -41,8 +41,10 @@ public class MyOnClickListener implements OnClickListener {
 			case INDEX_MEDICAL_HISTORY:
 				
 				pid = ((Encounter)child.get(childPos)).getPID();
+				eid = ((Encounter)child.get(childPos)).getEncounterId();
 				bundle = new Bundle();
 				bundle.putInt("EXTRA_PATIENT_ID", pid);
+				bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
 				intent = new Intent(view.getContext(), PatientInfoActivity.class);
 				intent.putExtras(bundle);
 				view.getContext().startActivity(intent);
@@ -62,9 +64,9 @@ public class MyOnClickListener implements OnClickListener {
 				break;
 			case INDEX_REFERRALS:
 				
-				eid = ((Encounter)child.get(childPos)).getEncounterId();
-				bundle = new Bundle();
-				bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
+				//eid = ((ReferralHelper)child.get(childPos)).getEncounterId();
+				//bundle = new Bundle();
+				//bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
 				//intent = new Intent(view.getContext(), PatientInfoActivity.class);
 				//intent.putExtras(bundle);
 				//view.getContext().startActivity(intent);

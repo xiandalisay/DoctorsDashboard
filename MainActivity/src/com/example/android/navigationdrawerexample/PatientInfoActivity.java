@@ -11,32 +11,27 @@ import java.util.Comparator;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupExpandListener;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
 import com.example.model.Encounter;
 import com.example.model.Patient;
+import com.example.model.ReferralHelper;
 import com.example.model.Rest;
 import com.example.model.Soap;
 import com.example.parser.EncounterParser;
@@ -74,7 +69,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
-		
+		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
 		tag = (Button) findViewById(R.id.TagPatientButton);
 		
 		DatabaseAdapter db = new DatabaseAdapter(this);
@@ -135,7 +130,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		else{
 		    patient = db.getPatientProfile(patient_id);
 			encounters = db.getPatientEncounter(patient_id);
-			encounter = encounters.get(0); // Get first encounter
+			encounter = db.getEncounter(encounter_id);
 		}
 		
 		EditText HRN = (EditText) findViewById(R.id.HRN);
@@ -160,6 +155,8 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		else{
 			gendertext = "Female";
 		}
+		
+		System.out.println(""+encounter_id);
 		
 		HRN.setText(encounter.getPID()+"");
 		CaseNo.setText(encounter.getEncounterId()+"");
@@ -234,6 +231,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		ArrayList<Object> child = new ArrayList<Object>();
 		DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
 		
+		// MEDICAL HISTORY / ENCOUNTERS
 		ArrayList<Encounter> encounterList = db.getPatientEncounter(patient_id);
 		for (int i = 0; i < encounterList.size(); i++) {
 			child.add(encounterList.get(i));
@@ -241,18 +239,23 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
+		// PREVIOUS REQUESTS / LAB REQUESTS
 		for (int i = 0; i < encounterList.size(); i++) {
 			child.add(encounterList.get(i));
 		}
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
-		for (int i = 0; i < encounterList.size(); i++) {
-			child.add(encounterList.get(i));
+		// REFERRALS
+		ArrayList<ReferralHelper> refList = db.getReferralHelpers(encounter_id);
+		Log.d("refList size", ""+refList.size());
+		for (int i = 0; i < refList.size(); i++) {
+			child.add(refList.get(i));
 		}
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
+		// NOTES
 		ArrayList<Soap> soapList = db.getDoctorNotes(encounter_id);
 		child.add("ADD NEW NOTES");
 		for (int i = 0; i < soapList.size(); i++) {

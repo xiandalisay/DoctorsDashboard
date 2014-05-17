@@ -12,19 +12,17 @@ package com.example.database;
 
 import java.util.ArrayList;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-
-import com.example.database.Data;
 import com.example.model.Age;
-import com.example.model.DoctorProfile;
 import com.example.model.Encounter;
 import com.example.model.Patient;
+import com.example.model.Referral;
+import com.example.model.ReferralHelper;
 import com.example.model.Soap;
 
 public class DatabaseAdapter extends Data {
@@ -495,6 +493,53 @@ public class DatabaseAdapter extends Data {
 		}
 		
 		return notelist;
+	}
+	
+	public ArrayList<ReferralHelper> getReferralHelpers(int eid) {
+		ArrayList<ReferralHelper> referral_list = new ArrayList<ReferralHelper>();
+		db = dbHandler.getWritableDatabase();
+		
+		ReferralHelper ref = new ReferralHelper();
+		
+		try {
+			String query =
+					"SELECT " +
+							REASON + ", " +
+							SHORT_DEPT + ", " +
+							REFERRED + " " +
+					"FROM " + TABLE_REFERRAL + " " +
+					"INNER JOIN " + TABLE_DEPARTMENT + " " + 
+						"ON " + TABLE_REFERRAL + "." + DEPT_ID + "=" +
+							TABLE_DEPARTMENT + "." + DEPT_ID + " " +
+					"INNER JOIN " + TABLE_REASON + " " +
+						"ON " + TABLE_REFERRAL + "." + REASON_ID + "=" +
+							TABLE_REASON + "." + REASON_ID + " " +
+					"WHERE " + TABLE_REFERRAL + "." + ENCOUNTER_ID + "=" + eid;
+			Cursor cursor = db.rawQuery(query, null);
+			
+			if(cursor.moveToFirst()) {
+				do {
+					String reason = cursor.getString(cursor.getColumnIndex(REASON));
+					String dept = cursor.getString(cursor.getColumnIndex(SHORT_DEPT));
+					String dateref = cursor.getString(cursor.getColumnIndex(REFERRED));
+					
+					ref = new ReferralHelper(reason, dept, dateref);
+					referral_list.add(ref);
+				} while (cursor.moveToNext());
+			}
+		}
+		catch (SQLException e) {
+			Log.d("getReferralHelpers", e.toString());
+		}
+		catch (Exception e) {
+			Log.d("getReferralHelpers", e.toString());
+		} finally {
+			db.close();
+		}
+		
+		Log.d("referral_list size", ""+referral_list.size());
+		
+		return referral_list;
 	}
 
 }

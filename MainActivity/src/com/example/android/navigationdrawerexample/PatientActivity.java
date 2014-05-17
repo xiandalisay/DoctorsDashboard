@@ -43,10 +43,11 @@ import com.example.parser.PatientParser;
 
 public class PatientActivity extends BaseActivity {
 	
+	private final int FIRST_ENCOUNTER = 1;
+	
 	private Patient patient;
 	private ArrayList<Patient> patients;
 	private ArrayList<Encounter> encounters;
-	
 	
 	private String patients_url; // = Preferences.getBaseURL(this) + "/patient/show/";
 	private String encounters_url; // = Preferences.getBaseURL(this) + "/encounter/";
@@ -148,6 +149,7 @@ public class PatientActivity extends BaseActivity {
 				/* saves the patient_id and encounter_id to be passed to the next activity */
 				extras = new Bundle();
 				extras.putInt("EXTRA_PATIENT_ID", patient_id);
+				extras.putInt("EXTRA_ENCOUNTER_ID", FIRST_ENCOUNTER); // pass the first encounter
 				
 				
 				/* start next activity Patient Info (2nd Page) */
