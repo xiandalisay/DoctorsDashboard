@@ -11,19 +11,28 @@ public class ServiceRequest
 	private int service_code;
 	private int request_number;
 	private int service_quantity;
+	private String transaction_type;
+	private String request_option;
+	private String discount;
 	
 	public ServiceRequest()
 	{
 		service_code = 0;
 		request_number = 0;
 		service_quantity = 0;
+		transaction_type = "";
+		request_option = "";
+		discount = "";
 	}
 	
-	public ServiceRequest(int servicecode, int requestnumber, int servicequantity)
+	public ServiceRequest(int servicecode, int requestnumber, int servicequantity, String transaction_type, String request_option, String discount)
 	{
 		service_code = servicecode;
 		request_number = requestnumber;
 		service_quantity = servicequantity;
+		this.transaction_type = transaction_type;
+		this.request_option = request_option;
+		this.discount = discount;
 	}
 	
 	public void setServiceCode(int servicecode)
@@ -39,6 +48,18 @@ public class ServiceRequest
 	public void setServiceQuantity(int servicequantity)
 	{
 		service_quantity = servicequantity;
+	}
+	
+	public void setTransactionType(String transaction_type){
+		this.transaction_type = transaction_type;
+	}
+	
+	public void setRequestOption(String request_option){
+		this.request_option = request_option;
+	}
+	
+	public void setDiscount(String discount){
+		this.discount = discount;
 	}
 	
 	public int getServiceCode()

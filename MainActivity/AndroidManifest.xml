@@ -164,6 +164,7 @@
         <activity
             android:name="com.example.android.navigationdrawerexample.LaboratoryRequestAddService"
             android:label="@string/title_activity_laboratory_request_add_service"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName="com.example.android.navigationdrawerexample.LaboratoryRequest" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -179,6 +180,10 @@
         </activity>
         <activity
             android:name="com.example.android.navigationdrawerexample.EncounterPatientInfoActivity"
+            android:label="@string/title_activity_encounter_patient_info" >
+        </activity>
+        <activity
+            android:name="com.example.android.navigationdrawerexample.LaboratorySearchActivity"
             android:label="@string/title_activity_encounter_patient_info" >
         </activity>
     </application>

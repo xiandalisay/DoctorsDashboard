@@ -59,7 +59,7 @@ public class LabRequestParser extends JSONParser{
 				String quantity = jsonChildNode.optString(QUANTITY).toString();
 				
 				
-				LabRequest labrequest = new LabRequest(refno, encounter_nr, service_code, service_name, Integer.parseInt(quantity));
+				LabRequest labrequest = new LabRequest(refno, encounter_nr, service_code, service_name, Integer.parseInt(quantity),"nothing","nothing","nothing");
 				labrequests.add(labrequest);
 							
 	        }
