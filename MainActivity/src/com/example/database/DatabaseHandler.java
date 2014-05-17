@@ -63,7 +63,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	public void onCreateDummy(SQLiteDatabase db) {
 		try	{ 
-			db.beginTransaction();
 			/*
 			db.execSQL("insert into [department] values(106, '', 'Med-Rheuma', 'Medicine-Rheumatology'), " +
 					" (107, '', 'Med-Neuro', 'Medicine-Neurology'), " +
@@ -121,14 +120,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					" (2,2,'Second Encounter','Encountered for the first time','2013-08-10 12:12:00',0 ), " + 	
 					" (3,3,'Third Encounter','Encountered for the first time','2014-02-20 07:08:00',0 ) " );*/
 			Log.d("DatabaseHandler","onCreateDummy successful");
-			db.setTransactionSuccessful();
 		} catch (SQLException se) {
 			Log.d("onCreateDummy SQLException",Log.getStackTraceString(se));
 		} catch (Exception e) {
 			Log.d("onCreateDummy Exception",Log.getStackTraceString(e));
-		} finally {
-			db.endTransaction();
-			db.close();
 		}
 	}
 	

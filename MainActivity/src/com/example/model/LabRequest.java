@@ -18,25 +18,18 @@ public class LabRequest
 {
 	private int reference_number;
 	private int encounter_number;
-<<<<<<< HEAD
-	private String date_requested;
-=======
+	
 	private String service_code;
 	private String service_name;
 	private int quantity;
->>>>>>> master
 	
 	public LabRequest()
 	{
 		reference_number = 0;
 		encounter_number = 0;
-<<<<<<< HEAD
-		date_requested = "";
-=======
 		service_code ="";
 		service_name = "";
 		quantity = 0;
->>>>>>> master
 	}
 	
 	public LabRequest(int referencenumber, int encounternumber, String servicecode, String servicename, int q)
@@ -58,15 +51,7 @@ public class LabRequest
 		encounter_number = encounternumber;
 	}
 	
-<<<<<<< HEAD
-	public void setDateRequested(String request) {
-		this.date_requested = request;
-	}
-	
-	public int getRequestNumber()
-=======
 	public void setServiceCode(String servicecode)
->>>>>>> master
 	{
 		service_code =servicecode;
 	}
@@ -90,12 +75,7 @@ public class LabRequest
 	{
 		return encounter_number;
 	}
-	
-<<<<<<< HEAD
-	public String getDateRequested() {
-		return this.date_requested;
-	}
-=======
+
 	public String getServiceCode()
 	{
 		return service_code;
@@ -111,6 +91,4 @@ public class LabRequest
 		return quantity;
 	}
 	
->>>>>>> master
-
 }

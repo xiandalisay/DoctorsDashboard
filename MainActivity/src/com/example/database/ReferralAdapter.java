@@ -26,7 +26,8 @@ import com.example.model.Soap;
 
 public class ReferralAdapter extends Data {
 	
-	ArrayList<Referral> referral_list;
+	private ArrayList<Referral> referral_list;
+	
 	public  SQLiteDatabase db;
 	private DatabaseHandler dbHandler;
 	
@@ -55,6 +56,7 @@ public class ReferralAdapter extends Data {
 		return db;
 	}
 	
+	/*
 	public ArrayList<Referral> getReferrals(int encounter) {
 		db = dbHandler.getWritableDatabase();
 		referral_list = new ArrayList<Referral>();
@@ -71,7 +73,7 @@ public class ReferralAdapter extends Data {
 					int dept_id = cursor.getInt(cursor.getColumnIndex("dept_id"));
 					int reason_id = cursor.getInt(cursor.getColumnIndex("reason_id"));
 					String date_referred = cursor.getString(cursor.getColumnIndex("date_referred"));
-					Referral referral = new Referral(referral_id, encounter_id, dept_id, reason_id, date_referred);
+					Referral referral = new Referral(referral_id, encounter_id, dept_id, reason_id);
 					referral_list.add(referral);
 				}while(cursor.moveToNext());
 			}
@@ -84,6 +86,6 @@ public class ReferralAdapter extends Data {
 		Log.d("getPreviousReferrals", "Done successfully.");
 		return referral_list;
 	}
-	
+	*/
 	
 }
