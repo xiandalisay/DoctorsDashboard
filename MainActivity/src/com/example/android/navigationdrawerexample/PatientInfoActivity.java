@@ -30,10 +30,10 @@ import android.widget.Toast;
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
 import com.example.model.Encounter;
+import com.example.model.Notes;
 import com.example.model.Patient;
 import com.example.model.ReferralHelper;
 import com.example.model.Rest;
-import com.example.model.Soap;
 import com.example.parser.EncounterParser;
 import com.example.parser.PatientParser;
 
@@ -248,7 +248,6 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 		// REFERRALS
 		ArrayList<ReferralHelper> refList = db.getReferralHelpers(encounter_id);
-		Log.d("refList size", ""+refList.size());
 		for (int i = 0; i < refList.size(); i++) {
 			child.add(refList.get(i));
 		}
@@ -256,10 +255,11 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		child = new ArrayList<Object>();
 		
 		// NOTES
-		ArrayList<Soap> soapList = db.getDoctorNotes(encounter_id);
+		ArrayList<Notes> noteList = db.getDoctorNotes(encounter_id);
+		Log.d("noteList size", ""+noteList.size());
 		child.add("ADD NEW NOTES");
-		for (int i = 0; i < soapList.size(); i++) {
-			child.add(soapList.get(i));
+		for (int i = 0; i < noteList.size(); i++) {
+			child.add(noteList.get(i));
 		}
 		childItems.add(child);
 		
