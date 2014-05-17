@@ -135,6 +135,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		else{
 		    patient = db.getPatientProfile(patient_id);
 			encounters = db.getPatientEncounter(patient_id);
+			encounter = encounters.get(0); // Get first encounter
 		}
 		
 		EditText HRN = (EditText) findViewById(R.id.HRN);
