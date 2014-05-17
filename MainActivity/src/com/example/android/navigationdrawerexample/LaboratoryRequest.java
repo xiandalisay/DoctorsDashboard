@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class LaboratoryRequest extends Activity {
 
@@ -57,6 +58,11 @@ public class LaboratoryRequest extends Activity {
 	public void showAddServices(View view){
 		Intent intent = new Intent(this, LaboratoryRequestAddService.class);
 		startActivity(intent);
+	}
+	
+	public void addRequest(View view){
+		
+		Toast.makeText(this, "clicked add request", Toast.LENGTH_SHORT).show();
 	}
 
 }

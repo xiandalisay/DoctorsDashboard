@@ -184,7 +184,7 @@
         </activity>
         <activity
             android:name="com.example.android.navigationdrawerexample.LaboratorySearchActivity"
-            android:label="@string/title_activity_encounter_patient_info" >
+            android:label="@string/title_activity_laboratory_search" >
         </activity>
     </application>
 

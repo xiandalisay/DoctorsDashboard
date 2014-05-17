@@ -88,8 +88,8 @@
     <string name="title_activity_referral">Referral</string>
     <string name="title_activity_laboratory_request_add_service">LaboratoryRequestAddService</string>
     <string name="search_lab_test">Search Laboratory Test</string>
-
-<string name="title_activity_encounter_patient">EncounterPatientActivity</string>
+	<string name="title_activity_laboratory_search">Laboratory Search</string>
+	<string name="title_activity_encounter_patient">EncounterPatientActivity</string>
     <string name="title_activity_encounter_patient_info">EncounterPatientInfoActivity</string>
 
 </resources>

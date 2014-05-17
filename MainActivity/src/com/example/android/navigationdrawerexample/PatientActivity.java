@@ -66,8 +66,8 @@ public class PatientActivity extends BaseActivity {
 		patients = new ArrayList<Patient>();
 		if(isNetworkAvailable()){
 
-			patients_url = Preferences.getBaseURL(this) + "/patient/show/";
-			
+			patients_url = Preferences.getBaseURL(this) + "/segservice/patient/show/";
+			//patients_url = "http://121.97.45.242/segservice/patient/show/";
 			Rest rest = new Rest("GET",this);
 			
 			rest.setURL(patients_url);
