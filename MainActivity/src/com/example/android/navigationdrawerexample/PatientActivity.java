@@ -114,14 +114,14 @@ public class PatientActivity extends BaseActivity {
 				// Starting single contact activity
 				patient = patients.get(position);
 				patient_id = patient.getPid();
-				encounter_id = getLatestEncounter(patient_id);
+				//encounter_id = getLatestEncounter(patient_id);
 				
 				/* saves the patient_id and encounter_id to be passed to the next activity */
 				extras = new Bundle();
 				extras.putInt("EXTRA_PATIENT_ID", patient_id);
-				extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
+				//extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 				
-				alertMessage(encounter_id+"");
+				//alertMessage(encounter_id+"");
 				
 				/* start next activity Patient Info (2nd Page) */
 				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
