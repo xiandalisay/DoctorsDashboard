@@ -12,20 +12,17 @@ package com.example.database;
 
 import java.util.ArrayList;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-
-import com.example.database.Data;
 import com.example.model.Age;
-import com.example.model.DoctorProfile;
 import com.example.model.Encounter;
+import com.example.model.Notes;
 import com.example.model.Patient;
-import com.example.model.Soap;
+import com.example.model.ReferralHelper;
 
 public class DatabaseAdapter extends Data {
 	
@@ -390,22 +387,39 @@ public class DatabaseAdapter extends Data {
 		return encounterlist;
 	}
 	
-	public ArrayList<Soap> getDoctorNotes(int eid)
+	/**
+	 * @author Jessie Emmanuel L. Adante
+	 * 			Edited by: Jake Randolph B Muncada
+	 * @param eid
+	 * @return ArrayList<Notes>
+	 */
+	public ArrayList<Notes> getDoctorNotes(int eid)
 	{
-		ArrayList<Soap> notelist = new ArrayList<Soap>();
+		ArrayList<Notes> notelist = new ArrayList<Notes>();
 		db = dbHandler.getWritableDatabase();
 		
 		try{
-			String query = "SELECT soap_id, msg_soap, date_modified, sync_soap FROM soap WHERE encounter_id = " + eid;
+			String query =
+					"SELECT " +
+						NOTES_ID + "," +
+						TITLE + "," +
+						BODY + "," + 
+						TYPE + "," +
+						CREATED + "," +
+						SYNC + " " +
+					"FROM " + TABLE_NOTES + " " +
+					"WHERE " + ENCOUNTER_ID + "=" + eid;
 			Cursor cursor = db.rawQuery(query, null);
 			
 			if(cursor.moveToFirst())
 			{
 				do {
-					int sid = cursor.getInt(cursor.getColumnIndex("soap_id"));
-					String msgsoap = cursor.getString(cursor.getColumnIndex("msg_soap"));
-					String datemodified = cursor.getString(cursor.getColumnIndex("date_modified"));
-					int syncsoap = cursor.getInt(cursor.getColumnIndex("sync_soap"));
+					int nid = cursor.getInt(cursor.getColumnIndex(NOTES_ID));
+					String title = cursor.getString(cursor.getColumnIndex(TITLE));
+					String body = cursor.getString(cursor.getColumnIndex(BODY));
+					String type = cursor.getString(cursor.getColumnIndex(TYPE));
+					String date_created = cursor.getString(cursor.getColumnIndex(CREATED));
+					int syncsoap = cursor.getInt(cursor.getColumnIndex(SYNC));
 					boolean sync;
 					
 					if(1 == syncsoap)
@@ -417,18 +431,70 @@ public class DatabaseAdapter extends Data {
 						sync = false;
 					}
 					
-					Soap soap = new Soap(sid, eid, msgsoap, datemodified, sync);
+					Notes soap = new Notes(nid, eid, title, body, type, date_created, sync);
 					notelist.add(soap);
 				} while (cursor.moveToNext());
 			}
 		} 
 		catch (Exception e) {
-			Log.d("Doctor's Notes", e.toString());
+			Log.d("getDoctorNotes", e.toString());
 		} finally {
 			db.close();
 		}
 		
+		Log.d("notelist size", ""+notelist.size());
+		
 		return notelist;
+	}
+	
+	/**
+	 * @author Jake Randolph B Muncada
+	 * @param eid
+	 * @return ArrayList<ReferralHelper>
+	 */
+	public ArrayList<ReferralHelper> getReferralHelpers(int eid) {
+		ArrayList<ReferralHelper> referral_list = new ArrayList<ReferralHelper>();
+		db = dbHandler.getWritableDatabase();
+		
+		ReferralHelper ref = new ReferralHelper();
+		
+		try {
+			String query =
+					"SELECT " +
+							REASON + ", " +
+							SHORT_DEPT + ", " +
+							REFERRED + " " +
+					"FROM " + TABLE_REFERRAL + " " +
+					"INNER JOIN " + TABLE_DEPARTMENT + " " + 
+						"ON " + TABLE_REFERRAL + "." + DEPT_ID + "=" +
+							TABLE_DEPARTMENT + "." + DEPT_ID + " " +
+					"INNER JOIN " + TABLE_REASON + " " +
+						"ON " + TABLE_REFERRAL + "." + REASON_ID + "=" +
+							TABLE_REASON + "." + REASON_ID + " " +
+					"WHERE " + TABLE_REFERRAL + "." + ENCOUNTER_ID + "=" + eid;
+			Cursor cursor = db.rawQuery(query, null);
+			
+			if(cursor.moveToFirst()) {
+				do {
+					String reason = cursor.getString(cursor.getColumnIndex(REASON));
+					String dept = cursor.getString(cursor.getColumnIndex(SHORT_DEPT));
+					String dateref = cursor.getString(cursor.getColumnIndex(REFERRED));
+					
+					ref = new ReferralHelper(reason, dept, dateref);
+					referral_list.add(ref);
+				} while (cursor.moveToNext());
+			}
+		}
+		catch (SQLException e) {
+			Log.d("getReferralHelpers", e.toString());
+		}
+		catch (Exception e) {
+			Log.d("getReferralHelpers", e.toString());
+		} finally {
+			db.close();
+		}
+		
+		return referral_list;
 	}
 
 }

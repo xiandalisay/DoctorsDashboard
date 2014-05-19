@@ -16,6 +16,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +38,9 @@ import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
 import com.example.database.PatientAdapter;
 import com.example.model.Encounter;
+import com.example.model.Notes;
 import com.example.model.Patient;
+import com.example.model.ReferralHelper;
 import com.example.model.Rest;
 import com.example.model.Soap;
 import com.example.parser.EncounterParser;
@@ -100,17 +103,17 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 		setViewsContents();
 		setupExpandableList();
-			
+		
 	}
-	
+		
 	/* retrieve passed data from previous activity */
 	private void retrieveBundle() {
-		
+			
 		intent = getIntent();
 		extras = intent.getExtras();
-		
+			
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
-		
+		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
 		/* check if encounter_id was passed from previous intent */
 		try{
 			encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
@@ -118,39 +121,39 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		}catch(Exception e){
 			System.out.println("no encounter_id");
 		}
-	}
-
+			}
+			
 	/* called when phone is not connected to a network */
 	private void initOfflineMode() {
-		
+			
 		PatientAdapter db = new PatientAdapter(this);
-		
+			
 		/* retrieve patient info from mobile DB */
 	    patient = db.getPatientProfile(patient_id);
-	    
+			
 	    /* retrieve patient's encounters from mobile DB */
 		encounters = db.getPatientEncounter(patient_id);
+			
 		
-
 		/* sort encounters based on encountered_data*/
-		Collections.sort(encounters, new CustomComparator());
+			Collections.sort(encounters, new CustomComparator());
 		
 		//temp
-		System.out.println("sorting..");
-		
-		//print tem
-		for(int i=0; i<encounters.size();i++){
-			encounter = encounters.get(i);
+			System.out.println("sorting..");
 			
-			try{
-				System.out.println(encounter.getDateEncountered());
-			}catch(Exception e){
-				System.out.println("null error");
+		//print tem
+			for(int i=0; i<encounters.size();i++){
+				encounter = encounters.get(i);
+				
+				try{
+					System.out.println(encounter.getDateEncountered());
+				}catch(Exception e){
+					System.out.println("null error");
+				}
 			}
-		}
 		
-		encounter = encounters.get(encounters.size()-1);
-		
+			encounter = encounters.get(encounters.size()-1);
+			
 		/* set the current encounter_id to be associated with Patient Info Page */ 
 		if(encounter_id == 0){
 			encounter_id = encounter.getEncounterId();
@@ -159,9 +162,9 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		/* hide tag and refer button on offline mode */
 		tag.setVisibility(CONTEXT_RESTRICTED);
 		refer.setVisibility(CONTEXT_RESTRICTED);
-			
-	}
-	
+				
+		}		
+		
 	/* called when phone is connected to a network */
 	private void initOnlineMode() {
 		
@@ -174,10 +177,10 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 		if(patient.getPID() == NULL){
 			retrievePatientAPI(patient_id);
-			
+		
 			//temp
 			System.out.println("patient not in DB. searching ONLINE..");
-			
+		
 			tag.setText("Tag Patient");
 		}
 		else{
@@ -186,14 +189,14 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 		retrieveEncounterAPI(patient_id);
 	}
-
-
-	/**
-	 * @author Jake Randolph B Muncada
-	 * @date 5/16/2014
-	 * 
-	 * Edited: Put the expandable list here, instead of listview
-	 */
+		
+		
+		/**
+		 * @author Jake Randolph B Muncada
+		 * @date 5/16/2014
+		 * 
+		 * Edited: Put the expandable list here, instead of listview
+		 */
 	private void setupExpandableList() {
 		final ExpandableListView expandableList = getExpandableListView(); // you can use (ExpandableListView) findViewById(R.id.list)
 		//final ExpandableListView expandableList = (ExpandableListView) findViewById(R.id.list);
@@ -207,7 +210,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		for(int i=0; i<encounters.size();i++){
 			encounter = encounters.get(i);
 			
-			setChildData(patient_id, encounter_id);
+		setChildData(patient_id, encounter_id);
 			System.out.println(encounter.getEncounterId());
 		}
 		
@@ -231,9 +234,9 @@ public class PatientInfoActivity extends ExpandableListActivity {
 				//Toast.makeText(getApplicationContext(),"groupPosition:"+groupPosition+" ", Toast.LENGTH_SHORT).show();
 			}
 		});
-	
+		
 	}
-
+	
 	/* set contents of layout elements based on patient info */
 	private void setViewsContents() {
 		
@@ -376,6 +379,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		ArrayList<Object> child = new ArrayList<Object>();
 		PatientAdapter db = new PatientAdapter(this);
 		
+		// MEDICAL HISTORY / ENCOUNTERS
 		ArrayList<Encounter> encounterList = db.getPatientEncounter(patient_id);
 		for (int i = 0; i < encounterList.size(); i++) {
 			child.add(encounterList.get(i));
@@ -383,22 +387,24 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
+		// PREVIOUS REQUESTS / LAB REQUESTS
 		for (int i = 0; i < encounterList.size(); i++) {
 			child.add(encounterList.get(i));
 		}
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
-		for (int i = 0; i < encounterList.size(); i++) {
-			child.add(encounterList.get(i));
+		// REFERRALS
+		ArrayList<ReferralHelper> refList = db.getReferralHelpers(encounter_id);
+		for (int i = 0; i < refList.size(); i++) {
+			child.add(refList.get(i));
 		}
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
-		/* should be changed to DoctorAdapter */
-		DatabaseAdapter db1 = new DatabaseAdapter(this);
-		
-		ArrayList<Soap> soapList = db1.getDoctorNotes(encounter_id);
+		// NOTES
+		ArrayList<Notes> noteList = db.getDoctorNotes(encounter_id);
+		Log.d("noteList size", ""+noteList.size());
 		child.add("ADD NEW NOTES");
 		for (int i = 0; i < soapList.size(); i++) {
 			child.add(soapList.get(i));
