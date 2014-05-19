@@ -6,8 +6,12 @@
 
 package com.example.model;
 
+import java.util.ArrayList;
+
 public class LabRequest 
 {
+	private ArrayList<LabService> services;
+	
 	private int reference_number;
 	private int encounter_number;
 	private String service_code;
@@ -36,34 +40,36 @@ public class LabRequest
 		
 	}
 	
-	public void setRequestNumber(int referencenumber)
+	public void setRequestNumber(int reference_number)
 	{
-		reference_number = referencenumber;
+		this.reference_number = reference_number;
 	}
 	
-	public void setEncounterNumber(int encounternumber)
+	public void setEncounterNumber(int encounter_number)
 	{
-		encounter_number = encounternumber;
+		this.encounter_number = encounter_number;
 	}
 	
-	public void setServiceCode(String servicecode)
+	public void setServiceCode(String service_code)
 	{
-		service_code =servicecode;
+		this.service_code =service_code;
 	}
 	
-	public void setServiceName(String servicename)
+	public void setServiceName(String service_name)
 	{
-		service_name = servicename;
+		this.service_name = service_name;
 	}
 	
-	public void setQuantity(int q)
+	public void setQuantity(int quantity)
 	{
-		quantity = q;
+		this.quantity = quantity;
 	}
 	
+	public void setServices(ArrayList<LabService> services){
+		this.services = services;
+	}
 	
-	
-	public int getReferenceNumber()
+	public int getRequestNumber()
 	{
 		return reference_number;
 	}
@@ -86,6 +92,10 @@ public class LabRequest
 	public int getQuantity()
 	{
 		return quantity;
+	}
+	
+	public ArrayList<LabService> getServices(){
+		return services;
 	}
 	
 

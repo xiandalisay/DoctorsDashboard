@@ -131,8 +131,7 @@ public class PatientActivity extends BaseActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
         	    }
-        	    //System.out.println(displayinfo);
-        	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
+
         	    	
         	    text1.setText(displayname);
         	    text2.setText(displayinfo);

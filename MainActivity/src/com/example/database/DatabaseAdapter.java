@@ -152,13 +152,14 @@ public class DatabaseAdapter extends Data {
 			String zipcode = cursor.getString(cursor.getColumnIndex("zipcode"));
 			
 			patient = new Patient(pid, lastname, firstname, middlename, sex, birthdate, street, city, province, zipcode);
-			return patient;
 		}
 		else{
 			patient = new Patient();
-			return patient;
 		}
 	
+		db.close();
+		
+		return patient;
 		
 		
 	}
@@ -192,16 +193,22 @@ public class DatabaseAdapter extends Data {
 	}
 	*/
 	public boolean checkDoctorCredentials(String username, String password){
-		db = dbHandler.getWritableDatabase();
+		db = dbHandler.getReadableDatabase();
 		String query = 
 			"SELECT username, password FROM " + TABLE_DOCTOR + " WHERE username = '" + username + "' AND password = '" + password + "'";
+		
 		Cursor cursor = db.rawQuery(query, null);
+		
 		if(cursor.moveToFirst()){
+			db.close();
 			return true;
 		}
 		else{
+			db.close();
 			return false;
 		}
+		
+		
 	}
 	
 	public ArrayList<Patient> searchPatient(String search)
@@ -308,7 +315,7 @@ public class DatabaseAdapter extends Data {
 				}
 			}
 			
-		
+		db.close();
 		return patients;
 	}
 	

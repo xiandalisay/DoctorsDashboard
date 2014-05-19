@@ -40,6 +40,7 @@ public class DepartmentAdapter extends Data {
 		else{
 			return false;
 		}
+		
 	}
 	
 	/*
@@ -51,7 +52,6 @@ public class DepartmentAdapter extends Data {
 		ContentValues values = new ContentValues();
 		
 		try {
-			db.beginTransaction();
 			for(int i = 0; i < dept.size(); i++) {
 				values.put(DEPT_ID, dept.get(i).getDepartmentNumber());	
 				values.put(DEPT, dept.get(i).getDepartmentName());	
@@ -66,7 +66,6 @@ public class DepartmentAdapter extends Data {
 			}
 			finally
 			{
-			  db.endTransaction();
 			  db.close();
 			}
 	}
@@ -92,14 +91,16 @@ public class DepartmentAdapter extends Data {
 					deptlist.add(dept);
 				}while(cursor.moveToNext());
 				Log.d("DepartmentAdapter getDepartments", "successful");
-				db.close();
 				return deptlist;
 			}
 			
 		}
 		catch(SQLException se) {
 			Log.d("DepartmentAdapter getDepartments",Log.getStackTraceString(se));
+		}finally {
+			db.close();
 		}
+		
 		return null;	
 	}
 	

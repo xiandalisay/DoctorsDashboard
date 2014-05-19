@@ -40,7 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL(Data.CREATE_TABLE_LAB_RESULT);
 			db.execSQL(Data.CREATE_TABLE_NOTES);
 			
-			onCreateDummy(db);
+			//onCreateDummy(db);
 			Log.d("DatabaseHandler","Database onCreateTables Successful");
 		} catch (SQLException se) {
 			System.out.println("did not");

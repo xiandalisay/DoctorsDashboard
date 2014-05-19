@@ -93,6 +93,8 @@ public class PatientAdapter extends Data {
 		catch(Exception e)
 		{
 			System.out.println(e);
+		}finally {
+			db.close();
 		}
 		
 		return patient;
@@ -103,29 +105,67 @@ public class PatientAdapter extends Data {
 		db = dbHandler.getWritableDatabase();
 		encounters = new ArrayList<Encounter>();
 		try {
-			String query = "SELECT encounter.encounter_id, encounter.date_encountered, encounter.type_patient, encounter.message_complaint, encounter.pid FROM encounter INNER JOIN patient ON encounter.pid = patient.pid WHERE patient.pid = " + patient_id + " ORDER BY date_encountered";
+			String query = "SELECT " 
+								+ ENCOUNTER_ID + ","
+								+ PATIENT + ","
+								+ COMPLAINT + ","
+								+ ENCOUNTERED + " " + 
+							"FROM "
+								+ TABLE_ENCOUNTER + " " +
+							"WHERE "
+								+ PID + "=" + patient_id;
 			
 			Cursor cursor = db.rawQuery(query,  null);
+			
 			if(cursor.moveToFirst()){
 				do{
-					int eid = cursor.getInt(cursor.getColumnIndex("encounter_id"));
-					String dateencountered = cursor.getString(cursor.getColumnIndex("date_encountered"));
-					String typepatient = cursor.getString(cursor.getColumnIndex("type_patient"));
-					String message = cursor.getString(cursor.getColumnIndex("message_complaint"));
-					int pid = cursor.getInt(cursor.getColumnIndex("pid"));
-					Encounter encounter = new Encounter(eid, typepatient, message, dateencountered, pid);
+					int pid = patient_id;
+					int encounter_id = cursor.getInt(cursor.getColumnIndex(ENCOUNTER_ID));
+					String date_encountered = cursor.getString(cursor.getColumnIndex(ENCOUNTERED));
+					String patient_type = cursor.getString(cursor.getColumnIndex(PATIENT));
+					String complaint = cursor.getString(cursor.getColumnIndex(COMPLAINT));
+					
+					Encounter encounter = new Encounter(encounter_id, patient_type, complaint, date_encountered, pid);
+					
 					encounters.add(encounter);
 				}while(cursor.moveToNext());
 			}
 		} catch (Exception e) {
 			Log.d("getPatientEncounter", e.getMessage());
-		}
-		finally {
+		}finally {
 			db.close();
 		}
+	
 		Log.d("getPatientEncounter", "Done successfully.");
 		return encounters;
 	}
 	
-	
+	/* insert ArrayList of patient profiles to mobile DB */
+	public void insertPatients(ArrayList<Patient> patients) {
+		
+		db = dbHandler.getWritableDatabase();
+		values = new ContentValues();
+		
+		try {
+			for(int i = 0; i < patients.size(); i++) {
+				values.put(PID, patients.get(i).getPID());	
+				values.put(NAME_FIRST, patients.get(i).getNameFirst().toUpperCase());	
+				values.put(NAME_MIDDLE, patients.get(i).getNameMiddle().toUpperCase());	
+				values.put(NAME_LAST, patients.get(i).getNameLast().toUpperCase());	
+				values.put(STREET , patients.get(i).getStreet());
+				values.put(BIRTH , patients.get(i).getBirthdate());
+				values.put(CITY, patients.get(i).getCity());	
+				values.put(PROVINCE, patients.get(i).getProvince());
+				values.put(ZIPCODE, patients.get(i).getZipCode());
+				values.put(SEX , patients.get(i).getSex());
+				
+				db.insertWithOnConflict(TABLE_PATIENT, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+			 }
+		}
+		catch (SQLException se) {
+			Log.d("PatientAdapter", Log.getStackTraceString(se));
+		}finally {
+			db.close();
+		}
+	}
 }

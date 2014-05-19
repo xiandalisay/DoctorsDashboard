@@ -6,10 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.database.EncounterAdapter;
+import com.example.database.LaboratoryAdapter;
+import com.example.database.PatientAdapter;
 import com.example.model.Encounter;
+import com.example.model.LabRequest;
+import com.example.model.LabService;
 import com.example.model.Patient;
 import com.example.model.Rest;
 import com.example.parser.EncounterParser;
+import com.example.parser.LabRequestParser;
 import com.example.parser.PatientParser;
 
 public class InitialSyncActivity extends InitialActivity {
@@ -18,6 +23,7 @@ public class InitialSyncActivity extends InitialActivity {
 
 	private ArrayList<Encounter> encounters;
 	private ArrayList<Patient> patients;
+	private ArrayList<LabRequest> requests;
 	
 	private ArrayList<String> PIDs;
 	private ArrayList<String> EIDs;
@@ -28,6 +34,7 @@ public class InitialSyncActivity extends InitialActivity {
 	private final static String TAGGED_URL = "/encounter/tagged/";
 	private final static String PATIENT_URL = "/patient/show/";
 	private final static String ENCOUNTER_URL = "/encounter/show/";
+	private final static String LAB_REQUEST_URL = "/laboratory/vieworder/";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,24 +42,17 @@ public class InitialSyncActivity extends InitialActivity {
 		
 		retrieveBundle();
 		
-		patients = new ArrayList<Patient>();
-		
 		retrieveTaggedByDoctorAPI();
-		
-		
-//		for(int i=0; i<PIDs.size() ; i++)
-//		{
-//			alertMessage("PID: " + PIDs.get(i));
-//		}
-		
 		retrievePatientsAPI();
 		retrieveEncountersAPI();
-		//retrieveLabRequestsAPI();
+		retrieveLabRequestsAPI();
+		//retrieveDoctorsNotesAPI();
 		
 		showLoginActivity();
 		finish();
 	}
-	
+
+	/* retrieve all passed information from previous activity*/
 	private void retrieveBundle() {
 		intent = getIntent();
 		extras = intent.getExtras();
@@ -61,6 +61,7 @@ public class InitialSyncActivity extends InitialActivity {
 		personnel_id = extras.getString("EXTRA_PERSONNEL_ID");
 	}
 
+	/* retrieve all the encounter_nr together with the patient_id that is tagged to a doctor*/
 	private void retrieveTaggedByDoctorAPI() {
 		
 		Rest rest = new Rest("GET", this, "Retrieving tagged encounters..");
@@ -88,7 +89,12 @@ public class InitialSyncActivity extends InitialActivity {
 		EIDs = parser.getTaggedEID();
 	}
 
+	/* retrieve all patients that is associated with a tagged encounter to a doctor */
 	private void retrievePatientsAPI() {
+		
+		PatientAdapter db = new PatientAdapter(this);
+		patients = new ArrayList<Patient>();
+		
 		for(int i=0; i<PIDs.size(); i++){
 			
 			Rest rest = new Rest("GET", this, "Retrieving patient profiles..");
@@ -114,8 +120,12 @@ public class InitialSyncActivity extends InitialActivity {
 			
 			patients.add(parser.getPatient());
 		}
+		
+		/* insert retrieved patients to mobile DB */
+		db.insertPatients(patients);
 	}
 
+	/* retrieve all encounters tagged to a doctor */
 	private void retrieveEncountersAPI() {
 		
 		EncounterAdapter db = new EncounterAdapter(this);
@@ -151,10 +161,52 @@ public class InitialSyncActivity extends InitialActivity {
 			encounters = (parser.getEncounters());
 			
 			/* insert encounters of patient(i) in mobile DB */
-			//db.insertEncounters(encounters);
+			db.insertEncounters(encounters);
+			db.insertDoctorEncounters(encounters, Integer.parseInt(personnel_id));
 		}		
 	}
 
+	/* retrieve thru web service all the laboratory request for each encounter tagged to a doctor */
+	private void retrieveLabRequestsAPI() {
+		
+		LaboratoryAdapter db = new LaboratoryAdapter(this);
+		requests = new ArrayList<LabRequest>();
+		
+		for(int i=0; i<EIDs.size(); i++){
+			
+			/* clear contents of ArrayList */
+			requests.clear();
+			
+			rest = new Rest("GET", this, "");
+			
+			/* get base_url associated with doctor */
+			rest.setURL(base_url + LAB_REQUEST_URL);
+			
+			/* add pid as parameter */
+			rest.addRequestParams("encounter_nr", EIDs.get(i));
+			
+			/* process request service request */
+			rest.execute();
+			
+			/* check if connection was successful */
+			System.out.println("processing request..");
+				
+			/* wait until data is retrieved, there is delay in retrieving data*/
+			while(rest.getContent() == null){} 
+				
+			System.out.println("Data Received:\n" + rest.getContent());
+			
+			LabRequestParser parser = new LabRequestParser(rest.getContent());
+			
+			/* retrieve and parse labo requests of each encounter of patient(i) */
+			requests = (parser.getRequestService());
+		
+			/* insert encounters of patient(i) in mobile DB */
+			db.insertLabRequestsEncounter(requests);
+
+		}
+	}
+	
 	/* starts Login Activity */
 	public void showLoginActivity(){
 		intent = new Intent(this, LoginActivity.class);

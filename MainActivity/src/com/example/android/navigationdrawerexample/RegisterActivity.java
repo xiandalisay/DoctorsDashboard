@@ -99,9 +99,9 @@ public class RegisterActivity extends InitialActivity{
 		 /* if inputs are all valid, submits them thru API */
 		if(prepareCredentials()){
 			if(submitCredentials()){
-				if(insertDoctor()){					
+//				if(insertDoctor()){					
 					startInitialSync();
-				}
+//				}
 			}
 		}
 	}
@@ -110,7 +110,7 @@ public class RegisterActivity extends InitialActivity{
 	public boolean prepareCredentials(){
 		
 		/* Convert data type from EditText -> Editable -> String */ 
-		convertInputText();
+		//convertInputText();
 		
 		/* Validate inputs from user (i.e. empty field, unequal passwords) */
 		if(!validateInputs()){

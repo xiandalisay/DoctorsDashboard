@@ -55,6 +55,8 @@ public class AccountsAdapter extends Data{
 		cursor = db.rawQuery(query, null);
 		cursor.moveToFirst();
 		System.out.println(cursor.getInt(0));
+		
+		db.close();
 		return cursor.getInt(0);
 	}
 }

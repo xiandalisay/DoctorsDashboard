@@ -1,6 +1,9 @@
+/*
+ * Created by: Alvin Jay Cosare
+ * Date: 05/14/14
+ */
 package com.example.android.navigationdrawerexample;
 
-import com.example.model.HelperSharedPreferences;
 import com.example.model.Preferences;
 
 import android.app.Activity;
@@ -20,7 +23,7 @@ public class InitialActivity extends Activity{
     
     /* checks if phone is connected to a network */
 	protected  void checkNetwork() {
-		// TODO Auto-generated method stub
+    	
 		Preferences pref =  new Preferences();
 		System.out.println("network?");
 		if(pref.isNetworkAvailable(this)){
@@ -35,6 +38,7 @@ public class InitialActivity extends Activity{
 			
 	}
     
+    /* checks if mobile device is connected to a network */
     protected boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
 	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
