@@ -19,18 +19,18 @@ public class UntagPatientActivity extends InitialActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		 
 		retrieveBundle();
 		
 		submitUntag();
-		deleteRelatedData();
+		//deleteRelatedData();
 		
 		finish();
 	}
 
 	private void submitUntag() {
 		
-		rest = new Rest("POST");
+		rest = new Rest("PUT");
 		
 		/* setup API URL */
 		rest.setURL(
@@ -38,17 +38,13 @@ public class UntagPatientActivity extends InitialActivity {
 					"/encounter/untagpatient/"
 					);
 		
+		logMessage(rest.getURL());
+
 		rest.addRequestParams("encounter_nr", encounter_id + "");
 		rest.addRequestParams("doctor_nr", getPersonnelNumber() + "");
 		
 		/* process request service request */
 		rest.execute();
-		
-		/* check if connection was successful */
-		while(rest.getContent() == null){}
-		
-		System.out.println("Data Received:\n" + rest.getContent()); 
-			
 	}
 
 	/* retrieves base_url */

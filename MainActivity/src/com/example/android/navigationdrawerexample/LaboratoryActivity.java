@@ -37,7 +37,7 @@ public class LaboratoryActivity extends Activity {
 		if(isNetworkAvailable()){
 					
 			//Rest for patient
-			Rest rest_patient = new Rest("GET", this);
+			Rest rest_patient = new Rest("GET", this, "");
 			rest_patient.setURL(url_patient);
 			rest_patient.addRequestParams("id", Integer.toString(patient_id));
 			rest_patient.execute();
@@ -58,7 +58,7 @@ public class LaboratoryActivity extends Activity {
 		EditText pid_edittext = (EditText) findViewById(R.id.PIDLaboratory);
 		EditText fullname_edittext = (EditText) findViewById(R.id.fullNameLaboratory);
 		
-		String pid = Integer.toString(patient.getPid());
+		String pid = Integer.toString(patient.getPID());
 		String fullname = patient.getFullName();
 		pid_edittext.setText(pid);
 		fullname_edittext.setText(fullname);

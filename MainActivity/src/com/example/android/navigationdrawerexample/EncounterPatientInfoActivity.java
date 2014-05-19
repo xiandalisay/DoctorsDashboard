@@ -68,7 +68,7 @@ public class EncounterPatientInfoActivity extends InitialActivity {
 		if(isNetworkAvailable()){
 			
 			//Rest for patient
-			Rest rest_patient = new Rest("GET", this);
+			Rest rest_patient = new Rest("GET", this, "");
 			rest_patient.setURL(url_patient);
 			rest_patient.addRequestParams("id", Integer.toString(patient_id));
 			rest_patient.execute();
@@ -83,7 +83,7 @@ public class EncounterPatientInfoActivity extends InitialActivity {
 			}
 			
 			//Rest for encounter
-			Rest rest_encounter = new Rest("GET", this);
+			Rest rest_encounter = new Rest("GET", this, "");
 			rest_encounter.setURL(url_encounter);
 			//rest_encounter.addRequestParams("id", Integer.toString(patient_id));
 			rest_encounter.execute();

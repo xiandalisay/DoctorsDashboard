@@ -1,27 +1,34 @@
 /*
+ * Created by: Alvin Jay Cosare
+ * Date created: 05/14/14
  * 
  * Updated By: Christian Joseph Dalisay\
  * Updated On: 05/15/14
+ * 
+ * Description:
+ * 		This activity is created when doctor clicks the "tag" button
  */
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
 
-import com.example.database.DepartmentAdapter;
+import android.os.Bundle;
+
 import com.example.database.EncounterAdapter;
+import com.example.database.PatientAdapter;
 import com.example.model.Encounter;
+import com.example.model.Patient;
 import com.example.model.Preferences;
 import com.example.model.Rest;
-import com.example.parser.DepartmentParser;
 import com.example.parser.EncounterParser;
 import com.example.parser.PatientParser;
-
-import android.os.Bundle;
 
 public class TagPatientActivity extends InitialActivity {
 
 	private Rest rest;
+	private Patient patient;
 	
+	private int patient_id;
 	private int encounter_id;
 	
 	@Override
@@ -30,14 +37,27 @@ public class TagPatientActivity extends InitialActivity {
 		
 		retrieveBundle();
 		
+		//print encounter_id
 		System.out.println(encounter_id);
 		
 		submitTag();
+		getPatientFromTag();
 		getEncounterFromTag();
+		//Add code to retrieve notes of specific encounter
 		
 		finish();
 	}
 
+	/* retrieve passed data from parent intent */
+	private void retrieveBundle() {
+		intent = getIntent();
+		extras = intent.getExtras();
+		
+		patient_id = extras.getInt("EXTRA_PATIENT_ID");
+		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
+	}
+	
+	/* submit tag patient POST request */
 	private void submitTag() {
 		
 		rest = new Rest("POST");
@@ -48,8 +68,10 @@ public class TagPatientActivity extends InitialActivity {
 					"/encounter/tagpatient/"
 					);
 		
+		logMessage(rest.getURL());
+		
 		rest.addRequestParams("encounter_nr", encounter_id + "");
-		rest.addRequestParams("doctor_nr", getPersonnelNumber() + "");
+		rest.addRequestParams("doctor_nr", "102354"); //getPersonnelNumber() + "");
 		
 		/* process request service request */
 		rest.execute();
@@ -61,29 +83,59 @@ public class TagPatientActivity extends InitialActivity {
 			
 	}
 
-	/* retrieves base_url */
+	/* retrieves base_url from preferences */
 	private String getBaseURL() {
 		return Preferences.getBaseURL(this);
 	}
 	
-	/* retrieves base_url */
+	/* retrieves doctor_nr from preferences */
 	private int getPersonnelNumber() {
 		return Preferences.getPersonnelNumber(this);
 	}
 
-	/* retrieve passed data from parent intent */
-	private void retrieveBundle() {
-		intent = getIntent();
-		extras = intent.getExtras();
+	private void getPatientFromTag() {
+		if(isNetworkAvailable()){
+			
+			Rest rest = new Rest("GET", this, "");
+			
+			/* setup API URL */
+			rest.setURL(
+						"http://121.97.45.242/segservice"+ 
+						"/patient/show/"
+						);
+			
+			rest.addRequestParams("id", patient_id + "");
+			
+			/* process request service request */
+			rest.execute();
+			
+						
+			/* check if connection was successful */
+			while(rest.getContent() == null){}
 		
-		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
+			
+			System.out.println("Data Received:\n" + rest.getContent()); 
+			
+			if(rest.getResult()) {
+				String content = rest.getContent();
+				PatientParser parser = new PatientParser(content);
+				patient = parser.getPatient();
+				PatientAdapter db = new PatientAdapter(this);
+				
+				db.insertPatient(patient);
+			}
+		} 
+		else{
+			alertMessage("Network Unavailable");
+		}
+		
 	}
-
+	
 	/* Gets specific encounter from the API by encounter_id */
 	public void getEncounterFromTag() {
+		
 		if(isNetworkAvailable()){
-	
-			Rest rest = new Rest("GET",this);
+			Rest rest = new Rest("GET",this, "Retrieving encounter of patient..");
 			/* setup API URL */
 			rest.setURL(
 						"http://121.97.45.242/segservice"+ 
@@ -95,21 +147,25 @@ public class TagPatientActivity extends InitialActivity {
 			/* process request service request */
 			rest.execute();
 			
+						
 			/* check if connection was successful */
 			while(rest.getContent() == null){}
+		
 			
 			System.out.println("Data Received:\n" + rest.getContent()); 
 			
 			if(rest.getResult()) {
 				String content = rest.getContent();
-				System.out.println(content);
 				EncounterParser encounter_parser = new EncounterParser(content);
 				ArrayList<Encounter> encounters = encounter_parser.getEncounters();
-				EncounterAdapter enc = new EncounterAdapter(this);
-				enc.insertDoctorEncounter(encounters.get(0).getEncounterId(),Preferences.getPersonnelPreference(this));
-				enc.insertEncounters(encounters);
+				EncounterAdapter db = new EncounterAdapter(this);
+				db.insertDoctorEncounter(encounters.get(0).getEncounterId(),Preferences.getPersonnelPreference(this));
+				db.insertEncounters(encounters);
 			}
 		} 
+		else{
+			alertMessage("Network Unavailable");
+		}
 		
 	}
 

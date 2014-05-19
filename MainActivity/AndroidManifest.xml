@@ -48,11 +48,6 @@
         <activity
             android:name="com.example.android.navigationdrawerexample.MainActivity"
             android:label="@string/app_name" >
-        <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.example.android.navigationdrawerexample.PatientActivity"
@@ -82,15 +77,15 @@
             android:name="com.example.android.navigationdrawerexample.InitializeActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.example.android.navigationdrawerexample.LoginActivity"
             android:label="@string/title_activity_register"
             android:parentActivityName="com.example.android.navigationdrawerexample.InitializeActivity" >
+      		<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.example.android.navigationdrawerexample.RegisterActivity"

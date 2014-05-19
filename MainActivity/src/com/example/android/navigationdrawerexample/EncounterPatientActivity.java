@@ -54,7 +54,7 @@ public class EncounterPatientActivity extends BaseActivity {
 		patients = new ArrayList<Patient>();
 		if(isNetworkAvailable()){
 
-			Rest rest = new Rest("GET",this);
+			Rest rest = new Rest("GET",this,"");
 			rest.setURL(url);
 			rest.execute();
 			while(rest.getContent() == null){}
@@ -113,7 +113,7 @@ public class EncounterPatientActivity extends BaseActivity {
 				
 				// Starting single contact activity
 				patient = patients.get(position);
-				patient_id = patient.getPid();
+				patient_id = patient.getPID();
 				//encounter_id = getLatestEncounter(patient_id);
 				
 				/* saves the patient_id and encounter_id to be passed to the next activity */
@@ -215,7 +215,7 @@ public class EncounterPatientActivity extends BaseActivity {
 			    				String patientname = text.getText().toString();
 			    				// Starting single contact activity
 			    				patient = patients.get(position);
-			    				int patient_id = patient.getPid();
+			    				int patient_id = patient.getPID();
 			    				//Toast.makeText(getApplicationContext(), "Clicked " + patient_id, Toast.LENGTH_SHORT).show();
 			    				intent = new Intent(getApplicationContext(), EncounterPatientInfoActivity.class);
 			    				extras = new Bundle();
