@@ -91,18 +91,6 @@
             android:padding="30dip"
             android:src="@drawable/ic_newcalculations2" />
 
-        <ImageButton
-            android:id="@+id/imageButton1"
-            android:layout_width="107dp"
-            android:layout_height="107dp"
-            android:layout_below="@+id/text_firstname"
-            android:layout_marginTop="18dp"
-            android:layout_toLeftOf="@+id/text_firstname"
-            android:adjustViewBounds="false"
-            android:onClick="showPatientActivity"
-            android:padding="30dip"
-            android:src="@drawable/ic_newpatient2" />
-
         <TextView
             android:id="@+id/text_lastname"
             android:layout_width="wrap_content"
@@ -124,24 +112,64 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="107dp"
+            android:layout_height="107dp"
+            android:layout_below="@+id/textView4"
+            android:layout_marginTop="21dp"
+            android:layout_toLeftOf="@+id/text_firstname"
+            android:src="@drawable/ic_newmanualsync" />
+
+        <ImageButton
             android:id="@+id/imageButton3"
             android:layout_width="107dp"
             android:layout_height="107dp"
-            android:layout_centerVertical="true"
+            android:layout_below="@+id/text_lastname"
+            android:layout_marginTop="13dp"
             android:layout_toLeftOf="@+id/text_firstname"
             android:onClick="showMedicalHistoryActivity"
             android:padding="30dip"
             android:src="@drawable/ic_newmedicalhistory2" />
 
-        <Button
-            android:id="@+id/logOutButton"
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="107dp"
+            android:layout_height="107dp"
+            android:layout_alignLeft="@+id/imageButton3"
+            android:layout_below="@+id/text_firstname"
+            android:layout_marginTop="17dp"
+            android:adjustViewBounds="false"
+            android:onClick="showPatientActivity"
+            android:padding="30dip"
+            android:src="@drawable/ic_newpatient2" />
+
+        <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_width="107dp"
+            android:layout_height="107dp"
+            android:layout_alignRight="@+id/textView6"
+            android:layout_alignTop="@+id/imageButton4"
+            android:src="@drawable/ic_newlogout" />
+
+        <TextView
+            android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView4"
-            android:layout_alignRight="@+id/textView6"
-            android:layout_below="@+id/textView6"
-            android:layout_marginTop="23dp"
-            android:text="LOGOUT" />
+            android:layout_alignLeft="@+id/imageButton4"
+            android:layout_below="@+id/imageButton4"
+            android:text="Manual Sync"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView1"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_alignRight="@+id/textView3"
+            android:layout_marginRight="12dp"
+            android:text="Logout"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </RelativeLayout>
     
