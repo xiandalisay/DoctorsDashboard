@@ -38,9 +38,11 @@ public class LoginActivity extends InitialActivity {
 	
 	
 	// Values for username and password at the time of the login attempt.
-	private String username;
-	private String password;
-
+	private String username = "seurinane";
+	private String password = "1234";
+	
+	private boolean success;
+	
 	// UI references.
 	private EditText et_username;
 	private EditText et_password;
@@ -57,6 +59,17 @@ public class LoginActivity extends InitialActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		
+		intent = getIntent();
+		extras = intent.getExtras();
+		
+		try{
+			if(extras.getBoolean("EXTRA_SUCCESS_REGISTER")){
+				alertMessage("Successfully registered");
+			}
+		}catch(NullPointerException e){
+			
+		}
+		
 		/* checks if phone is connected to a network */
 		checkNetwork();
 		/*
@@ -72,7 +85,6 @@ public class LoginActivity extends InitialActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		finish();
 	}
 
 	@Override
@@ -111,9 +123,9 @@ public class LoginActivity extends InitialActivity {
 		setInputText();
 		
 		/* Convert data type from EditText -> Editable -> String */ 
-		convertInputText();
+		//convertInputText();
 		
-		/* Validate inputs from user (i.e. empty field, unequal passwords) */
+		//* Validate inputs from user (i.e. empty field, unequal passwords) */
 		if(validateInputs()){
 			if (validateAuthtoken()){
 				successfulLogin();

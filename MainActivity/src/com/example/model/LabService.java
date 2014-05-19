@@ -8,33 +8,39 @@ package com.example.model;
 
 public class LabService 
 {
-	private int service_code;
-	private int section_code;
+	private String service_code;
+	private String section_code;
 	private String lab_service_name;
 	private String lab_section_name;
+	private String opd;
+	private String ipd;
 	
 	public LabService()
 	{
-		service_code = 0;
-		section_code = 0;
+		service_code = "";
+		section_code = "";
 		lab_service_name = "";
 		lab_section_name = "";
+		opd = "";
+		setIpd("");
 	}
 	
-	public LabService(int servicecode, int sectioncode, String labservicename, String labsectionname)
+	public LabService(String servicecode, String sectioncode, String labservicename, String labsectionname, String opd, String ipd)
 	{
 		service_code = servicecode;
 		section_code = sectioncode;
 		lab_service_name = labservicename;
 		lab_section_name = labsectionname;
+		this.opd = "";
+		this.setIpd("");
 	}
 	
-	public void setServiceCode(int servicecode)
+	public void setServiceCode(String servicecode)
 	{
 		service_code = servicecode;
 	}
 	
-	public void setSectionCode(int sectioncode)
+	public void setSectionCode(String sectioncode)
 	{
 		section_code = sectioncode;
 	}
@@ -49,12 +55,20 @@ public class LabService
 		lab_section_name = labsectionname;
 	}
 	
-	public int getServiceCode()
+	public void setOpd(String opd){
+		this.opd = opd;
+	}
+	
+	public String getIpd(){
+		return this.ipd;
+	}
+	
+	public String getServiceCode()
 	{
 		return service_code;
 	}
 	
-	public int getSectionCode()
+	public String getSectionCode()
 	{
 		return section_code;
 	}
@@ -67,5 +81,13 @@ public class LabService
 	public String getLabSectionName()
 	{
 		return lab_section_name;
+	}
+
+	public String getOpd() {
+		return ipd;
+	}
+
+	public void setIpd(String ipd) {
+		this.ipd = ipd;
 	}
 }

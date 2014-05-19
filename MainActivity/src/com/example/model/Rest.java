@@ -5,18 +5,14 @@ import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Base64;
-import android.util.Xml.Encoding;
-import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.example.parser.TokenParser;
 
 //	To import Resting, copy the .JAR files in Alvin's Seg Dropbox 
 //folder to the 'libs' folder of the chosen project. 
@@ -28,9 +24,13 @@ import com.google.resting.component.RequestParams;
 import com.google.resting.component.impl.BasicRequestParams;
 import com.google.resting.component.impl.ServiceResponse;
 import com.google.resting.method.post.PostHelper;
+import com.google.resting.method.put.PutHelper;
 
 public class Rest extends AsyncTask<String, Void, Void>{
 
+
+	private ProgressDialog pd;
+	
 	private final String USERNAME = "emr";
 	private final String PASSWORD = "3mrh1s";
 	
@@ -56,9 +56,11 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		this.method = method;
 		this.context = null;
 		
+		//temp
+		System.out.println(method);
 	}
 	
-	public Rest(String method, Context context){
+	public Rest(String method, Context context, String message){
 		params = new BasicRequestParams();
 		headers = new ArrayList<Header>();
 		headers.add(new BasicHeader("Authorization","Basic " + 
@@ -66,23 +68,14 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		port = 80;
 		this.method = method;
 		this.context = context;
-	}
-	/*
-	@Override
-    protected void onPreExecute() {
-		progressdialog = new ProgressDialog (context);
-		progressdialog.setMessage("Hulat lang...");
-		try{
-		//progressdialog.show();
-	}
-		catch(Exception e){
-			System.out.println(e);
-		}
 		
-		System.out.println("pre execute");
-    }
-    */
-	
+		pd = new ProgressDialog(context);
+		pd.setMessage(message);
+	    pd.setIndeterminate(true);
+	    pd.setCancelable(false);
+
+		
+	}
 	
 	
 	//adds key : value params
@@ -122,37 +115,57 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	
 
 	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		try{
+			pd.show();
+		} catch(NullPointerException e){
+			System.out.println(e.toString() + ": no message for dialog");
+		}
+	}
+
+	@Override
 	protected Void doInBackground(String... params) {
 		System.out.println(this.params);
 		
-		if(method == "GET"){
+		if(method.equals("GET")){
 			try{
 				response = Resting.get(url, this.params, EncodingTypes.UTF8, headers, 0);
 				content = response.getResponseString();
 				result = true;
-				//progressdialog.dismiss();
-				
 	        } catch(Exception e){
 				result = false;
 			}
 		}
-		else{
+		else if(method.equals("POST")){
 			try{
-				//response = PostHelper.get(url, port, EncodingTypes.UTF8, this.params,headers, null);
-				//EncodingTypes.UTF8, this.params,headers, null);
+				response = PostHelper.post(url, port, EncodingTypes.UTF8, this.params,headers, null);
 				content = response.getResponseString();
-				result = true;
+	        } catch(Exception e){
+				result = false;
+			}
+		}else if(method.equals("PUT")){
+			try{
+				PutHelper.put(url, EncodingTypes.UTF8, port, this.params, headers, null);
 	        } catch(Exception e){
 				result = false;
 			}
 		}
-		
 		
 		return null;
-		
 	}
 
 	
+
+	@Override
+	protected void onPostExecute(Void result) {
+		super.onPostExecute(result);
+		try{
+			pd.dismiss();
+		} catch(Exception e){
+			
+		}
+	}
 
 	public boolean getResult(){
 		return result;

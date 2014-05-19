@@ -1,18 +1,26 @@
 package com.example.android.navigationdrawerexample;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends BaseActivity {
-
+	private ProgressDialog pd;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
+        pd = new ProgressDialog(this);
     }
     
     public void showPatientActivity(View view){
+
+    	/* display progress dialog */
+		pd.setMessage("Retrieving patients..");
+		pd.show();
+		
     	Intent intent = new Intent(this, PatientActivity.class);
     	startActivity(intent);
     }
@@ -22,7 +30,14 @@ public class MainActivity extends BaseActivity {
     	startActivity(intent);
     }
     
-    public void showMedicalHistoryActivity(View view){
+    @Override
+	protected void onResume() {
+		
+		super.onResume();
+		pd.dismiss();
+	}
+
+	public void showMedicalHistoryActivity(View view){
     	Intent intent = new Intent(this, CanvassActivity.class);
     	startActivity(intent);
     }

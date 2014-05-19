@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,6 +41,8 @@ import com.example.parser.TokenParser;
 
 public class RegisterActivity extends InitialActivity{
 
+	private ProgressDialog pd;
+	
 	private Preferences pref;
 	private Registration reg;
 	private Rest rest;
@@ -93,12 +96,12 @@ public class RegisterActivity extends InitialActivity{
 	/* Called when "Register" button is clicked (refer to activity_register layout) */
 	public void processRegistration(View view){
 		
-		/* if inputs are all valid, submits them thru API */
+		 /* if inputs are all valid, submits them thru API */
 		if(prepareCredentials()){
 			if(submitCredentials()){
-				//insertDoctor();
-				startInitialSync();
-				//showLoginActivity();
+				if(insertDoctor()){					
+					startInitialSync();
+				}
 			}
 		}
 	}
@@ -113,7 +116,7 @@ public class RegisterActivity extends InitialActivity{
 		if(!validateInputs()){
 			return false;
 		}
-		*/
+		*/ 
 		
 		reg = new Registration();
 		
@@ -264,7 +267,7 @@ public class RegisterActivity extends InitialActivity{
 	/* submits credentials to server via API */
 	private boolean submitCredentials(){
 		
-		rest = new Rest("GET");
+		rest = new Rest("GET", this, "Verifying credentials...");
 		/* setup API URL */
 		try {
 			rest.setURL(
@@ -280,7 +283,7 @@ public class RegisterActivity extends InitialActivity{
 			e.printStackTrace();
 		}
 		
-		/* process request service request */
+		/* process service request */
 		rest.execute();
 		
 		/* check if connection was successful */
@@ -307,7 +310,7 @@ public class RegisterActivity extends InitialActivity{
 		System.out.println("Parsing data..\n" + content);
 		
 		if(!parser.getChild()){ 
-			Toast.makeText(getApplicationContext(), "Unauthorized Acess. Please try again.", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "Unauthorized Access. Please try again.", Toast.LENGTH_LONG).show();
 			return false;
 		}
 		else{
@@ -321,6 +324,11 @@ public class RegisterActivity extends InitialActivity{
 	/* starts Login Activity */
 	public void showLoginActivity(){
 		Intent intent = new Intent(this, LoginActivity.class);
+		
+		/* clears all activities running prior to this call */
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        
 		startActivity(intent);
 	}
 	
@@ -331,7 +339,7 @@ public class RegisterActivity extends InitialActivity{
 	}
 	
 	/* insert newly registered doctor's details to mobile DB */
-	private void insertDoctor() {
+	private boolean insertDoctor() {
 		
 		System.out.println("license_nr: " + license_nr);
 		
@@ -359,9 +367,12 @@ public class RegisterActivity extends InitialActivity{
 			/* inserting string data to the model */
 			doctor.setDoctorCredentials(DoctorData);
 			setRetrievedCredentials(doctor);
+			
+			return true;
 		}
 		else{
 			alertMessage("Account Already Exists");
+			return false;
 		}
 	}
 	
@@ -415,13 +426,13 @@ public class RegisterActivity extends InitialActivity{
 			return rootView;
 		}
 	}
-		
-		
+	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
 		finish();
 	}
-
+	
+	
 }

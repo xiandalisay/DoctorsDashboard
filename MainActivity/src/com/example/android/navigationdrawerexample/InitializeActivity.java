@@ -39,6 +39,8 @@ public class InitializeActivity extends InitialActivity{
 		DatabaseAdapter db = new DatabaseAdapter(this);
 		Preferences.createPreferences(this);
 		
+		logMessage("ok");
+		
 		/* When dummy datum client_id is used */
 		if(!checkClientId()){
 			client_id = generateClientId();

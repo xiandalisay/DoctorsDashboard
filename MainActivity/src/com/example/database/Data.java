@@ -212,7 +212,7 @@ public class Data {
 		
 	 static final String CREATE_TABLE_LAB_SERVICE =
 		"CREATE TABLE " + TABLE_LAB_SERVICE + " ( " +
-		SERVICE_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		SERVICE_ID 	+ " CHAR(10) PRIMARY KEY, " +
 		SECTION 	+ " NVARCHAR(20) NOT NULL, " +
 		SERVICE 	+ " NVARCHAR(20) NOT NULL UNIQUE " +	")";
 			
@@ -235,6 +235,7 @@ public class Data {
 		"CREATE TABLE " + TABLE_NOTES + "(" +
 		NOTES_ID		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID + " INTEGER NOT NULL REFERENCES " 	+ TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
+		TYPE		+ " CHAR(5) NOT NULL, " +
 		TITLE 		+ " NVARCHAR(30) NOT NULL, " 	+ 
 		BODY 		+ " TEXT, " 	+ 
 		CREATED  	+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime'))," +

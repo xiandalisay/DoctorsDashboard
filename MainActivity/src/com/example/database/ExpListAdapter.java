@@ -102,11 +102,14 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
 		public void onClick(View view) {
 			switch (groupPos) {
 				case INDEX_MEDICAL_HISTORY:
-					int eid = ((Encounter)child.get(childPos)).getEncounterId();
-					Bundle bundle = new Bundle();
-					bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
+					int encounter_id = ((Encounter)child.get(childPos)).getEncounterId();
+					System.out.println("clicked eid:" + encounter_id);
+					Bundle extras = new Bundle();
+					extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
+					
 					Intent intent = new Intent(view.getContext(), PatientEncounterActivity.class);
-					intent.putExtras(bundle);
+					intent.putExtras(extras);
+					
 					view.getContext().startActivity(intent);
 					break;
 				case INDEX_PREVIOUS_REQUESTS:

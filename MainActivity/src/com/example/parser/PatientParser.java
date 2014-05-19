@@ -2,6 +2,7 @@ package com.example.parser;
 
 import java.util.ArrayList;
 
+import com.example.model.Age;
 import com.example.model.Patient;
 import com.google.resting.json.JSONArray;
 import com.google.resting.json.JSONException;
@@ -9,7 +10,11 @@ import com.google.resting.json.JSONObject;
 
 public class PatientParser extends JSONParser {
 	
+	private Patient patient;
+	
 	private ArrayList<Patient> patients;
+	private ArrayList<String> PIDs;
+	
 	//private HashMap<String, String> data = new HashMap<String, String>();
 	private JSONObject json_childNode;
 	
@@ -28,6 +33,8 @@ public class PatientParser extends JSONParser {
 	private final String FATHER_OF_PATIENT = "FatherOfPatient";
 	private final String SPOUSE_OF_PATIENT = "SpouseOfPatient";
 	
+	private final int FIRST_OBJECT = 0;
+	
 	public PatientParser(String content) throws NullPointerException{
 		
 		patients = new ArrayList<Patient>();
@@ -38,6 +45,8 @@ public class PatientParser extends JSONParser {
 		}
 	}
 	
+
+
 	public ArrayList<Patient> getPatients(){
 		
 		try{
@@ -78,4 +87,76 @@ public class PatientParser extends JSONParser {
         
         return patients;
 	}
+	
+	public ArrayList<String> getPatientsPID(){
+		
+		try{
+			setJSONMainNode();
+			PIDs = new ArrayList<String>();
+			
+			JSONArray jason_array = getJSONMainNode();
+		
+			int lengthJsonArr = jason_array.length();  
+	   
+	        for(int i=0; i < lengthJsonArr; i++) 
+	        {
+	                         /****** Get Object for each JSON node.***********/
+	            JSONObject jsonChildNode = jason_array.getJSONObject(i);
+				
+				
+	                           
+	                         /******* Fetch node values **********/
+	            String    pid       			= jsonChildNode.optString(PID).toString();
+				
+				
+				PIDs.add(pid);   
+				System.out.println(pid);			
+	        }
+		}catch(Exception e){
+			System.out.println(e.toString() + "alvin was here");
+		}
+        
+        return PIDs;
+	}
+	
+	/* parse for only one patient */
+	public Patient getPatient(){
+		
+		Age patient_age = new Age();
+		
+		try{
+			setJSONMainNode();
+			JSONArray jason_array = getJSONMainNode();
+		
+			int lengthJsonArr = jason_array.length();  
+	   
+	
+	                     /****** Get Object for one JSON node.***********/
+	        JSONObject jsonChildNode = jason_array.getJSONObject(FIRST_OBJECT);
+	                       
+	                     /******* Fetch node values **********/
+	        int    pid       			= Integer.parseInt(jsonChildNode.optString(PID).toString());
+	        System.out.println("patient id:" + pid);
+			String name_last 			= jsonChildNode.optString(NAME_LAST).toString();
+			String name_first 			= jsonChildNode.optString(NAME_FIRST).toString();
+			String name_middle 			= jsonChildNode.optString(NAME_MIDDLE).toString();
+			String date_birth 			= jsonChildNode.optString(DATE_BIRTH).toString();
+			int age 					= patient_age.getAge(date_birth);
+			String sex 					= jsonChildNode.optString(SEX).toString();
+			String street1 				= jsonChildNode.optString(STREET_1).toString();
+			String city 				= jsonChildNode.optString(CITY).toString();
+			String province 			= jsonChildNode.optString(PROVINCE).toString();
+			//String country 				= jsonChildNode.optString(COUNTRY).toString();
+			String zipCode 				= jsonChildNode.optString(ZIPCODE).toString();
+			//String mother_of_patient 	= jsonChildNode.optString(MOTHER_OF_PATIENT).toString();
+			//String father_of_patient 	= jsonChildNode.optString(FATHER_OF_PATIENT).toString();
+			//String spouse_of_patient 	= jsonChildNode.optString(SPOUSE_OF_PATIENT).toString();
+			
+			patient = new Patient(pid,name_last,name_first,name_middle,sex,date_birth,street1,city,province,zipCode);	
+
+		}catch(Exception e){System.out.println(e.toString() + "alvin was here");}
+        
+        return patient;
+	}
+	
 }

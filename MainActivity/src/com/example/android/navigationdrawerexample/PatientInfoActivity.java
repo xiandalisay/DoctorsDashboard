@@ -16,6 +16,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,15 +36,19 @@ import android.widget.Toast;
 
 import com.example.database.DatabaseAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.database.PatientAdapter;
 import com.example.model.Encounter;
+import com.example.model.Notes;
 import com.example.model.Patient;
+import com.example.model.ReferralHelper;
 import com.example.model.Rest;
-import com.example.model.Soap;
 import com.example.parser.EncounterParser;
 import com.example.parser.PatientParser;
 
 public class PatientInfoActivity extends ExpandableListActivity {
 	
+	private Intent intent;
+	private Bundle extras;
 	private ArrayList<String> parentItems = new ArrayList<String>();
 	private ArrayList<Object> childItems = new ArrayList<Object>();
 	private ArrayList<Object> child;
@@ -54,15 +59,30 @@ public class PatientInfoActivity extends ExpandableListActivity {
 	private ArrayList<Encounter> encounters;
 	private ArrayList<Patient> patients;
 	
+	private EditText HRN;
+	private EditText CaseNo;
+	private EditText nameEditText;
+	private EditText genderEditText;
+	private EditText addressEditText;
+	private EditText ageEditText;
+	
+	private CheckBox histOfSmokingCheckBox;
+	private CheckBox histOfDrinkingCheckBox;
+	
 	private Button tag;
+	private Button refer;
+	
 	private String tagText;
 	
-	private int patient_id;
-	private int encounter_id;
+	private int patient_id = 0;
+	private int encounter_id = 0;
 	
 	final String url_patient = "http://121.97.45.242/segservice/patient/show";
 	final String url_encounter = "http://121.97.45.242/segservice/encounter/show";
+		
+	final static int EMPTY = 0;
 	final static int FIRST_PATIENT = 0;
+	final static int NULL = -1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,52 +90,57 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		setContentView(R.layout.activity_patient_info);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		initViews();
+		retrieveBundle(); 
 		
-		Intent intent = getIntent();
-		Bundle extras = intent.getExtras();
-		patient_id = extras.getInt("EXTRA_PATIENT_ID");
-		
-		tag = (Button) findViewById(R.id.TagPatientButton);
-		
-		DatabaseAdapter db = new DatabaseAdapter(this);
 		if(isNetworkAvailable()){
-			
-			//Rest for patient
-			Rest rest_patient = new Rest("GET", this);
-			rest_patient.setURL(url_patient);
-			rest_patient.addRequestParams("id", Integer.toString(patient_id));
-			rest_patient.execute();
-			while(rest_patient.getContent() == null){}
-			
-			if(rest_patient.getResult()){
-				String content = rest_patient.getContent();
-				PatientParser patient_parser = new PatientParser(content);
-				patients = patient_parser.getPatients();
-				patient = patients.get(FIRST_PATIENT);
-				System.out.println(patient + " lol");
-			}
-			
-			//Rest for encounter
-			Rest rest_encounter = new Rest("GET", this);
-			rest_encounter.setURL(url_encounter);
-			rest_encounter.addRequestParams("pid", Integer.toString(patient_id));
-			rest_encounter.execute();
-			
-			while(rest_encounter.getContent() == null){}
-			
-			System.out.println(rest_encounter.getContent());
-			
-			if(rest_encounter.getResult()){
-				String content = rest_encounter.getContent();
-				EncounterParser encounter_parser = new EncounterParser(content);
-				encounters = encounter_parser.getEncounters();
-			}
-			
-			System.out.println(encounters.size());
+			initOnlineMode();
+		}		
+		else{
+			initOfflineMode();
+		}
 		
+		setViewsContents();
+		setupExpandableList();
+		
+	}
+		
+	/* retrieve passed data from previous activity */
+	private void retrieveBundle() {
+			
+		intent = getIntent();
+		extras = intent.getExtras();
+			
+		patient_id = extras.getInt("EXTRA_PATIENT_ID");
+		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
+		/* check if encounter_id was passed from previous intent */
+		try{
+			encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
+			System.out.println("encounter_id:" + encounter_id);
+		}catch(Exception e){
+			System.out.println("no encounter_id");
+		}
+			}
+			
+	/* called when phone is not connected to a network */
+	private void initOfflineMode() {
+			
+		PatientAdapter db = new PatientAdapter(this);
+			
+		/* retrieve patient info from mobile DB */
+	    patient = db.getPatientProfile(patient_id);
+			
+	    /* retrieve patient's encounters from mobile DB */
+		encounters = db.getPatientEncounter(patient_id);
+			
+		
+		/* sort encounters based on encountered_data*/
 			Collections.sort(encounters, new CustomComparator());
+		
+		//temp
 			System.out.println("sorting..");
 			
+		//print tem
 			for(int i=0; i<encounters.size();i++){
 				encounter = encounters.get(i);
 				
@@ -125,51 +150,45 @@ public class PatientInfoActivity extends ExpandableListActivity {
 					System.out.println("null error");
 				}
 			}
-			System.out.println("Index: " + (encounters.size()-1));
+		
 			encounter = encounters.get(encounters.size()-1);
 			
-			System.out.println("PID: " + encounter.getPID());
-			System.out.println("EID: " + encounter.getEncounterId());
+		/* set the current encounter_id to be associated with Patient Info Page */ 
+		if(encounter_id == 0){
+			encounter_id = encounter.getEncounterId();
+		}
+		
+		/* hide tag and refer button on offline mode */
+		tag.setVisibility(CONTEXT_RESTRICTED);
+		refer.setVisibility(CONTEXT_RESTRICTED);
 				
 		}		
-		else{
-		    patient = db.getPatientProfile(patient_id);
-			encounters = db.getPatientEncounter(patient_id);
-		}
 		
-		EditText HRN = (EditText) findViewById(R.id.HRN);
-		EditText CaseNo = (EditText) findViewById(R.id.CaseNo);
-		EditText nameEditText = (EditText) findViewById(R.id.FullName);
-		EditText genderEditText = (EditText) findViewById(R.id.Gender);
-		EditText addressEditText = (EditText) findViewById(R.id.Address);
-		EditText ageEditText = (EditText) findViewById(R.id.Age);
+	/* called when phone is connected to a network */
+	private void initOnlineMode() {
 		
-		CheckBox histOfSmokingCheckBox = (CheckBox) findViewById(R.id.HistOfSmoking);
-		CheckBox histOfDrinkingCheckBox = (CheckBox) findViewById(R.id.HistOfDrinking);
+		PatientAdapter db = new PatientAdapter(this);
 		
-		histOfSmokingCheckBox.setChecked(true);
-		histOfDrinkingCheckBox.setChecked(true);
+		//temp
+		System.out.println("patient checking in db..");
 		
-		String nametext = patient.getNameLast() + ", " + patient.getNameFirst();
-		String gendertext;
+		patient = db.getPatientProfile(patient_id);
 		
-		if(patient.getSex().equals("M")){
-			gendertext = "Male";
+		if(patient.getPID() == NULL){
+			retrievePatientAPI(patient_id);
+		
+			//temp
+			System.out.println("patient not in DB. searching ONLINE..");
+		
+			tag.setText("Tag Patient");
 		}
 		else{
-			gendertext = "Female";
+			tag.setText("Undo Tag");
 		}
 		
-		HRN.setText(encounter.getPID()+"");
-		CaseNo.setText(encounter.getEncounterId()+"");
-		addressEditText.setText(patient.getAddress());
-		nameEditText.setText(nametext);
-		genderEditText.setText(gendertext);
-
+		retrieveEncounterAPI(patient_id);
+	}
 		
-		String age = String.valueOf(patient.getAge());
-		
-		ageEditText.setText(age);
 		
 		/**
 		 * @author Jake Randolph B Muncada
@@ -177,6 +196,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		 * 
 		 * Edited: Put the expandable list here, instead of listview
 		 */
+	private void setupExpandableList() {
 		final ExpandableListView expandableList = getExpandableListView(); // you can use (ExpandableListView) findViewById(R.id.list)
 		//final ExpandableListView expandableList = (ExpandableListView) findViewById(R.id.list);
 
@@ -185,7 +205,13 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		expandableList.setClickable(true);
 		
 		setGroupParents();
+		
+		for(int i=0; i<encounters.size();i++){
+			encounter = encounters.get(i);
+			
 		setChildData(patient_id, encounter_id);
+			System.out.println(encounter.getEncounterId());
+		}
 		
 		final ExpListAdapter adapter = new ExpListAdapter(parentItems, childItems);
 
@@ -210,6 +236,125 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 	}
 	
+	/* set contents of layout elements based on patient info */
+	private void setViewsContents() {
+		
+		histOfSmokingCheckBox.setChecked(true);
+		histOfDrinkingCheckBox.setChecked(true);
+		
+		String nametext = patient.getNameLast() + ", " + patient.getNameFirst();
+				
+		
+		if(patient.getSex().equals("M")){
+			genderEditText.setText("Male");
+		}
+		else{
+			genderEditText.setText("Female");
+		}
+		
+		HRN.setText(patient.getPID()+"");
+		CaseNo.setText(encounter.getEncounterId()+"");
+		
+		addressEditText.setText(patient.getAddress());
+		nameEditText.setText(nametext);
+		
+		String age = String.valueOf(patient.getAge());
+		
+		ageEditText.setText(age);
+	}
+
+	/* associate layout elements */
+	private void initViews() {
+		HRN = (EditText) findViewById(R.id.HRN);
+		CaseNo = (EditText) findViewById(R.id.CaseNo);
+		nameEditText = (EditText) findViewById(R.id.FullName);
+		genderEditText = (EditText) findViewById(R.id.Gender);
+		addressEditText = (EditText) findViewById(R.id.Address);
+		ageEditText = (EditText) findViewById(R.id.Age);
+		
+		histOfSmokingCheckBox = (CheckBox) findViewById(R.id.HistOfSmoking);
+		histOfDrinkingCheckBox = (CheckBox) findViewById(R.id.HistOfDrinking);
+
+		tag = (Button) findViewById(R.id.TagPatientButton);
+		refer = (Button) findViewById(R.id.ReferPatientButton);
+	}
+
+	/* retrieve all encounters of a patient thru web service base on pid */
+	private void retrieveEncounterAPI(int patient_id2) {
+
+		//Rest for encounter
+		Rest rest = new Rest("GET", this, "");
+		rest.setURL(url_encounter);
+		rest.addRequestParams("pid", Integer.toString(patient_id));
+		rest.execute();
+		
+		/* wait while data is retrieved */
+		while(rest.getContent() == null){}
+		
+		//print data
+		System.out.println(rest.getContent());
+		
+		/* check if retrieving data was successful */
+		if(rest.getResult()){
+			String content = rest.getContent();
+			EncounterParser parser = new EncounterParser(content);
+			encounters = parser.getEncounters();
+		}
+		
+		try{
+			//print how many encounters
+			System.out.println("# of encounters:");// + encounters.size());	
+			
+			/* sort encounters based on encountered_data*/
+			Collections.sort(encounters, new CustomComparator());
+			
+			//temp
+			System.out.println("sorting..");
+			
+			//print to check if sorting was successful
+			for(int i=0; i<encounters.size();i++){
+				encounter = encounters.get(i);
+				
+				try{
+					System.out.println(encounter.getDateEncountered());
+				}catch(Exception e){
+					System.out.println("null error");
+				}
+			}
+			
+			/* get latest encounter if encounter_id is not set */
+			if(encounter_id == EMPTY){			
+				encounter = encounters.get(encounters.size()-1);
+			}
+			
+			//print pid and encounter_id
+			System.out.println("PID: " + encounter.getPID());
+			System.out.println("EID: " + encounter.getEncounterId());
+			
+			/* set the current encounter_id to be associated with Patient Info Page */ 
+			encounter_id = encounter.getEncounterId();
+		} catch(Exception e){
+			alertMessage("No encounters");
+		}
+	}
+
+	/* retrieve patient data from web service based on PID */
+	private void retrievePatientAPI(int patient_id2) {
+		
+		Rest rest = new Rest("GET", this, "Retrieving patient information...");
+		rest.setURL(url_patient);
+		rest.addRequestParams("id", Integer.toString(patient_id));
+		rest.execute();
+		
+		while(rest.getContent() == null){}
+		
+		String content = rest.getContent();
+		PatientParser patient_parser = new PatientParser(content);
+		patient = patient_parser.getPatient();
+		
+		System.out.println(patient.getSex() + " lol");
+	}
+
 	/**
 	 * @author Jake Randolph B Muncada
 	 * @date 5/16/2014
@@ -231,8 +376,10 @@ public class PatientInfoActivity extends ExpandableListActivity {
 	public void setChildData(int patient_id, int encounter_id) {
 
 		ArrayList<Object> child = new ArrayList<Object>();
-		DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
+		PatientAdapter db = new PatientAdapter(this);
+		DatabaseAdapter db1 = new DatabaseAdapter(this);
 		
+		// MEDICAL HISTORY / ENCOUNTERS
 		ArrayList<Encounter> encounterList = db.getPatientEncounter(patient_id);
 		for (int i = 0; i < encounterList.size(); i++) {
 			child.add(encounterList.get(i));
@@ -240,22 +387,27 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
+		// PREVIOUS REQUESTS / LAB REQUESTS
 		for (int i = 0; i < encounterList.size(); i++) {
 			child.add(encounterList.get(i));
 		}
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
-		for (int i = 0; i < encounterList.size(); i++) {
-			child.add(encounterList.get(i));
+		// REFERRALS
+		ArrayList<ReferralHelper> refList = db1.getReferralHelpers(encounter_id);
+		for (int i = 0; i < refList.size(); i++) {
+			child.add(refList.get(i));
 		}
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
-		ArrayList<Soap> soapList = db.getDoctorNotes(encounter_id);
+		// NOTES
+		ArrayList<Notes> noteList = db1.getDoctorNotes(encounter_id);
+		Log.d("noteList size", ""+noteList.size());
 		child.add("ADD NEW NOTES");
-		for (int i = 0; i < soapList.size(); i++) {
-			child.add(soapList.get(i));
+		for (int i = 0; i < noteList.size(); i++) {
+			child.add(noteList.get(i));
 		}
 		childItems.add(child);
 		
@@ -266,7 +418,8 @@ public class PatientInfoActivity extends ExpandableListActivity {
     public void showReferPatient(View view){
 	    Intent intent = new Intent(this,ReferralActivity.class);
 		Bundle extras = new Bundle();
-		extras.putInt("EXTRA_PATIENT_ID", patient.getPid());
+		extras.putInt("EXTRA_PATIENT_ID", patient.getPID());
+		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 		extras.putString("EXTRA_PATIENT_NAME_LAST", patient.getNameLast());
 		extras.putString("EXTRA_PATIENT_NAME_FIRST", patient.getNameFirst());
 		intent.putExtras(extras);
@@ -279,36 +432,39 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 		alertMessage("clicked");
 
-		EncounterAdapter enc = new EncounterAdapter(this);
+		EncounterAdapter db = new EncounterAdapter(this);
 		if(tagText.equals("Tag Patient")){
 			handleTagPatient();
 			//Add here code to save encounter details to mobile DB
-		
-		tag.setText("Undo Tag");
 		}
 		else{
 			handleUntagPatient();
 			//Add here code to remove encounter details from mobile DB
-			enc.deleteDoctorEncounter(encounter_id);
+			db.deleteDoctorEncounter(encounter_id);
 			tag.setText("Tag Patient");
 		}		
 	}
 		
 	/* handles tagging patient process */
 	private void handleTagPatient() {
-		Bundle extras = new Bundle();
+		
+		extras = new Bundle();
+		extras.putInt("EXTRA_PATIENT_ID", patient_id);
 		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
-		Intent intent = new Intent(this, TagPatientActivity.class);
+		
+		intent = new Intent(this, TagPatientActivity.class);
 		intent.putExtras(extras);
 		
 		startActivity(intent);
 		
+		tag.setText("Undo Tag");
 		alertMessage("Successfully Tagged");
 	}
 		
 	/* handles untagging patient process */
 	private void handleUntagPatient() {
-		Bundle extras = new Bundle();
+		extras = new Bundle();
+		extras.putInt("EXTRA_PATIENT_ID", patient_id);
 		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 		
 		Intent intent = new Intent(this, UntagPatientActivity.class);

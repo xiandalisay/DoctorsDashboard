@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.example.android.navigationdrawerexample.MyOnClickListener;
 import com.example.database.DatabaseAdapter;
 import com.example.model.Encounter;
-import com.example.model.Soap;
 
 public class PatientEncounterActivity extends ExpandableListActivity{
 
@@ -162,14 +161,14 @@ public class PatientEncounterActivity extends ExpandableListActivity{
 		}
 		childItems.add(child);
 		child = new ArrayList<Object>();
-		
+		/*
 		ArrayList<Soap> soapList = db.getDoctorNotes(encounter_id);
 		child.add("ADD NEW NOTES");
 		for (int i = 0; i < soapList.size(); i++) {
 			child.add(soapList.get(i));
 		}
 		childItems.add(child);
-		
+		*/
 		/*
 		// Android
 		ArrayList<String> child = new ArrayList<String>();

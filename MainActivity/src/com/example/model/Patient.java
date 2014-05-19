@@ -83,12 +83,12 @@ public class Patient {
 	}
 	
 	public void setPatient(Patient rPatient) {
-		setPid(rPatient.patient_pid);
+		setPID(rPatient.patient_pid);
 		setNameLast(rPatient.patient_name_last);
 		setNameFirst(rPatient.patient_name_first);
 	}
 	
-	public void setPid (int pid) {
+	public void setPID (int pid) {
 		this.patient_pid = pid;
 	}
 	
@@ -108,7 +108,7 @@ public class Patient {
 		return this;
 	}
 	
-	public int getPid() {
+	public int getPID() {
 		return this.patient_pid;
 	}
 	
@@ -141,7 +141,21 @@ public class Patient {
 		return this.patient_street + ", " + this.patient_city + " " + this.patient_province; 
 	}
 	
+	public String getStreet(){
+		return this.patient_street;
+	}
 	
+	public String getCity(){
+		return this.patient_city;
+	}
+	
+	public String getProvince(){
+		return this.patient_province;
+	}
+
+	public String getZipCode(){
+		return this.patient_zipcode;
+	}
 	
 	public int getAge()
 	{

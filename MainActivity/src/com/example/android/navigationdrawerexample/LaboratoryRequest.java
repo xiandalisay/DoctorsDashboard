@@ -1,11 +1,14 @@
 package com.example.android.navigationdrawerexample;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class LaboratoryRequest extends Activity {
 
@@ -13,10 +16,10 @@ public class LaboratoryRequest extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_laboratory_request);
-		//getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+		
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
+		ListView listview = (ListView) findViewById(R.id.servicesList);
 	}
 
 	/**
@@ -50,6 +53,16 @@ public class LaboratoryRequest extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void showAddServices(View view){
+		Intent intent = new Intent(this, LaboratoryRequestAddService.class);
+		startActivity(intent);
+	}
+	
+	public void addRequest(View view){
+		
+		Toast.makeText(this, "clicked add request", Toast.LENGTH_SHORT).show();
 	}
 
 }

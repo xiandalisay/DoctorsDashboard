@@ -27,7 +27,7 @@ public abstract class BaseActivity extends InitialActivity{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
+ 
     private CharSequence mDrawerTitle = "Doctor's Dashboard";
     private CharSequence mTitle;
     private String[] mDashletNames;
@@ -154,9 +154,10 @@ public abstract class BaseActivity extends InitialActivity{
             else if(position == 6){
             	resetPreferences();
                 intent = new Intent(context, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
-
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
+        	
         	startActivity(intent);
             selectItem(position);
             
