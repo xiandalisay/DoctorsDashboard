@@ -27,7 +27,7 @@ public class LaboratoryRequestAddService extends Activity {
 		setupActionBar();
 		//department spinner
 		Spinner spinner_department = (Spinner) findViewById(R.id.requestingDepartmentSpinner);
-		Rest rest = new Rest("GET",this);
+		Rest rest = new Rest("GET",this, "");
 		rest.setURL(url_department);
 		rest.execute();
 		while(rest.getContent() == null){}
