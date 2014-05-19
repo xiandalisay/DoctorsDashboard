@@ -11,7 +11,7 @@ import com.google.resting.json.JSONArray;
 import com.google.resting.json.JSONException;
 import com.google.resting.json.JSONObject;
 
-public class LabRequestParser extends JSONParser{
+public class LabServiceParser extends JSONParser{
 	private ArrayList<LabRequest> labrequests;
 	//private HashMap<String, String> data = new HashMap<String, String>();
 	//private JSONObject json_childNode;
@@ -26,7 +26,7 @@ public class LabRequestParser extends JSONParser{
 	
 
 	
-	public LabRequestParser(String content) throws NullPointerException{
+	public LabServiceParser(String content) throws NullPointerException{
 		
 		labrequests = new ArrayList<LabRequest>();
 		try {

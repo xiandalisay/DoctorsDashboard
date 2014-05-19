@@ -191,7 +191,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:text="Add Request" />
+            android:text="Add Request"
+            android:onClick="addRequest" />
 
         <Button
             android:id="@+id/addItemButtonLab"
@@ -200,7 +201,8 @@
             android:layout_alignBottom="@+id/textView6"
             android:layout_alignLeft="@+id/seniorCitizenCheckBoxLaboratory"
             android:layout_below="@+id/imageView1"
-            android:text="Add Services" />
+            android:text="Add Services"
+            android:onClick="showAddServices" />
 
         <ImageView
             android:id="@+id/imageView5"

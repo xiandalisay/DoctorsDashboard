@@ -133,7 +133,7 @@ public class PatientActivity extends BaseActivity {
         	    }
         	    //System.out.println(displayinfo);
         	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
-        	    
+        	    	
         	    text1.setText(displayname);
         	    text2.setText(displayinfo);
         	    

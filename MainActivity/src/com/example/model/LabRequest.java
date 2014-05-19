@@ -14,6 +14,7 @@ public class LabRequest
 	private String service_name;
 	private int quantity;
 	
+	
 	public LabRequest()
 	{
 		reference_number = 0;
@@ -21,15 +22,18 @@ public class LabRequest
 		service_code ="";
 		service_name = "";
 		quantity = 0;
+		
+		
 	}
 	
-	public LabRequest(int referencenumber, int encounternumber, String servicecode, String servicename, int q)
+	public LabRequest(int referencenumber, int encounternumber, String servicecode, String servicename, int q, String transactiontype, String requestoption, String discount)
 	{
 		reference_number = referencenumber;
 		encounter_number = encounternumber;
 		service_code =servicecode;
 		service_name = servicename;
 		quantity = q;
+		
 	}
 	
 	public void setRequestNumber(int referencenumber)
@@ -56,6 +60,8 @@ public class LabRequest
 	{
 		quantity = q;
 	}
+	
+	
 	
 	public int getReferenceNumber()
 	{
