@@ -32,8 +32,8 @@ public class InitializeActivity extends InitialActivity{
 	private ArrayList<Department> departments;
 	private String client_id;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		
+	protected void onCreate(Bundle savedInstanceState) {		
+		//setContentView(R.layout.activity_loading_screen);
 		super.onCreate(savedInstanceState);
 		/*Initializes the database, and the shared preferences*/
 		DatabaseAdapter db = new DatabaseAdapter(this);
@@ -92,7 +92,6 @@ public class InitializeActivity extends InitialActivity{
 			 
 			if(rest.getResult()){
 				String content = rest.getContent();
-				System.out.println(content);
 				DepartmentParser department_parser = new DepartmentParser(content);
 				departments = department_parser.getDepartments();
 				da.insertDepartments(departments);

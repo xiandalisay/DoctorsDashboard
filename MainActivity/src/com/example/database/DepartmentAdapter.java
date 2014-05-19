@@ -89,7 +89,6 @@ public class DepartmentAdapter extends Data {
 					Department dept = new Department(cursor.getInt(cursor.getColumnIndex(DEPT_ID)),
 							cursor.getString(cursor.getColumnIndex(SHORT_DEPT)),
 							cursor.getString(cursor.getColumnIndexOrThrow(DEPT)));
-					System.out.println(cursor.getString(cursor.getColumnIndexOrThrow(DEPT)));
 					deptlist.add(dept);
 				}while(cursor.moveToNext());
 				Log.d("DepartmentAdapter getDepartments", "successful");

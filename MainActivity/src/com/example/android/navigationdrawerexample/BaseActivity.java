@@ -150,7 +150,6 @@ public abstract class BaseActivity extends InitialActivity{
         	else if(position == 5){
         		intent = new Intent(context, EncountersActivity.class);
         	}
-            
             else if(position == 6){
             	resetPreferences();
                 intent = new Intent(context, LoginActivity.class);

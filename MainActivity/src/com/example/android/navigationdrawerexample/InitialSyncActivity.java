@@ -39,10 +39,11 @@ public class InitialSyncActivity extends InitialActivity {
 		
 		retrieveTaggedByDoctorAPI();
 		
-		for(int i=0; i<PIDs.size() ; i++)
-		{
-			alertMessage("PID: " + PIDs.get(i));
-		}
+		
+//		for(int i=0; i<PIDs.size() ; i++)
+//		{
+//			alertMessage("PID: " + PIDs.get(i));
+//		}
 		
 		retrievePatientsAPI();
 		retrieveEncountersAPI();
@@ -120,7 +121,7 @@ public class InitialSyncActivity extends InitialActivity {
 		EncounterAdapter db = new EncounterAdapter(this);
 		encounters = new ArrayList<Encounter>();
 		
-		for(int i=0; i<PIDs.size(); i++){
+		for(int i=0; i<EIDs.size(); i++){
 			
 			/* clear contents of ArrayList */
 			encounters.clear();
@@ -131,7 +132,7 @@ public class InitialSyncActivity extends InitialActivity {
 			rest.setURL(base_url + ENCOUNTER_URL);
 			
 			/* add pid as parameter */
-			rest.addRequestParams("pid", PIDs.get(i));
+			rest.addRequestParams("id", EIDs.get(i));
 			
 			/* process request service request */
 			rest.execute();

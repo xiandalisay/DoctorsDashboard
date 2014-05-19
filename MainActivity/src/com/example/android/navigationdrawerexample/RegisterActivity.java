@@ -110,13 +110,12 @@ public class RegisterActivity extends InitialActivity{
 	public boolean prepareCredentials(){
 		
 		/* Convert data type from EditText -> Editable -> String */ 
-		//convertInputText();
+		convertInputText();
 		
-		/* Validate inputs from user (i.e. empty field, unequal passwords) 
+		/* Validate inputs from user (i.e. empty field, unequal passwords) */
 		if(!validateInputs()){
 			return false;
 		}
-		*/ 
 		
 		reg = new Registration();
 		

@@ -38,8 +38,8 @@ public class LoginActivity extends InitialActivity {
 	
 	
 	// Values for username and password at the time of the login attempt.
-	private String username = "seurinane";
-	private String password = "1234";
+	private String username;// = "seurinane";
+	private String password;// = "1234";
 	
 	private boolean success;
 	
@@ -49,13 +49,12 @@ public class LoginActivity extends InitialActivity {
 	
 	private View mLoginFormView;
 	private View mLoginStatusView;
-	private TextView mLoginStatusMessageView;
+	private TextView mLoginStatusMessageView; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		
@@ -80,6 +79,7 @@ public class LoginActivity extends InitialActivity {
 				&& Preferences.getRememberPreference(this)){
 			successfulLogin();
 		}
+		setContentView(R.layout.activity_login);
 	}
 	
 	@Override
@@ -102,6 +102,10 @@ public class LoginActivity extends InitialActivity {
 	
 	public void successfulLogin(){
 		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+		
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
 		startActivity(intent);	
 	}
 	
@@ -123,7 +127,7 @@ public class LoginActivity extends InitialActivity {
 		setInputText();
 		
 		/* Convert data type from EditText -> Editable -> String */ 
-		//convertInputText();
+		convertInputText();
 		
 		//* Validate inputs from user (i.e. empty field, unequal passwords) */
 		if(validateInputs()){
@@ -227,6 +231,7 @@ public class LoginActivity extends InitialActivity {
 		TokenAdapter _token = new TokenAdapter(this);
 		 
 		if(_token.isAuthtokenExists(token)) {
+			logMessage("there is");
 			return true;
 		} else {
 			return false;
