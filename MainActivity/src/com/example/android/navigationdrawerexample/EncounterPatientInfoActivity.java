@@ -85,7 +85,7 @@ public class EncounterPatientInfoActivity extends InitialActivity {
 			//Rest for encounter
 			Rest rest_encounter = new Rest("GET", this, "");
 			rest_encounter.setURL(url_encounter);
-			//rest_encounter.addRequestParams("id", Integer.toString(patient_id));
+			rest_encounter.addRequestParams("pid", Integer.toString(patient_id));
 			rest_encounter.execute();
 			while(rest_encounter.getContent() == null){}
 			if(rest_encounter.getResult()){
@@ -110,6 +110,7 @@ public class EncounterPatientInfoActivity extends InitialActivity {
 		/* duplicate code with LINE 41  */
 		/*
 		patient = db.getPatientProfile(patient_id);
+		*/
 		ListView listview = (ListView) findViewById(R.id.servicesList);
 		ArrayAdapter<Encounter> arrayAdapter = new ArrayAdapter<Encounter>(getApplicationContext(), android.R.layout.simple_list_item_1, encounters){
 			@Override
@@ -138,7 +139,7 @@ public class EncounterPatientInfoActivity extends InitialActivity {
 					}
 				});
 				
-				*/
+				
 	}
 		
 	private boolean isEncounterExists(int encounter_id){

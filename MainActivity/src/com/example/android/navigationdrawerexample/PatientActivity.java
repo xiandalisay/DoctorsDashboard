@@ -83,7 +83,7 @@ public class PatientActivity extends BaseActivity {
 			
 
 			while(rest.getContent() == null){}
-		
+			
 			
 			if(rest.getResult()){
 				String content = rest.getContent();
@@ -92,8 +92,9 @@ public class PatientActivity extends BaseActivity {
 			}
 		} 
 		else{
-			DatabaseAdapter db = new DatabaseAdapter(getApplicationContext());
-			patients = db.searchPatient("");
+		
+			DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
+			patients = adapter.searchPatient("");
 		}
 		
 		ListView listview = (ListView) findViewById(R.id.servicesList);
@@ -130,7 +131,9 @@ public class PatientActivity extends BaseActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
         	    }
-        	    	
+        	    //System.out.println(displayinfo);
+        	    displayinfo = displayinfo + " : " + patient.getBirthdate().substring(0,10);
+        	    
         	    text1.setText(displayname);
         	    text2.setText(displayinfo);
         	    
@@ -214,21 +217,21 @@ public class PatientActivity extends BaseActivity {
 		            		patients = adapter.searchPatient(searchtext);
 		            	}
 		            	
-		            	ListView listview = (ListView) findViewById(R.id.servicesList);
-		        		ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
-		                	//method to override the getView method of ArrayAdapter, this changes the color of the text view
-		                	@Override
-		                	public View getView(int position, View convertView, ViewGroup parent) {
-		                		View view = super.getView(position, convertView, parent);
-		                	    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-		                	    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-		                	    text1.setTextColor(Color.BLACK);
-		                	    text2.setTextColor(Color.BLACK);
-		                	    String displayname = "";
-		                	    String displayinfo = "";
-		                	    Patient patient = patients.get(position);
+			            ListView listview = (ListView) findViewById(R.id.servicesList);
+			            ArrayAdapter<Patient> arrayAdapter = new ArrayAdapter<Patient>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, patients){
+			            	//method to override the getView method of ArrayAdapter, this changes the color of the text view
+			            	@Override
+			            	public View getView(int position, View convertView, ViewGroup parent) {
+			            		View view = super.getView(position, convertView, parent);
+			            	    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+			            	    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+			            	    text1.setTextColor(Color.BLACK);
+			            	    text2.setTextColor(Color.BLACK);
+			            	    String displayname = "";
+			            	    String displayinfo = "";
+			            	    Patient patient = patients.get(position);
 		                	  
-		                	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
+			            	    displayname = patient.getNameLast() + ", " + patient.getNameFirst();
 		                	    Age age = new Age();
 		                	    if(patient.getSex().equals("M") || patient.getSex().equals("m")){
 		                	    	displayinfo = displayinfo + "Gender: Male";
@@ -239,7 +242,7 @@ public class PatientActivity extends BaseActivity {
 		                	    	displayinfo = displayinfo + "Gender: Female";
 		                	    	//text1.setBackgroundColor(Color.parseColor("#FF99CC"));
 		                	    	//text2.setBackgroundColor(Color.parseColor("#FF99CC"));
-		                	    }
+			            	    }
 		                	   
 		                	    try{
 		        					displayinfo = "HRN: " + Integer.toString(patient.getPID()) +
@@ -247,15 +250,15 @@ public class PatientActivity extends BaseActivity {
 		        				} catch (java.text.ParseException e) {
 		        					// TODO Auto-generated catch block
 		        					e.printStackTrace();
-		                	    }
-		                	    	
-		                	    text1.setText(displayname);
-		                	    text2.setText(displayinfo);
+			            	    }
+			            	    
+			            	    text1.setText(displayname);
+			            	    text2.setText(displayinfo);
 		                	    
 		                	  
-		                	    return view;
-		                	  }
-		                	};
+			            	    return view;
+			            	  }
+			            	};
 			            	
 			            listview.setAdapter(arrayAdapter); 
 			            listview.setOnItemClickListener(new OnItemClickListener() {

@@ -3,7 +3,10 @@ package com.example.android.navigationdrawerexample;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import androisd.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,28 +14,25 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.database.DepartmentAdapter;
 import com.example.model.Department;
+import com.example.model.ReferralReason;
 import com.example.model.Rest;
+import com.example.parser.ReferralReasonParser;
 
 public class ReferralActivity extends Activity {
 
 	private int patient_id;
 	ArrayList<Department> departments;
+	ArrayList<ReferralReason> reasons;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_referral);
 
-		/*
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
-		*/
-		
 		TextView textView = (TextView) findViewById(R.id.nameLabel);
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
@@ -41,37 +41,48 @@ public class ReferralActivity extends Activity {
 		String name_first= extras.getString("EXTRA_PATIENT_NAME_FIRST");
 		textView.setText(name_last + ", " + name_first);
 		
-		Spinner spinner = (Spinner) findViewById(R.id.referDepartment);
-		DepartmentAdapter db = new DepartmentAdapter(this);
+		Spinner referDepartments 	= (Spinner) findViewById(R.id.referDepartment);
+		Spinner referReason 		= (Spinner) findViewById(R.id.referReason);
+		//DepartmentAdapter departmentAdapter = new DepartmentAdapter(this);
 		
 		
 		departments = new ArrayList<Department>();
-		departments = db.getDepartments();
+		//departments = departmentAdapter.getDepartments();
+		//ArrayAdapter<Department> array_adapter = new ArrayAdapter<Department>(this, android.R.layout.simple_spinner_item, departments);
+		//referDepartments.setAdapter(array_adapter);      
+		reasons = new ArrayList<ReferralReason>();
 		
-		System.out.println(departments.get(0).getDepartmentName());
-		ArrayAdapter<Department> array_adapter = new ArrayAdapter<Department>(this, android.R.layout.simple_spinner_item, departments);
-		spinner.setAdapter(array_adapter);
 
-		/*
-		ArrayAdapter<Department> arrayAdapter = new ArrayAdapter<Department>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, android.R.id.text2, departments){
-        	//method to override the getView method of ArrayAdapter, this changes the color of the text view
-        	@Override
-        	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+		if(isNetworkAvailable()){
+			try{
+				Rest rest = new Rest("GET", this);
+				rest.setURL("http://121.97.45.242/segservice/encounter/reasonreferral/");
+				rest.execute();
+				while(rest.getContent() == null){}
         		
-        		TextView label = new TextView(getApplicationContext());
-        		label.setTextColor(Color.BLACK);
-        		label.setText(departments.get(position).getDepartmentName());
+				if(rest.getResult()){
+					String content = rest.getContent();
+					ReferralReasonParser referralReasonParser = new ReferralReasonParser(content);
+					reasons = referralReasonParser.getReasons();
         		
-        		return label;
+					ArrayAdapter<ReferralReason> reasonAdapter = new ArrayAdapter<ReferralReason>(this, android.R.layout.simple_spinner_item, reasons);
+					referReason.setAdapter(reasonAdapter);
         	  }
-        	};
+			}catch(Exception e){System.out.println(e.toString());}
+		}else
+			Toast.makeText(this, "Connection unavailable", Toast.LENGTH_SHORT).show();;
 
-        spinner.setAdapter(arrayAdapter);
-        */
+	}
         	
+	//to check if the phone has access to the internet
+	public boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 	
-	/* called when submit button is clicked */
+	/* Called when submit button is clicked */
 	public void referPatient(View view){
 		Intent intent = new Intent(this,PatientInfoActivity.class);
 		Bundle extras = new Bundle();
