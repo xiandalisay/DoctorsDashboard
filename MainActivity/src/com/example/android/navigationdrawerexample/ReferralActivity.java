@@ -3,7 +3,7 @@ package com.example.android.navigationdrawerexample;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import androisd.content.Context;
+import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -46,7 +46,7 @@ public class ReferralActivity extends Activity {
 		//DepartmentAdapter departmentAdapter = new DepartmentAdapter(this);
 		
 		
-		departments = new ArrayList<Department>();
+		departments = new ArrayList<Department>();	
 		//departments = departmentAdapter.getDepartments();
 		//ArrayAdapter<Department> array_adapter = new ArrayAdapter<Department>(this, android.R.layout.simple_spinner_item, departments);
 		//referDepartments.setAdapter(array_adapter);      
@@ -55,7 +55,7 @@ public class ReferralActivity extends Activity {
 
 		if(isNetworkAvailable()){
 			try{
-				Rest rest = new Rest("GET", this);
+				Rest rest = new Rest("GET", this, "");
 				rest.setURL("http://121.97.45.242/segservice/encounter/reasonreferral/");
 				rest.execute();
 				while(rest.getContent() == null){}

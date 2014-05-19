@@ -42,7 +42,6 @@ import com.example.model.Notes;
 import com.example.model.Patient;
 import com.example.model.ReferralHelper;
 import com.example.model.Rest;
-import com.example.model.Soap;
 import com.example.parser.EncounterParser;
 import com.example.parser.PatientParser;
 
@@ -378,6 +377,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 
 		ArrayList<Object> child = new ArrayList<Object>();
 		PatientAdapter db = new PatientAdapter(this);
+		DatabaseAdapter db1 = new DatabaseAdapter(this);
 		
 		// MEDICAL HISTORY / ENCOUNTERS
 		ArrayList<Encounter> encounterList = db.getPatientEncounter(patient_id);
@@ -395,7 +395,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		child = new ArrayList<Object>();
 		
 		// REFERRALS
-		ArrayList<ReferralHelper> refList = db.getReferralHelpers(encounter_id);
+		ArrayList<ReferralHelper> refList = db1.getReferralHelpers(encounter_id);
 		for (int i = 0; i < refList.size(); i++) {
 			child.add(refList.get(i));
 		}
@@ -403,11 +403,11 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		child = new ArrayList<Object>();
 		
 		// NOTES
-		ArrayList<Notes> noteList = db.getDoctorNotes(encounter_id);
+		ArrayList<Notes> noteList = db1.getDoctorNotes(encounter_id);
 		Log.d("noteList size", ""+noteList.size());
 		child.add("ADD NEW NOTES");
-		for (int i = 0; i < soapList.size(); i++) {
-			child.add(soapList.get(i));
+		for (int i = 0; i < noteList.size(); i++) {
+			child.add(noteList.get(i));
 		}
 		childItems.add(child);
 		

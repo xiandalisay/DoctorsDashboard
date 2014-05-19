@@ -222,7 +222,6 @@
                 android:layout_alignLeft="@+id/FullName"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/FullName"
-                android:focusable="false"
                 android:ems="10"
                 android:inputType="textPostalAddress"
                 android:clickable="false"
