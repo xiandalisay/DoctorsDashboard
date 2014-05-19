@@ -419,6 +419,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 	    Intent intent = new Intent(this,ReferralActivity.class);
 		Bundle extras = new Bundle();
 		extras.putInt("EXTRA_PATIENT_ID", patient.getPID());
+		extras.putInt("EXTRA_ENCOUNTER_ID", encounter_id);
 		extras.putString("EXTRA_PATIENT_NAME_LAST", patient.getNameLast());
 		extras.putString("EXTRA_PATIENT_NAME_FIRST", patient.getNameFirst());
 		intent.putExtras(extras);

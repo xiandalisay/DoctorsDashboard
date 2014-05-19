@@ -16,17 +16,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.database.DepartmentAdapter;
 import com.example.model.Department;
+import com.example.model.Preferences;
 import com.example.model.ReferralReason;
 import com.example.model.Rest;
 import com.example.parser.ReferralReasonParser;
 
-public class ReferralActivity extends Activity {
+public class ReferralActivity extends InitialActivity {
 
 	private int patient_id;
-	ArrayList<Department> departments;
-	ArrayList<ReferralReason> reasons;
 	
+	private ArrayList<Department> departments;
+	private ArrayList<ReferralReason> reasons;
+	
+	private Spinner referDepartments;
+	private Spinner referReason;
+	
+	private int encounter_id;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +46,19 @@ public class ReferralActivity extends Activity {
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
 		String name_last = extras.getString("EXTRA_PATIENT_NAME_LAST");
 		String name_first= extras.getString("EXTRA_PATIENT_NAME_FIRST");
+		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
+		
 		textView.setText(name_last + ", " + name_first);
 		
-		Spinner referDepartments 	= (Spinner) findViewById(R.id.referDepartment);
-		Spinner referReason 		= (Spinner) findViewById(R.id.referReason);
-		//DepartmentAdapter departmentAdapter = new DepartmentAdapter(this);
+		referDepartments 	= (Spinner) findViewById(R.id.referDepartment);
+		referReason 		= (Spinner) findViewById(R.id.referReason);
+		DepartmentAdapter departmentAdapter = new DepartmentAdapter(this);
 		
 		
 		departments = new ArrayList<Department>();	
-		//departments = departmentAdapter.getDepartments();
-		//ArrayAdapter<Department> array_adapter = new ArrayAdapter<Department>(this, android.R.layout.simple_spinner_item, departments);
-		//referDepartments.setAdapter(array_adapter);      
+		departments = departmentAdapter.getDepartments();
+		ArrayAdapter<Department> array_adapter = new ArrayAdapter<Department>(this, android.R.layout.simple_spinner_item, departments);
+		referDepartments.setAdapter(array_adapter);      
 		reasons = new ArrayList<ReferralReason>();
 		
 
@@ -93,10 +102,15 @@ public class ReferralActivity extends Activity {
 		/* setup API URL */
 		rest.setURL("http://121.97.45.242/segservice/encounter/referral/");
 		
-		rest.addRequestParams("encounter_nr", "100055"); //encounter number
-		rest.addRequestParams("doctor_nr", "100055"); //doctor number
-		rest.addRequestParams("referred_dept", "100055"); //reffered department
-		rest.addRequestParams("reason_referral", "100055"); //reason number for referral
+		rest.addRequestParams("encounter_nr", encounter_id+""); //encounter number
+		rest.addRequestParams("doctor_nr", Preferences.getPersonnelNumber(this)+""); //doctor number
+		rest.addRequestParams("referred_dept", Integer.toString(departments.get(referDepartments.getSelectedItemPosition()).getDepartmentNumber())); //reffered department
+		rest.addRequestParams("reason_referral", Integer.toString(reasons.get(referReason.getSelectedItemPosition()).getId())); //reason number for referral
+		
+		logMessage("Referral Encounter ID:" + encounter_id);
+		logMessage("Referral Personnel ID:" + Preferences.getPersonnelNumber(this));
+		logMessage("Referral department ID:" + Integer.toString(departments.get(referDepartments.getSelectedItemPosition()).getDepartmentNumber()));
+		logMessage("Referral reason ID:" + Integer.toString(reasons.get(referReason.getSelectedItemPosition()).getId()));
 		
 
 		System.out.println(rest.getURL());
@@ -107,7 +121,10 @@ public class ReferralActivity extends Activity {
 		while(rest.getContent() == null){}
 		
 		System.out.println("Data Received:\n" + rest.getContent()); 
-			
+		
+		alertMessage("Referral successfully saved");
+		
+		finish();
 		//System.out.println("processing request..");
 	}
 
