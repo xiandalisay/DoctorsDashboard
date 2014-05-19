@@ -18,7 +18,9 @@ public class InitialSyncActivity extends InitialActivity {
 
 	private ArrayList<Encounter> encounters;
 	private ArrayList<Patient> patients;
+	
 	private ArrayList<String> PIDs;
+	private ArrayList<String> EIDs;
 	
 	private String base_url;
 	private String personnel_id;
@@ -32,16 +34,19 @@ public class InitialSyncActivity extends InitialActivity {
 		super.onCreate(savedInstanceState);
 		
 		retrieveBundle();
+		
 		patients = new ArrayList<Patient>();
 		
-		PIDs = retrieveTaggedByDoctorAPI();
+		retrieveTaggedByDoctorAPI();
 		
 		for(int i=0; i<PIDs.size() ; i++)
+		{
 			alertMessage("PID: " + PIDs.get(i));
+		}
 		
 		retrievePatientsAPI();
 		retrieveEncountersAPI();
-		//retrieveReferralsAPI();
+		//retrieveLabRequestsAPI();
 		
 		showLoginActivity();
 		finish();
@@ -55,7 +60,7 @@ public class InitialSyncActivity extends InitialActivity {
 		personnel_id = extras.getString("EXTRA_PERSONNEL_ID");
 	}
 
-	private ArrayList<String> retrieveTaggedByDoctorAPI() {
+	private void retrieveTaggedByDoctorAPI() {
 		
 		Rest rest = new Rest("GET", this, "Retrieving tagged encounters..");
 		
@@ -78,7 +83,8 @@ public class InitialSyncActivity extends InitialActivity {
 		
 		PatientParser parser = new PatientParser(rest.getContent());
 		
-		return parser.getPatientsPID();
+		PIDs = parser.getTaggedPID();
+		EIDs = parser.getTaggedEID();
 	}
 
 	private void retrievePatientsAPI() {

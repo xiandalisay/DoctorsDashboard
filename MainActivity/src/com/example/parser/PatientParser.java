@@ -13,7 +13,8 @@ public class PatientParser extends JSONParser {
 	private Patient patient;
 	
 	private ArrayList<Patient> patients;
-	private ArrayList<String> PIDs;
+	private ArrayList<String> PatientIDs;
+	private ArrayList<String> EncounterIDs;
 	
 	//private HashMap<String, String> data = new HashMap<String, String>();
 	private JSONObject json_childNode;
@@ -88,11 +89,12 @@ public class PatientParser extends JSONParser {
         return patients;
 	}
 	
-	public ArrayList<String> getPatientsPID(){
+	/* retrieve and parse patients tagged to a doctor */
+	public ArrayList<String> getTaggedPID(){
 		
 		try{
 			setJSONMainNode();
-			PIDs = new ArrayList<String>();
+			PatientIDs = new ArrayList<String>();
 			
 			JSONArray jason_array = getJSONMainNode();
 		
@@ -109,14 +111,46 @@ public class PatientParser extends JSONParser {
 	            String    pid       			= jsonChildNode.optString(PID).toString();
 				
 				
-				PIDs.add(pid);   
+				PatientIDs.add(pid);   
 				System.out.println(pid);			
 	        }
 		}catch(Exception e){
 			System.out.println(e.toString() + "alvin was here");
 		}
         
-        return PIDs;
+        return PatientIDs;
+	}
+	
+	/* retrieve and parse encounters tagged to a doctor */
+	public ArrayList<String> getTaggedEID(){
+		
+		try{
+			setJSONMainNode();
+			EncounterIDs = new ArrayList<String>();
+			
+			JSONArray jason_array = getJSONMainNode();
+		
+			int lengthJsonArr = jason_array.length();  
+	   
+	        for(int i=0; i < lengthJsonArr; i++) 
+	        {
+	                         /****** Get Object for each JSON node.***********/
+	            JSONObject jsonChildNode = jason_array.getJSONObject(i);
+				
+				
+	                           
+	                         /******* Fetch node values **********/
+	            String    encounter_id      			= jsonChildNode.optString("encounter_nr").toString();
+				
+				
+				EncounterIDs.add(encounter_id);   
+				System.out.println(encounter_id);			
+	        }
+		}catch(Exception e){
+			System.out.println(e.toString() + "alvin was here");
+		}
+        
+        return EncounterIDs;
 	}
 	
 	/* parse for only one patient */
