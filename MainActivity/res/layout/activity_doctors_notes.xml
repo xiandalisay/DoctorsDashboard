@@ -115,19 +115,10 @@
             android:ems="10"
             android:inputType="textMultiLine" />
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/textView3"
-            android:text="Assessment" />
-
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button1"
             android:layout_alignParentLeft="true"
             android:src="@drawable/line" />
 
@@ -147,6 +138,22 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/subjectiveTextDocNotes"
             android:layout_marginTop="56dp"
+            android:src="@drawable/line" />
+
+        <Button
+            android:id="@+id/assessmentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Assessment" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/assessmentButton"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/line" />
 
     </RelativeLayout>

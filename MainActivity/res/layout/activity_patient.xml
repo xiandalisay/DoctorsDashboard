@@ -41,16 +41,6 @@
             android:textColor="#FF0000" >
         </ListView>
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/searchView1"
-            android:layout_centerHorizontal="true"
-            android:text="Temporary Button for Patient Info"
-            android:onClick="showPatientInfo"
-            android:visibility="gone" />
-
     </RelativeLayout>
     
     <ListView
