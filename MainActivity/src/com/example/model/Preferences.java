@@ -91,4 +91,5 @@ public class Preferences extends HelperSharedPreferences{
 	public static void setPersonnelPreference(Context context, Integer pref) {
 		putSharedPreferencesInt(context, "key_personnel_nr", pref);
 	}
+	
 }

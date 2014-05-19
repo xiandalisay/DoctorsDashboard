@@ -7,10 +7,16 @@
  * 
  * @update: Christian Joseph Dalisay
  * @date updated: 05/15/14
+ * @Description:
+ * 		   added getLatestDateEncountered
+ * 		   deleteDoctorEncounter, insertDoctorEncounter,
+ * 		   insertEncounters, deleteEncounter, getEncounterIds
+ * 
  */
 
 package com.example.database;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import com.example.model.Encounter;
@@ -28,6 +34,8 @@ public class EncounterAdapter extends Data {
 	private ContentValues values;
 	private Cursor cursor;
 	
+	private ArrayList<Encounter> encounter_list;
+	
 	/* _constructor */
 	public  EncounterAdapter(Context context) 
 	{
@@ -41,7 +49,7 @@ public class EncounterAdapter extends Data {
 	
 	/* retrieves the encounter_id of the latest encounter of a patient */
 	public int getLatestEncounter(int patient_id){
-	
+		
 		db = dbHandler.getReadableDatabase();
 		
 		String query = 
@@ -59,6 +67,32 @@ public class EncounterAdapter extends Data {
 		} catch(Exception e) {
 			Log.d("Encounter Adapter","0 rows retrieved");
 			return -1;
+		}
+	}
+
+	/* retrieves the date encountered of the latest encounter of a patient */
+	public String getLatestDateEncountered(int pid,int personnel){
+	
+		db = dbHandler.getReadableDatabase();
+		
+		String query = 
+				"SELECT date_encountered " + 
+						" FROM " + TABLE_PATIENT + 
+ 				" JOIN " + TABLE_ENCOUNTER + " USING (" + PID + ")" + 
+				" JOIN " + TABLE_DOC_ENC + " USING (" + ENCOUNTER_ID + ")" + 
+				" JOIN " + TABLE_DOCTOR + " USING (" + PERSONNEL_ID + ")" + 
+				" WHERE doctor.personnel_id = " + personnel + 
+					" AND patient.pid = " + pid + 
+				" LIMIT 1";
+		
+		cursor = db.rawQuery(query, null);
+		
+		try{
+			cursor.moveToFirst();
+			return cursor.getString(cursor.getColumnIndex("date_encountered"));
+		} catch(Exception e) {
+			Log.d("Encounter Adapter","0 rows retrieved");
+			return "";
 		}
 	}
 	
@@ -82,6 +116,7 @@ public class EncounterAdapter extends Data {
 		}
 	}
 	
+	/* Deletes rows where encounter id exists */
 	public void deleteDoctorEncounter(Integer encounter) {
 		db = dbHandler.getWritableDatabase();
 		try {
@@ -94,9 +129,7 @@ public class EncounterAdapter extends Data {
 		
 	}
 	
-	/* @Author: Christian Joseph Dalisay
-	 * 
-	 */
+	/* @Author: Christian Joseph Dalisay */
 	public void insertDoctorEncounter(Integer encounter,Integer personnel) {
 		db = dbHandler.getWritableDatabase();
 		values = new ContentValues();
@@ -149,4 +182,30 @@ public class EncounterAdapter extends Data {
 		  db.close();
 		}
 	}
+	
+	public ArrayList<Integer> getEncounterIds(int patientid){
+		ArrayList<Integer> enc_ids = new ArrayList<Integer>();
+		db = dbHandler.getReadableDatabase();
+		encounter_list = new ArrayList<Encounter>();
+		try {
+			String query = 
+					"SELECT encounter_id FROM " + TABLE_ENCOUNTER + 
+					" WHERE pid = " + patientid ;
+			Cursor cursor = db.rawQuery(query,  null);
+			if(cursor.moveToFirst()){
+				do{
+					enc_ids.add(cursor.getInt(cursor.getColumnIndex("encounter_id")));
+				}while(cursor.moveToNext());
+			}
+		} catch (Exception se) {
+			Log.d("getEncounterIds", Log.getStackTraceString(se));
+			return enc_ids;
+		}
+		finally {
+			db.close();
+		}
+		Log.d("getEncounterIds", "Done successfully.");
+		return enc_ids;
+	}
+	
 }

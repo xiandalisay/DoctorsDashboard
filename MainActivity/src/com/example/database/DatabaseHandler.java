@@ -63,14 +63,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	public void onCreateDummy(SQLiteDatabase db) {
 		try	{ 
-			/*
+			
 			db.execSQL("insert into [department] values(106, '', 'Med-Rheuma', 'Medicine-Rheumatology'), " +
 					" (107, '', 'Med-Neuro', 'Medicine-Neurology'), " +
 					" (131, '', 'Opthal', 'Opthalmology'), " +
 					" (133, '', 'FaMed', 'Family Medicine'), " +
 					" (136, '', 'ENT-HNS', 'ENT-HNS'), " +
 					" (153, '', 'Anesthesia', 'Anesthesia')");
-			*/
+			
 			db.execSQL("insert into [patient] values(1, 'Cosare', 'Alvin', 'Ceniza', 'M', '1994-08-27', 'Cool Street', 'Davao', 'Davao', '8000', 0, null), " +
 					"(2, 'Adante', 'Jessie', 'Boi', 'M', '1992-12-13', 'That Street', 'Davao', 'Davao', '8000', null, null), " +
 					"(3, 'Ipong', 'Jose Martin', 'dela Rosa', 'M', '1994-08-29', 'The Street', 'Davao', 'Davao', '8000', null, null), " +
@@ -93,9 +93,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				"	(100027,'1234567',133,'Gaurino','Marc','Gonzales'), " +
 				"	(100040,'1234568',133,'Caralos','Rex Arnold','Mesiona'), " +
 					"	(100054,'1234569',131,'Chin','Elizabeth May','Tan') "  );*/
-			/*
-			 * db.execSQL("INSERT INTO doctor values(100055, '0117236', 133, 'ESPA￑OLA', 'SEURINANE SEAN', 'BORRA', '97ffcb8e6d1014d2752cadd03b1ac6ca8b4a63d0', '28b0f836cc41361b90ce15a7a28ac8b3a9363f5b', 'm', '1981-05-12', '121.97.45.242')");
-			 */
+			db.execSQL("INSERT INTO doctor values(100055, '0117236', 133, 'ESPA￑OLA', 'SEURINANE SEAN', 'BORRA', '97ffcb8e6d1014d2752cadd03b1ac6ca8b4a63d0', '28b0f836cc41361b90ce15a7a28ac8b3a9363f5b', 'm', '1981-05-12', '121.97.45.242')");
 			db.execSQL("insert into [encounter] (encounter_id, pid, type_patient,message_complaint, date_encountered,official_receipt_nr,is_confidential)" + 
 						" values(1, 1, 'In-Patient', 'Fever', '2012-07-01 00:00:00.000',null,null)," +
 						"(2, 2, 'In-Patient', 'Headache', '2013-06-02 00:08:00.000',null,null)," +
@@ -105,9 +103,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						"(2008000000, 1000000, 'Inpatient from ER',null, '2009-02-09 11:47:00.000',null,null)," +
 						"(2008000001, 1000000, 'OPD',null, '2008-11-24 16:05:43.000',null,null)," +
 						"(2008000002, 1000000, 'OPD',null, '2008-12-24 08:07:43.000',null,null)");
-			db.execSQL("insert into doctor_encounter (personnel_id,encounter_id) values ('0117236',2),('0117236',2),('0117236',3)");
+			db.execSQL("INSERT INTO doctor_encounter VALUES (100055,1),(100055,1),(100055,3),(100022,1),(100022,3),(100055,3),(100022,1),(100022,3),(100055,5)");
 			db.execSQL("insert into [client] values(1, '06778975-75e3-4da2-9e1e-866b222e0fa6')");
-			/*db.execSQL("INSERT INTO 'reason' ('reason_id','name_reason') " +
+			db.execSQL("INSERT INTO 'reason' ('reason_id','name_reason') " +
 				" VALUES (1,'Surgery'), " + 
 				"   (2,'Dialysis'), " +
 				"	(3,'ER')"); 
@@ -115,10 +113,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				" VALUES (1,1,107,1,'2013-06-02 00:12:00' ), " + 
 				" (2,2,131,2,'2013-08-10 12:12:00' ), " + 	
 				" (3,3,136,3,'2014-02-20 07:08:00' ) " );
-			db.execSQL("INSERT INTO 'notes' ('notes_id','encounter_id','title','body','date_created','sync') " + 
-					" VALUES (1,1,'First Encounter','Encountered for the first time','2013-06-02 00:12:00',0 ), " + 
-					" (2,2,'Second Encounter','Encountered for the first time','2013-08-10 12:12:00',0 ), " + 	
-					" (3,3,'Third Encounter','Encountered for the first time','2014-02-20 07:08:00',0 ) " );*/
+			db.execSQL("INSERT INTO 'notes' ('notes_id','personnel_id','encounter_id','title','body','date_created','sync') " + 
+					" VALUES (1,100055,1,'First Encounter','Encountered for the first time','2013-06-02 00:12:00',0 ), " + 
+					" (2,100055, 2,'Second Encounter','Encountered for the first time','2013-08-10 12:12:00',0 ), " + 	
+					" (3,100055, 3,'Third Encounter','Encountered for the first time','2014-02-20 07:08:00',0 ) " );
 			Log.d("DatabaseHandler","onCreateDummy successful");
 		} catch (SQLException se) {
 			Log.d("onCreateDummy SQLException",Log.getStackTraceString(se));

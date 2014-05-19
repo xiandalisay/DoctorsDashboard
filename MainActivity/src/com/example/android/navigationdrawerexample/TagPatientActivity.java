@@ -103,11 +103,16 @@ public class TagPatientActivity extends InitialActivity {
 			if(rest.getResult()) {
 				String content = rest.getContent();
 				System.out.println(content);
+				
+				/* Gets specific encounter data based on encounter id */
 				EncounterParser encounter_parser = new EncounterParser(content);
 				ArrayList<Encounter> encounters = encounter_parser.getEncounters();
 				EncounterAdapter enc = new EncounterAdapter(this);
-				enc.insertDoctorEncounter(encounters.get(0).getEncounterId(),Preferences.getPersonnelPreference(this));
 				enc.insertEncounters(encounters);
+				
+				/*Tags the specific encounter to the specific doctor */
+				enc.insertDoctorEncounter(encounters.get(0).getEncounterId(),Preferences.getPersonnelPreference(this));
+				
 			}
 		} 
 		

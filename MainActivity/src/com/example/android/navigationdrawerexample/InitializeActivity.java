@@ -12,10 +12,7 @@ package com.example.android.navigationdrawerexample;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import com.example.database.AccountsAdapter;
@@ -36,6 +33,8 @@ public class InitializeActivity extends InitialActivity{
 		
 		super.onCreate(savedInstanceState);
 		/*Initializes the database, and the shared preferences*/
+		System.out.println("Ini agi diri");
+		
 		DatabaseAdapter db = new DatabaseAdapter(this);
 		Preferences.createPreferences(this);
 		

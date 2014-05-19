@@ -1,9 +1,15 @@
 package com.example.android.navigationdrawerexample;
 
+import java.util.ArrayList;
+
 import com.example.database.CanvasAdapter;
 import com.example.database.DatabaseAdapter;
 import com.example.database.DoctorAdapter;
+import com.example.database.DoctorEncounterAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.database.LabRequestAdapter;
+import com.example.database.NotesAdapter;
+import com.example.database.ReferralAdapter;
 import com.example.model.HelperSharedPreferences;
 import com.example.model.Preferences;
 import com.example.model.Rest;
@@ -23,7 +29,7 @@ public class UntagPatientActivity extends InitialActivity {
 		retrieveBundle();
 		
 		submitUntag();
-		deleteRelatedData();
+		deleteUntaggedEncounter();
 		
 		finish();
 	}
@@ -69,13 +75,29 @@ public class UntagPatientActivity extends InitialActivity {
 		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
 	}
 
-	private void deleteRelatedData() {
-		EncounterAdapter doc_ad = new EncounterAdapter(this);
-		//doc_ad.deleteEncounter(encounter_id,Preferences.getPersonnelPreference(this));
-	}
-	
-
-	
-
+	/* 
+	 * if only one doctor tagged it, deletes the data of the patient 
+	 * else deletes the row of the relation
+	 */
+	private void deleteUntaggedEncounter() {
+		ArrayList<Integer> enc_ids = new ArrayList<Integer>();
+		/* diba dapat pid ? */
+		//EncounterAdapter enc = new EncounterAdapter(this);
+		//enc_ids = enc.getEncounterIds(encounter_id);
 		
+		ArrayList<Integer> doc = new ArrayList<Integer>();
+		DoctorEncounterAdapter doc_enc = new DoctorEncounterAdapter(this);
+		doc = doc_enc.countDoctorsByEncounter(encounter_id,Preferences.getPersonnelNumber(this));
+		doc_enc.deleteDoctorEncounter(enc_ids);
+		for(int i = 0; i < doc.size(); i++) {
+			if(doc.get(i) > 1) {
+				ReferralAdapter ref = new ReferralAdapter(this);
+				ref.deleteReferral(encounter_id);
+				LabRequestAdapter req = new LabRequestAdapter(this);
+				req.deleteLabRequest(encounter_id, getPersonnelNumber());
+				NotesAdapter notes = new NotesAdapter(this);
+				notes.deleteNotes(encounter_id, getPersonnelNumber());
+			}
+		}
+	}		
 }

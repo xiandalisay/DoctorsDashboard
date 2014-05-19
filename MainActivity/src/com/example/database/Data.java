@@ -98,6 +98,7 @@ public class Data {
 	public static final String TABLE_LAB_REQUEST = "lab_request";
 	public static final String REQUEST_ID 		= "request_id";
 	//public static final String ENCOUNTER_ID 	= "encounter_id;"
+	//public static final String PERSONNEL_ID = "personnel_id";
 	public static final String REQUESTED 		= "date_requested";
 	
 	// Table Name: LabService
@@ -125,6 +126,7 @@ public class Data {
 	public static final String TABLE_NOTES 	= "notes";
 	public static final String NOTES_ID 	= "notes_id";
 	//public static final String ENCOUNTER_ID = "encounter_id";
+	//public static final String PERSONNEL_ID = "personnel_id";
 	public static final String TITLE 	= "title";
 	public static final String TYPE 	= "type";
 	public static final String BODY		= "body";
@@ -181,12 +183,12 @@ public class Data {
 		COMPLAINT 	+ " TEXT, " +
 		ENCOUNTERED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " +	", " +
 		OFFICIAL_RECEIPT_NR + " NVARCHAR(10), " +
-		IS_CONFIDENTIAL + " CHAR(3) DEFAULT 'No' " +	")";
+		IS_CONFIDENTIAL + " NVARCHAR(3) DEFAULT 'No' " +	")";
 	
 	 static final String CREATE_TABLE_DOC_ENC = 
 		"CREATE TABLE " + TABLE_DOC_ENC + "(" +
-		PERSONNEL_ID 	+ " INTEGER NOT NULL " + ", " +
-		ENCOUNTER_ID 	+ " INTEGER NOT NULL " + ") ";
+		PERSONNEL_ID 	+ " INTEGER NOT NULL REFERENCES " 	+ TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
+		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES "  + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + "))" ;
 			
 	 static final String CREATE_TABLE_REASON = 
 		"CREATE TABLE " + TABLE_REASON + "(" +
@@ -205,6 +207,7 @@ public class Data {
 		"CREATE TABLE " + TABLE_LAB_REQUEST + " ( " +
 		REQUEST_ID 		+ " INTEGER PRIMARY KEY, " +
 		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES " + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", " +
+		PERSONNEL_ID 	+ " INTEGER NOT NULL REFERENCES " 	+ TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
 		REQUESTED 		+ " DATETIME NOT NULL " +	" ) ";
 		
 	 static final String CREATE_TABLE_LAB_SERVICE =
@@ -232,6 +235,7 @@ public class Data {
 		"CREATE TABLE " + TABLE_NOTES + "(" +
 		NOTES_ID	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID + " INTEGER NOT NULL REFERENCES " 	+ TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
+		PERSONNEL_ID + " INTEGER NOT NULL REFERENCES " 	+ TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
 		TITLE 		+ " NVARCHAR(30) NOT NULL, " 	+ 
 		BODY 		+ " TEXT, " 	+ 
 		CREATED  	+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime'))," +

@@ -36,18 +36,19 @@ public class LabRequestAdapter extends Data {
 		}
 	}
 	
-	public  LabRequestAdapter open() throws SQLException {
+	public void deleteLabRequest(int encounter_id, int personnel_id) {
 		db = dbHandler.getWritableDatabase();
-		return this;
+		
+		try {
+			db.delete(TABLE_LAB_REQUEST, "encounter_id = ?, personnel_id", 
+					new String[] {encounter_id +"",personnel_id+""});
+		} catch (Exception se) {
+			Log.d("LabRequestAdapter deleteLabRequest", Log.getStackTraceString(se));
+		}
+		finally {
+			db.close();
+			Log.d("deleteLabRequest", "Done successfully.");
+		}
 	}
-	
-	public void close() {
-		db.close();
-	}
-	
-	public  SQLiteDatabase getDatabaseInstance() {
-		return db;
-	}
-	
 	
 }

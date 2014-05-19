@@ -7,6 +7,7 @@
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -31,7 +32,11 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.example.database.DatabaseAdapter;
+import com.example.database.DoctorEncounterAdapter;
 import com.example.database.EncounterAdapter;
+import com.example.database.LabRequestAdapter;
+import com.example.database.NotesAdapter;
+import com.example.database.ReferralAdapter;
 import com.example.model.Age;
 import com.example.model.Encounter;
 import com.example.model.HelperSharedPreferences;
@@ -64,6 +69,11 @@ public class PatientActivity extends BaseActivity {
 		EditText edittext = (EditText) findViewById(R.id.searchView1);
 		// Initialize patient list
 		patients = new ArrayList<Patient>();
+		
+		//DoctorEncounterAdapter doc_enc = new DoctorEncounterAdapter(this);
+		//doc_enc.deleteDoctorEncounter(2008000000);
+		
+		deleteUntaggedPatient();
 		if(isNetworkAvailable()){
 
 			patients_url = Preferences.getBaseURL(this) + "/patient/show/";
@@ -288,5 +298,27 @@ public class PatientActivity extends BaseActivity {
     	Intent intent = new Intent(this, PatientInfoActivity.class);
     	startActivity(intent);
     }
+	
+	private void deleteUntaggedPatient() {
+		Integer personnel = Preferences.getPersonnelNumber(this);
+		ArrayList<Integer> enc_ids = new ArrayList<Integer>();
+		/* diba dapat pid ? */
+		//EncounterAdapter enc = new EncounterAdapter(this);
+		//enc_ids = enc.getEncounterIds(1);
+		
+		ArrayList<Integer> doc = new ArrayList<Integer>();
+		DoctorEncounterAdapter doc_enc = new DoctorEncounterAdapter(this);
+		doc = doc_enc.countDoctorsByEncounter(1,personnel);
+		//doc_enc.deleteDoctorEncounter(enc_ids);
+		/*for(int i = 0; i < doc.size(); i++) {
+			if(doc.get(i) > 1) {
+				ReferralAdapter ref = new ReferralAdapter(this);
+				ref.deleteReferral(encounter_id);
+				LabRequestAdapter req = new LabRequestAdapter(this);
+				req.deleteLabRequest(encounter_id, personnel);
+				NotesAdapter notes = new NotesAdapter(this);
+				notes.deleteNotes(encounter_id, personnel);
+			}
+		}*/
+	}	
 }
-

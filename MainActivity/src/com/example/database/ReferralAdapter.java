@@ -1,6 +1,8 @@
 /*
- * Created By: Christian Joseph Dalisay
- * Created On: 05/16/14
+ * @Author: Christian Joseph Dalisay
+ * @Date: 05/16/14
+ * @Description: manages the CRUD operations
+ * 				 of the table referral
  */
 
 package com.example.database;
@@ -8,7 +10,6 @@ package com.example.database;
 
 import java.util.ArrayList;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -17,12 +18,7 @@ import android.util.Log;
 
 
 import com.example.database.Data;
-import com.example.model.Age;
-import com.example.model.DoctorProfile;
-import com.example.model.Encounter;
-import com.example.model.Patient;
 import com.example.model.Referral;
-import com.example.model.Soap;
 
 public class ReferralAdapter extends Data {
 	
@@ -56,7 +52,7 @@ public class ReferralAdapter extends Data {
 		return db;
 	}
 	
-	/*
+	
 	public ArrayList<Referral> getReferrals(int encounter) {
 		db = dbHandler.getWritableDatabase();
 		referral_list = new ArrayList<Referral>();
@@ -82,10 +78,22 @@ public class ReferralAdapter extends Data {
 		}
 		finally {
 			db.close();
+			Log.d("getPreviousReferrals", "Done successfully.");
 		}
-		Log.d("getPreviousReferrals", "Done successfully.");
 		return referral_list;
-	}
-	*/
+	}	
 	
+	public void deleteReferral(int encounter_id) {
+		db = dbHandler.getWritableDatabase();
+		
+		try {
+			db.delete(TABLE_REFERRAL, "encounter_id = ?", new String[] {encounter_id+""});
+		} catch (Exception se) {
+			Log.d("ReferralAdapter deleteReferral", Log.getStackTraceString(se));
+		}
+		finally {
+			db.close();
+			Log.d("deleteReferral", "Done successfully.");
+		}
+	}
 }

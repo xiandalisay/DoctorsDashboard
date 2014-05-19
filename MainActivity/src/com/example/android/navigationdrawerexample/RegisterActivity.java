@@ -97,7 +97,7 @@ public class RegisterActivity extends InitialActivity{
 		if(prepareCredentials()){
 			if(submitCredentials()){
 				//insertDoctor();
-				startInitialSync();
+				//startInitialSync();
 				//showLoginActivity();
 			}
 		}
