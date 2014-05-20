@@ -65,8 +65,6 @@ public class EncounterAdapter extends Data {
 		} catch(Exception e) {
 			Log.d("Encounter Adapter","0 rows retrieved");
 			return -1;
-		}finally{
-        	db.close();
 		}
 	}
 	
@@ -88,7 +86,7 @@ public class EncounterAdapter extends Data {
 		} catch(Exception e) {
 			Log.d("Encounter Adapter","0 rows retrieved");
 			return false;
-		}
+		} 
 	}
 	
 	/* Deletes rows where encounter id exists */

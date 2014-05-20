@@ -89,8 +89,7 @@ public class DoctorEncounterAdapter extends Data {
 			}
 		} catch (Exception se) {
 			Log.d("showDoctorEncounter", Log.getStackTraceString(se));
-		}
-		finally {
+		} finally {
 			db.close();
 		}	
 	}

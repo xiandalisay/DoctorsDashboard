@@ -11,12 +11,6 @@
 package com.example.database;
 
 
-import java.util.ArrayList;
-
-import com.example.model.Encounter;
-import com.example.model.Patient;
-
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -41,6 +35,8 @@ public class CanvasAdapter extends Data{
 			dbHandler = new DatabaseHandler(context, DATABASE_NAME, null, DATABASE_VERSION);
 		} catch (Exception e) {
 			Log.d("DatabaseHandler Exception", Log.getStackTraceString(e));
+		} finally{
+			db.close();
 		}
 	}
 	
