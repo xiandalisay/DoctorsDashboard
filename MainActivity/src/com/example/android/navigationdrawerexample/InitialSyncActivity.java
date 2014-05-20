@@ -198,7 +198,7 @@ public class InitialSyncActivity extends InitialActivity {
 			
 			LabRequestParser parser = new LabRequestParser(rest.getContent());
 			
-			/* retrieve and parse labo requests of each encounter of patient(i) */
+			/* retrieve and parse lab requests of each encounter of patient(i) */
 			requests = (parser.getRequestService());
 		
 			//print all encounters and requests
@@ -208,7 +208,7 @@ public class InitialSyncActivity extends InitialActivity {
 			}
 			
 			/* insert encounters of patient(i) in mobile DB */
-			db.insertLabRequestsEncounter(requests);
+			db.insertLabRequestsEncounter(requests, Integer.parseInt(personnel_id));
 		}
 	}
 	
