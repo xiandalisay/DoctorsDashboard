@@ -10,10 +10,10 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.database.LabServiceAdapter;
 import com.example.model.Department;
 import com.example.model.Rest;
 import com.example.parser.DepartmentParser;
-import com.example.parser.LabServiceParser;
 
 public class LaboratoryRequestAddService extends Activity {
 	ArrayList<Department> departments;
@@ -39,8 +39,12 @@ public class LaboratoryRequestAddService extends Activity {
 		}
 		ArrayAdapter<Department> array_adapter = new ArrayAdapter<Department>(this, android.R.layout.simple_spinner_item, departments);
 		spinner_department.setAdapter(array_adapter);
-		
-		
+		LabServiceAdapter db = new LabServiceAdapter(this);
+		Spinner spinner_lab_service = (Spinner) findViewById(R.id.laboratoryServiceSectionSpinner);
+		ArrayList<String> sectionnames = new ArrayList<String>();
+		sectionnames = db.getSectionNames();
+		ArrayAdapter<String> array_adapter_service_name = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sectionnames);
+		spinner_lab_service.setAdapter(array_adapter_service_name);
 	
 	}
 
