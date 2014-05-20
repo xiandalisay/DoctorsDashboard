@@ -19,8 +19,6 @@ public class DepartmentAdapter extends Data {
 			Log.d("DatabaseHandler", "Database Created");
 		} catch (Exception e) {
 			Log.d("DatabaseHandler Exception", Log.getStackTraceString(e));
-		} finally{
-			db.close();
 		}
 	}
 	

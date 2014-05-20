@@ -27,8 +27,6 @@ public class ClientAdapter extends Data{
 			Log.d("Client Adapter", "Instantiated");
 		} catch (Exception e) {
 			Log.d("Client Adapter Exception", Log.getStackTraceString(e));
-		}  finally{
-			db.close();
 		}
 	}
 	
