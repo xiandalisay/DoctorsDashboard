@@ -89,19 +89,20 @@ public class LabServiceAdapter extends Data {
 	public ArrayList<LabService> getLabServices() {
 		db = dbHandler.getWritableDatabase();
 		ArrayList<LabService> labservicelist = new ArrayList<LabService>();
-		String query = "SELECT service_id, section_name, service_name, section_code, opd, ipd FROM lab_service";
+		String query = "SELECT service_id, name_section, name_service, section_code, opd, ipd FROM lab_service";
 		try {
 			Cursor cursor = db.rawQuery(query, null);
 			
 			if(cursor.moveToFirst()){
 				do {
 					LabService lab_service = new LabService(cursor.getString(cursor.getColumnIndex(SERVICE_ID)),
-							cursor.getString(cursor.getColumnIndexOrThrow(SERVICE)),
+							cursor.getString(cursor.getColumnIndex(SERVICE)),
 							cursor.getString(cursor.getColumnIndex(SECTION_CODE)),
 							cursor.getString(cursor.getColumnIndex(SECTION)),
 							cursor.getString(cursor.getColumnIndex(OPD)),
 							cursor.getString(cursor.getColumnIndex(IPD))
 							);
+					//System.out.println(lab_service);
 					//System.out.println(cursor.getString(cursor.getColumnIndexOrThrow(DEPT)));
 					labservicelist.add(lab_service);
 				}while(cursor.moveToNext());
