@@ -10,7 +10,6 @@ import com.example.database.LaboratoryAdapter;
 import com.example.database.PatientAdapter;
 import com.example.model.Encounter;
 import com.example.model.LabRequest;
-import com.example.model.LabService;
 import com.example.model.Patient;
 import com.example.model.Rest;
 import com.example.parser.EncounterParser;

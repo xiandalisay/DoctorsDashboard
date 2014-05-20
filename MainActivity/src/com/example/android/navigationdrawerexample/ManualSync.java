@@ -14,7 +14,6 @@ import com.example.database.EncounterAdapter;
 import com.example.database.PatientAdapter;
 import com.example.model.Preferences;
 import com.example.model.Rest;
-import com.example.parser.DepartmentParser;
 
 import android.os.Bundle;
 

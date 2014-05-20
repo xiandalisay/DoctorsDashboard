@@ -25,7 +25,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.Toast;
 
 public class CanvassActivity extends Activity implements OnClickListener,

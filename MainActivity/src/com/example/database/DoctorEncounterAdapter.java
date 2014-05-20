@@ -7,8 +7,10 @@
 
 package com.example.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -23,6 +25,7 @@ public class DoctorEncounterAdapter extends Data {
 
 	private Cursor cursor;
 	private String query;
+	private ContentValues values;
 	
 	private static final int 	DATABASE_VERSION	= 1;
 	private static final String DATABASE_NAME 		= "localhost";
@@ -92,5 +95,21 @@ public class DoctorEncounterAdapter extends Data {
 		}	
 	}
 	
+	/* Inserts a row with the given encounter id and personnel id */
+	public void insertDoctorEncounter(Integer encounter,Integer personnel) {
+		db = dbHandler.getWritableDatabase();
+		values = new ContentValues();
+		try {
+			values.put(ENCOUNTER_ID, encounter);	
+			values.put(PERSONNEL_ID, personnel);	
+			
+			db.insertWithOnConflict(TABLE_DOC_ENC, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		} catch(SQLException se) {
+			Log.d("EncounterAdapter insertDocEnc", Log.getStackTraceString(se));
+		} finally {
+			db.close();
+		}
+		
+	}
 	
 }

@@ -5,9 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class Preferences extends HelperSharedPreferences{
-	
-	private  ConnectivityManager connectivityManager;
-	
+		
 	public boolean isNetworkAvailable(Context context) {
 	    ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo networkInfo = cm.getActiveNetworkInfo();
