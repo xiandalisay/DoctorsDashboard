@@ -156,9 +156,11 @@ public class EncounterAdapter extends Data {
 				values.put(PERSONNEL_ID, personnel_id);	
 			
 				db.insertWithOnConflict(TABLE_DOC_ENC, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-			}
-			finally	{
-			  db.endTransaction();
+				}
+			}catch(Exception e){
+				
+			}finally	{
+			  db.close();
 			}
 	}
 

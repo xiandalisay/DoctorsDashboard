@@ -23,7 +23,7 @@ import com.example.model.Age;
 import com.example.model.DoctorProfile;
 import com.example.model.Encounter;
 import com.example.model.Patient;
-import com.example.model.Soap;
+
 
 public class DoctorEncounterAdapter extends Data {
 	

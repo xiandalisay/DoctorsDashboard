@@ -15,6 +15,7 @@ import com.google.resting.json.JSONObject;
 public class LabRequestParser extends JSONParser{
 	private ArrayList<LabRequest> requests;
 	private ArrayList<LabService> services;
+	
 	private HashMap<String, String> data = new HashMap<String, String>();
 	//private JSONObject json_childNode;
 	private JSONArray json_array;
@@ -24,15 +25,18 @@ public class LabRequestParser extends JSONParser{
 	private final String SERVICE_CODE 	= "service_code";
 	private final String SERVICE_NAME = "service_name";
 	private final String QUANTITY = "quantity";
+
+	private final int NULL = 0;
 	
 	
 
 	
-	public LabRequestParser(String content) throws NullPointerException{
+	public LabRequestParser(String content){
 		
 		requests = new ArrayList<LabRequest>();
 		try {
 			json_array = new JSONArray(content);
+			System.out.println("content:"+content);
 		} catch (JSONException e) {
 			System.out.println("JSON error");
 		}
@@ -73,48 +77,74 @@ public class LabRequestParser extends JSONParser{
 	/* retrieve and parse all lab requests */
 	public ArrayList<LabRequest> getRequestService(){
 		
+		int    encounter_id = NULL;
+        int    request_nr   = NULL;    
+        
+        services = new ArrayList<LabService>();
+        
 		try{			
 			int lengthJsonArr = json_array.length();  
 			
-			/* first JSON object retrieved thru web service */
-			JSONObject first_object = json_array.getJSONObject(0);
+			System.out.println("Length JSON: "+lengthJsonArr);
 			
 			/* gets first ref_no for basis if request has been changed */
-			String current_request = first_object.optString(REFNO).toString();
+			int current_request = NULL;
 	        
 			for(int i=0; i < lengthJsonArr; i++) 
 	        {
 	                         /****** Get Object for each JSON node.***********/
 	            JSONObject jsonChildNode = json_array.getJSONObject(i);
-	                           
-	                         /******* Fetch node values **********/
-	            int    encounter_id      	= Integer.parseInt(jsonChildNode.optString(ENCOUNTER_NR).toString());
-	            int    request_nr       	= Integer.parseInt(jsonChildNode.optString(REFNO).toString());
 
+	                         /******* Fetch node values **********/
+	            encounter_id      	= Integer.parseInt(jsonChildNode.optString("encounter_nr").toString());
+	            request_nr       	= Integer.parseInt(jsonChildNode.optString("refno").toString());
+	            
+	            if(current_request ==  NULL){
+	            	current_request = request_nr;
+	            	System.out.println(current_request);
+	            }
+	            
 	            /* check if ref_no has changed, save the new request as object and add to ArrayList */
-	            if(!current_request.equals(jsonChildNode.optString(REFNO).toString())){
+	            if(current_request != request_nr){
+
 	            	LabRequest request = new LabRequest();	
 	            	
 	            	request.setEncounterNumber(encounter_id);
-	            	request.setRequestNumber(request_nr);
+	            	request.setRequestNumber(current_request);
 	            	request.setServices(services);
 	            	
 	            	requests.add(request);
+	            	
+	            	services.clear();
+	            	current_request = request_nr;
 	            }
-	            
-				String service_code			= jsonChildNode.optString(SERVICE_CODE).toString();
-				String service_name 		= jsonChildNode.optString(SERVICE_NAME).toString();
-				int quantity 				= Integer.parseInt(jsonChildNode.optString(QUANTITY));
-				
+
+				String service_code			= jsonChildNode.optString("service_code").toString();
+				String service_name 		= jsonChildNode.optString("service_name").toString();
+				int quantity 				= Integer.parseInt(jsonChildNode.optString("quantity"));
+
 				LabService service = new LabService();
 				
 				service.setServiceCode(service_code);
 				service.setLabServiceName(service_name);
 				service.setQuantity(quantity);
 				
+				System.out.println(service.getServiceCode());
+				System.out.println(service.getLabServiceName());
+				System.out.println(service.getQuantity());
+				
 				services.add(service);
+
 	        }
 			
+			LabRequest request = new LabRequest();	
+
+			request.setEncounterNumber(encounter_id);
+        	request.setRequestNumber(request_nr);
+        	request.setServices(services);
+        	
+        	requests.add(request);
+        	
 		}catch(Exception e){
 			System.out.println(e.toString() + " pong was here too :)");
 		}

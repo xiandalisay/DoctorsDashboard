@@ -66,7 +66,19 @@ public class LabRequest
 	}
 	
 	public void setServices(ArrayList<LabService> services){
-		this.services = services;
+		System.out.println("Setting services...");
+		
+		this.services = new ArrayList<LabService>();
+		
+		for(int i=0;i<services.size();i++){
+			this.services.add(services.get(i));
+			
+			System.out.println("Service Code: "+this.services.get(i).getServiceCode());
+//			this.services.get(i).setServiceCode(services.get(i).getServiceCode();
+//			this.services.get(i).setLabServiceName(services.get(i).getLabServiceName();
+//			this.services.get(i).setQuantity(services.get(i).getServiceCode();
+		}
+		
 	}
 	
 	public int getRequestNumber()
