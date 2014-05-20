@@ -25,7 +25,7 @@ import com.example.model.Encounter;
 import com.example.model.Patient;
 import com.example.model.Soap;
 
-public class LabRequestAdapter extends Data {
+public class LabResultAdapter extends Data {
 	
 	
 	public  SQLiteDatabase db;
@@ -34,27 +34,26 @@ public class LabRequestAdapter extends Data {
 	private static final int 	DATABASE_VERSION	= 1;
 	private static final String DATABASE_NAME 		= "localhost";
 	
-	public  LabRequestAdapter(Context context) {
+	public  LabResultAdapter(Context context) {
 		try {
 			dbHandler = new DatabaseHandler(context, DATABASE_NAME, null, DATABASE_VERSION);
-			Log.d("LabRequestAdapter", "Initialized");
+			Log.d("LabResultAdapter", "Initialized");
 		} catch (Exception e) {
-			Log.d("LabRequestAdapter Exception", Log.getStackTraceString(e));
+			Log.d("LabResultAdapter Exception", Log.getStackTraceString(e));
 		}
 	}
 	
-	public void deleteLabRequest(int encounter_id, int personnel_id) {
+	public void deleteLabResult(int encounter_id) {
 		db = dbHandler.getWritableDatabase();
 		
 		try {
-			db.delete(TABLE_LAB_REQUEST, "encounter_id = ? AND personnel_id = ?", 
-					new String[] {encounter_id +"",personnel_id+""});
+			db.delete(TABLE_LAB_RESULT, " request_id IN (SELECT request_id FROM lab_request WHERE encounter_id = "  + encounter_id + ")" , null);
 		} catch (Exception se) {
-			Log.d("LabRequestAdapter deleteLabRequest", Log.getStackTraceString(se));
+			Log.d("LabResultAdapter deleteLabResult", Log.getStackTraceString(se));
 		}
 		finally {
 			db.close();
-			Log.d("deleteLabRequest", "Done successfully.");
+			Log.d("deleteLabResult", "Done successfully.");
 		}
 	}
 	

@@ -103,12 +103,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						"(2008000000, 1000000, 'Inpatient from ER',null, '2009-02-09 11:47:00.000',null,null)," +
 						"(2008000001, 1000000, 'OPD',null, '2008-11-24 16:05:43.000',null,null)," +
 						"(2008000002, 1000000, 'OPD',null, '2008-12-24 08:07:43.000',null,null)");
-			db.execSQL("INSERT INTO doctor_encounter VALUES (100055,1),(100055,1),(100055,3),(100022,1),(100022,3),(100055,3),(100022,1),(100022,3),(100055,5)");
+			db.execSQL("INSERT INTO doctor_encounter VALUES (100055,1),(100022,1)");
 			db.execSQL("insert into [client] values(1, '06778975-75e3-4da2-9e1e-866b222e0fa6')");
 			db.execSQL("INSERT INTO 'reason' ('reason_id','name_reason') " +
 				" VALUES (1,'Surgery'), " + 
 				"   (2,'Dialysis'), " +
-				"	(3,'ER')"); 
+				"	(3,'ER')");
+			db.execSQL("INSERT INTO lab_request ('request_id',encounter_id,personnel_id,date_requested) VALUES (1,1,100055,'2011-01-01 00:00:00'),(2,1,100055,'2011-02-01 00:00:00')");
+			db.execSQL("INSERT INTO lab_result ('result_id','request_id','date_received','name_test','message_hl7','name_patho') " + 
+					"VALUES(1,1,'2011-01-01 00:00:00','asd','asd','asd'), " + 
+					"(2,1,'2011-01-01 00:00:00','asd','asd','asd')");
 			db.execSQL("INSERT INTO 'referral' ('referral_id','encounter_id','dept_id','reason_id','date_referred') " + 
 				" VALUES (1,1,107,1,'2013-06-02 00:12:00' ), " + 
 				" (2,2,131,2,'2013-08-10 12:12:00' ), " + 	

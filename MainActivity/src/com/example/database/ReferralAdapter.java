@@ -87,7 +87,7 @@ public class ReferralAdapter extends Data {
 		db = dbHandler.getWritableDatabase();
 		
 		try {
-			db.delete(TABLE_REFERRAL, "encounter_id = ?", new String[] {encounter_id+""});
+			db.delete(TABLE_REFERRAL, "encounter_id = " + encounter_id, null);
 		} catch (Exception se) {
 			Log.d("ReferralAdapter deleteReferral", Log.getStackTraceString(se));
 		}

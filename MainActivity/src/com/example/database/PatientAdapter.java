@@ -26,7 +26,9 @@ public class PatientAdapter extends Data{
 	
 	private SQLiteDatabase db;
 	private DatabaseHandler dbHandler;
+	
 	private Cursor cursor;
+	private String query;
 	
 	private static final int 	DATABASE_VERSION	= 1;
 	private static final String DATABASE_NAME 		= "localhost";
@@ -44,13 +46,13 @@ public class PatientAdapter extends Data{
 	/* gets pids tagged by a specific doctor */
 	public ArrayList<Integer> getPids(int personnel) {
 		db = dbHandler.getReadableDatabase();
-		String sql = "SELECT pid FROM " + TABLE_PATIENT + 
+		query = "SELECT pid FROM " + TABLE_PATIENT + 
 				" JOIN " + TABLE_ENCOUNTER + " USING (" + PID + ")" + 
 				" JOIN " + TABLE_DOC_ENC + " USING (" + ENCOUNTER_ID + ")" + 
 				" JOIN " + TABLE_DOCTOR + " USING (" + PERSONNEL_ID + ")" + 
 				" WHERE doctor.personnel_id = '" + personnel + "'";
 		
-		cursor = db.rawQuery(sql, null);
+		cursor = db.rawQuery(query, null);
 		if(cursor.moveToFirst()) {
 			ArrayList<Integer> pids = new ArrayList<Integer>();
 			do {
@@ -60,6 +62,18 @@ public class PatientAdapter extends Data{
 		}
 		Log.d("PatientAdapter getPids", "0 rows retrieved.");
 		return null;
+	}
+	
+	public void deletePatient(int patient) {
+		db = dbHandler.getWritableDatabase();
+		try {
+			db.delete(TABLE_PATIENT, " pid = " + patient, null);
+		}  catch (Exception se) {
+			Log.d("deletePatient", Log.getStackTraceString(se));
+		}
+		finally {
+			db.close();
+		}
 	}
 	
 }

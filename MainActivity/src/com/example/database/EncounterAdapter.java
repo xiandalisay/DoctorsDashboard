@@ -34,6 +34,8 @@ public class EncounterAdapter extends Data {
 	private ContentValues values;
 	private Cursor cursor;
 	
+	private String query;
+	
 	private ArrayList<Encounter> encounter_list;
 	
 	/* _constructor */
@@ -52,12 +54,12 @@ public class EncounterAdapter extends Data {
 		
 		db = dbHandler.getReadableDatabase();
 		
-		String query = 
-				"SELECT encounter_id " + 
-			    " FROM " + TABLE_ENCOUNTER + 
-				" WHERE pid = " + patient_id +
-				" ORDER BY date_encountered DESC" +
-				" LIMIT 1"; 
+		query = 
+			"SELECT encounter_id " + 
+		    " FROM " + TABLE_ENCOUNTER + 
+			" WHERE pid = " + patient_id +
+			" ORDER BY date_encountered DESC" +
+			" LIMIT 1"; 
 		
 		cursor = db.rawQuery(query, null);
 		
@@ -75,15 +77,15 @@ public class EncounterAdapter extends Data {
 	
 		db = dbHandler.getReadableDatabase();
 		
-		String query = 
-				"SELECT date_encountered " + 
-						" FROM " + TABLE_PATIENT + 
- 				" JOIN " + TABLE_ENCOUNTER + " USING (" + PID + ")" + 
-				" JOIN " + TABLE_DOC_ENC + " USING (" + ENCOUNTER_ID + ")" + 
-				" JOIN " + TABLE_DOCTOR + " USING (" + PERSONNEL_ID + ")" + 
-				" WHERE doctor.personnel_id = " + personnel + 
-					" AND patient.pid = " + pid + 
-				" LIMIT 1";
+		query = 
+			"SELECT date_encountered " + 
+					" FROM " + TABLE_PATIENT + 
+ 			" JOIN " + TABLE_ENCOUNTER + " USING (" + PID + ")" + 
+			" JOIN " + TABLE_DOC_ENC + " USING (" + ENCOUNTER_ID + ")" + 
+			" JOIN " + TABLE_DOCTOR + " USING (" + PERSONNEL_ID + ")" + 
+			" WHERE doctor.personnel_id = " + personnel + 
+				" AND patient.pid = " + pid + 
+			" LIMIT 1";
 		
 		cursor = db.rawQuery(query, null);
 		
@@ -100,10 +102,10 @@ public class EncounterAdapter extends Data {
 
 		db = dbHandler.getReadableDatabase();
 		
-		String query = 
-				"SELECT encounter_id " + 
-			    " FROM " + TABLE_ENCOUNTER + 
-				" WHERE  encounter_id = " + encounter_id;
+		query = 
+			"SELECT encounter_id " + 
+		    " FROM " + TABLE_ENCOUNTER + 
+			" WHERE  encounter_id = " + encounter_id;
 		
 		cursor = db.rawQuery(query, null);
 		
@@ -170,16 +172,17 @@ public class EncounterAdapter extends Data {
 			}
 	}
 
-	public void deleteEncounter(int encounter,int personnel) {
+	public void deleteEncounter(int encounter) {
 		db = dbHandler.getWritableDatabase();
 		try {
-			db.delete(TABLE_ENCOUNTER, "encounter_id = ?, personnel_id = ?", new String[] {"'" + encounter + "'","'" + personnel + "'"});
+			db.delete(TABLE_ENCOUNTER, " encounter_id = " + encounter, null);
 		}
 		catch (SQLException se) {
 			Log.d("DepartmentAdapter deleteEncounter", Log.getStackTraceString(se));
 		}
 		finally {
 		  db.close();
+		  Log.d("deleteEncounter", "Done successfully.");
 		}
 	}
 	
@@ -188,10 +191,10 @@ public class EncounterAdapter extends Data {
 		db = dbHandler.getReadableDatabase();
 		encounter_list = new ArrayList<Encounter>();
 		try {
-			String query = 
-					"SELECT encounter_id FROM " + TABLE_ENCOUNTER + 
-					" WHERE pid = " + patientid ;
-			Cursor cursor = db.rawQuery(query,  null);
+			query = 
+				"SELECT encounter_id FROM " + TABLE_ENCOUNTER + 
+				" WHERE pid = " + patientid ;
+			cursor = db.rawQuery(query,  null);
 			if(cursor.moveToFirst()){
 				do{
 					enc_ids.add(cursor.getInt(cursor.getColumnIndex("encounter_id")));
@@ -208,4 +211,25 @@ public class EncounterAdapter extends Data {
 		return enc_ids;
 	}
 	
+	public Integer getPid(int encounter) {
+		db = dbHandler.getReadableDatabase();
+		try {
+			query = "SELECT pid FROM " + TABLE_ENCOUNTER + 
+					" WHERE encounter_id = " + encounter;
+			cursor = db.rawQuery(query, null);
+			if(cursor.moveToFirst()) {
+				return cursor.getInt(cursor.getColumnIndex("pid"));
+			} else {
+				return -1;
+			}
+		} catch (Exception se) {
+			Log.d("getPid", Log.getStackTraceString(se));
+			return -1;
+		}
+		finally {
+			db.close();
+			Log.d("getPid", "Done successfully.");
+		}
+
+	}
 }

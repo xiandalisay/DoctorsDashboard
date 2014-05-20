@@ -36,14 +36,13 @@ public class NotesAdapter extends Data {
 		db = dbHandler.getWritableDatabase();
 		
 		try {
-			db.delete(TABLE_NOTES, "encounter_id = ?, personnel_id", 
-					new String[] {encounter_id +"",personnel_id+""});
+			db.execSQL("DELETE FROM notes WHERE encounter_id = " + encounter_id + " AND personnel_id = " + personnel_id);
 		} catch (Exception se) {
 			Log.d("NotesAdapter deleteNotes", Log.getStackTraceString(se));
 		}
 		finally {
 			db.close();
-			Log.d("NotesAdapter", "Done successfully.");
+			Log.d("deleteNotes", "Done successfully.");
 		}
 	}
 

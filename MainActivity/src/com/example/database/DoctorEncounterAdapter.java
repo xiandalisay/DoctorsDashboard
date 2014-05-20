@@ -48,20 +48,19 @@ public class DoctorEncounterAdapter extends Data {
 	}
 	
 	/* counts the doctors involved by an encounter */
-	public Integer countDoctorsByEncounter(Integer encounter_id,Integer personnel) {
+	public Integer countDoctorsByEncounter(Integer encounter_id) {
 		db = dbHandler.getReadableDatabase();
 		try {
-			System.out.println("Personnel id: " + personnel);
 			System.out.println("Encounter id: " + encounter_id);
-			query = " SELECT count(encounter_id)  FROM " + TABLE_DOC_ENC + 
-					" WHERE encounter_id = " + encounter_id + " AND personnel_id =" + personnel;
+			query = " SELECT DISTINCT personnel_id, encounter_id  FROM " + TABLE_DOC_ENC + 
+					" WHERE encounter_id = " + encounter_id ;
 			System.out.println(query);
 			cursor = db.rawQuery(query,  null);
-			System.out.println(" rows: " + (cursor.getCount()-1));
+			System.out.println(" rows: " + (cursor.getCount()));
 
-			return (cursor.getCount()-1);
+			return (cursor.getCount());
 		} catch (Exception se) {
-			Log.d("getEncounterIds", se.getMessage());
+			Log.d("DoctorEncounter countDoctorsByEncounter", se.getMessage());
 			return 0;
 		}
 		finally {
@@ -69,13 +68,12 @@ public class DoctorEncounterAdapter extends Data {
 		}
 	}
 	
-	public void deleteDoctorEncounter(ArrayList<Integer> encounter) {
+	public void deleteDoctorEncounter(Integer encounter, Integer personnel) {
 		db = dbHandler.getWritableDatabase();
 		
 		try {
-			for(int i = 0; i < encounter.size(); i++) {	
-				db.delete(TABLE_DOC_ENC, "encounter_id = ?", new String[] {encounter.get(i)+""});
-			}
+			db.delete(TABLE_DOC_ENC, "encounter_id = ? AND personnel_id = ? ", 
+					new String[] {encounter + "", personnel + ""});
 		} catch (Exception se) {
 			Log.d("deleteDoctorEncounter", Log.getStackTraceString(se));
 		}
@@ -83,4 +81,25 @@ public class DoctorEncounterAdapter extends Data {
 			db.close();
 		}
 	}
+	
+	public void showDoctorEncounter() {
+		db = dbHandler.getReadableDatabase();
+		try {
+			String query = "SELECT DISTINCT personnel_id, encounter_id FROM doctor_encounter";
+			cursor = db.rawQuery(query, null);
+			if(cursor.moveToFirst() && (cursor.getCount() != 0)){
+				do {
+					System.out.println(cursor.getInt(cursor.getColumnIndex("personnel_id")));
+					System.out.println(cursor.getInt(cursor.getColumnIndex("encounter_id")));
+				} while(cursor.moveToNext());
+			}
+		} catch (Exception se) {
+			Log.d("showDoctorEncounter", Log.getStackTraceString(se));
+		}
+		finally {
+			db.close();
+		}	
+	}
+	
+	
 }
