@@ -70,7 +70,7 @@
         android:layout_centerHorizontal="true" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageCanvas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/laboratoryServiceSectionSpinner"
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/imageView3"
+        android:layout_below="@+id/imageCanvas"
         android:text="Search Laboratory Test:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 

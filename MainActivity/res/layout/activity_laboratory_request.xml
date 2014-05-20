@@ -95,7 +95,7 @@
             android:src="@drawable/line" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageCanvas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -119,7 +119,7 @@
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
-            android:layout_below="@+id/imageView3"
+            android:layout_below="@+id/imageCanvas"
             android:layout_centerHorizontal="true"
             android:src="@drawable/linetwo" />
 
