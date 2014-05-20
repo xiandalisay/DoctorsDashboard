@@ -437,6 +437,7 @@ public class RegisterActivity extends InitialActivity{
 		finish();
 	}
 	
+	/* sets the last sync date of the doctor */
 	private void setLastSync() {
 		DoctorAdapter doc = new DoctorAdapter(this);
 		doc.setLastSync(Integer.parseInt(data.get("personell_nr")));

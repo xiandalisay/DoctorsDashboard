@@ -37,22 +37,6 @@ public class Doctor {
 		this.base_url		= "";
 	}
 	
-	public void setDoctor(Doctor doctor){
-		this.personnel_id	= doctor.personnel_id;
-		this.license_no 	= doctor.license_no;
-		this.dept_id 		= doctor.dept_id;
-		this.name_last 		= doctor.name_last;
-		this.name_first 	= doctor.name_first;
-		this.name_middle 	= doctor.name_middle;
-		this.authtoken 		= doctor.authtoken;
-		this.accesstoken 	= doctor.accesstoken;
-		this.base_url 		= doctor.base_url;
-		this.last_sync 		= doctor.last_sync;
-		this.date_birth 	= doctor.date_birth;
-		this.sex 			= doctor.sex;
-		this.base_url 		= doctor.base_url;
-	}
-	
 	public void setDoctorCredentials(String[] doctor){
 		this.license_no 	= doctor[0];
 		this.name_last 		= doctor[1];
@@ -80,12 +64,6 @@ public class Doctor {
 
 	public void setDeptId(Integer dept ) {
 		this.dept_id = dept;
-	}
-	
-	public void setDoctor(String license, String authtoken, String accesstoken) {
-		this.license_no 	= license;
-		this.authtoken 		= authtoken;
-		this.accesstoken 	= accesstoken;
 	}
 	
 	public Doctor getDoctor() {

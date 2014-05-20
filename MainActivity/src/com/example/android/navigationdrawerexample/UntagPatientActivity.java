@@ -8,11 +8,6 @@
 
 package com.example.android.navigationdrawerexample;
 
-import java.util.ArrayList;
-
-import com.example.database.CanvasAdapter;
-import com.example.database.DatabaseAdapter;
-import com.example.database.DoctorAdapter;
 import com.example.database.DoctorEncounterAdapter;
 import com.example.database.EncounterAdapter;
 import com.example.database.LabRequestAdapter;
@@ -20,7 +15,6 @@ import com.example.database.LabResultAdapter;
 import com.example.database.NotesAdapter;
 import com.example.database.PatientAdapter;
 import com.example.database.ReferralAdapter;
-import com.example.model.HelperSharedPreferences;
 import com.example.model.Preferences;
 import com.example.model.Rest;
 
@@ -91,17 +85,13 @@ public class UntagPatientActivity extends InitialActivity {
 		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
 	}
 
-	/* 
-	 * if only one doctor tagged it, deletes the data of the patient 
-	 * else deletes the row of the relation
-	 */
 	private void deleteUntaggedEncounter() {
 		Integer personnel = getPersonnelNumber();
 		
 		DoctorEncounterAdapter doc_enc = new DoctorEncounterAdapter(this);
 		/* If an encounter is tagged to many doctors
-		 * 	Then, delete lab results, requests and notes associated with them
-		 * Else, deletes all remaining data which encounter associated 
+		 * 	Then, delete lab results, requests and notes associated with that encounter
+		 * Else, deletes all remaining data which encounter is associated 
 		 */
 		if(doc_enc.countDoctorsByEncounter(encounter_id) > 1) {
 			LabResultAdapter res = new LabResultAdapter(this);
