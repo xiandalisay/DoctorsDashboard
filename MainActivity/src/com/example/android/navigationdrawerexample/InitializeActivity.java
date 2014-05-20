@@ -12,7 +12,6 @@ package com.example.android.navigationdrawerexample;
 import java.util.ArrayList;
 import java.util.UUID;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,14 +19,18 @@ import com.example.database.AccountsAdapter;
 import com.example.database.ClientAdapter;
 import com.example.database.DatabaseAdapter;
 import com.example.database.DepartmentAdapter;
+import com.example.database.LabServiceAdapter;
 import com.example.model.Department;
+import com.example.model.LabService;
 import com.example.model.Preferences;
 import com.example.model.Rest;
 import com.example.parser.DepartmentParser;
+import com.example.parser.LabServiceParser;
 
 public class InitializeActivity extends InitialActivity{
 	
 	private ArrayList<Department> departments;
+	private ArrayList<LabService> labservices;
 	private String client_id;
 	
 	@Override
@@ -114,6 +117,25 @@ public class InitializeActivity extends InitialActivity{
 		}
 		else{
 			return false;			
+		}
+	}
+	
+	private void retrieveServicesAPI(){
+		LabServiceAdapter lab_service_adapter = new LabServiceAdapter(this);
+		if(isNetworkAvailable()){
+			Rest rest = new Rest("GET");
+			rest.setURL("http://121.97.45.242/segservice/laboratory/show/");
+			rest.execute();
+			while(rest.getContent() == null){}
+			 
+			if(rest.getResult()){
+				String content = rest.getContent();
+				//System.out.println(content);
+				LabServiceParser lab_service_parser = new LabServiceParser(content);
+				labservices = lab_service_parser.getLabServices();
+				lab_service_adapter.insertLabServices(labservices);
+				//lab_service_adapter.getDepartments();
+			}
 		}
 	}
 

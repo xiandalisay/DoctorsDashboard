@@ -22,9 +22,7 @@ import com.example.model.LabRequest;
 import com.example.model.LabService;
 
 public class LaboratoryAdapter extends Data {
-	
-	ContentValues values;
-	
+
 	/* _constructor */
 	public  LaboratoryAdapter(Context context) 
 	{
@@ -37,16 +35,21 @@ public class LaboratoryAdapter extends Data {
 	}
 	
 	
-	/* inserts lab requests in mobile DB */
+	/* inserts lab requests in mobile DB
+	 * TABLE = "lab_request" 
+	 */
 	public void insertLabRequestsEncounter(ArrayList<LabRequest> requests) {
 		
 		db = dbHandler.getWritableDatabase();
-		values = new ContentValues();
+		ContentValues values = new ContentValues();
 		
 		try {
 			for(int i = 0; i < requests.size(); i++) {
 				values.put(ENCOUNTER_ID, requests.get(i).getEncounterNumber());	
+				//Log.d("Lab Request Insert","Encounter ID: "+requests.get(i).getEncounterNumber());
 				values.put(REQUEST_ID, requests.get(i).getRequestNumber());				
+				//Log.d("Lab Request Insert","Request ID: "+requests.get(i).getRequestNumber());
+				values.put(REQUESTED, "2011-00-00 00:00:00");
 				
 				db.insertWithOnConflict(TABLE_LAB_REQUEST, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 				
@@ -54,17 +57,19 @@ public class LaboratoryAdapter extends Data {
 			}
 		} catch(SQLException se) {
 			Log.d("LABORATORY_ADAPTER", Log.getStackTraceString(se));
-		} finally {
+		}finally{
 			db.close();
-		}	
+		}
 		
 	}
 
-	/* insert into composite table for requests and associated services inluded*/
+	/*  inserts into composite table for requests and associated services included
+	 *  TABLE = "service_request"
+     */
 	private void insertLabServiceRequest(LabRequest request) {
 		
 		db = dbHandler.getWritableDatabase();
-		values = new ContentValues();
+		ContentValues values = new ContentValues();
 		
 		ArrayList<LabService> services = request.getServices();
 		
@@ -72,9 +77,12 @@ public class LaboratoryAdapter extends Data {
 			
 			for(int i=0; i < services.size(); i++) {
 				
-				values.put(REQUEST_ID, request.getRequestNumber());				
+				values.put(REQUEST_ID, request.getRequestNumber());			
+				//Log.d("Lab Request Insert","Request ID: "+request.getRequestNumber());
 				values.put(SERVICE_ID, services.get(i).getServiceCode());
+				//Log.d("Lab Request Insert","Service Code: "+services.get(i).getServiceCode());
 				values.put(QUANTITY, services.get(i).getQuantity());
+				//Log.d("Lab Request Insert","Quantity: "+services.get(i).getQuantity());
 				
 				db.insertWithOnConflict(TABLE_SERVICE_REQUEST, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			}
@@ -83,10 +91,10 @@ public class LaboratoryAdapter extends Data {
 			
 			Log.d("LABORATORY_ADAPTER", Log.getStackTraceString(se));
 	
-		} finally {
-			
-			db.close();
-		
-		}	
+		}
+	}
+	
+	public void close(){
+		db.close();
 	}
 }

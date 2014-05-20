@@ -168,10 +168,11 @@ public class InitialSyncActivity extends InitialActivity {
 	/* retrieve thru web service all the laboratory request for each encounter tagged to a doctor */
 	private void retrieveLabRequestsAPI() {
 		
-		LaboratoryAdapter db = new LaboratoryAdapter(this);
+		
 		requests = new ArrayList<LabRequest>();
 		
 		for(int i=0; i<EIDs.size(); i++){
+			LaboratoryAdapter db = new LaboratoryAdapter(this);
 			
 			/* clear contents of ArrayList */
 			requests.clear();
@@ -200,9 +201,14 @@ public class InitialSyncActivity extends InitialActivity {
 			/* retrieve and parse labo requests of each encounter of patient(i) */
 			requests = (parser.getRequestService());
 		
+			//print all encounters and requests
+			for(int j=0;j<requests.size();j++){
+				System.out.println("Encounter ID: "+requests.get(j).getEncounterNumber());
+				System.out.println("Ref No: "+requests.get(j).getRequestNumber());
+			}
+			
 			/* insert encounters of patient(i) in mobile DB */
 			db.insertLabRequestsEncounter(requests);
-
 		}
 	}
 	

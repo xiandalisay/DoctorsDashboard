@@ -108,6 +108,9 @@ public class Data {
 	public static final String SERVICE_ID 	= "service_id";
 	public static final String SECTION	 	= "name_section";
 	public static final String SERVICE 		= "name_service";
+	public static final String SECTION_CODE = "section_code";
+	public static final String OPD 			= "opd";
+	public static final String IPD 			= "ipd";
 	
 	// Table Name: Service_Request
 	public static final String TABLE_SERVICE_REQUEST = "service_request";

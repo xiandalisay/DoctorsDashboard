@@ -8,6 +8,11 @@
 
 package com.example.android.navigationdrawerexample;
 
+import java.util.ArrayList;
+
+import com.example.database.CanvasAdapter;
+import com.example.database.DatabaseAdapter;
+import com.example.database.DoctorAdapter;
 import com.example.database.DoctorEncounterAdapter;
 import com.example.database.EncounterAdapter;
 import com.example.database.LabRequestAdapter;
@@ -15,6 +20,7 @@ import com.example.database.LabResultAdapter;
 import com.example.database.NotesAdapter;
 import com.example.database.PatientAdapter;
 import com.example.database.ReferralAdapter;
+import com.example.model.HelperSharedPreferences;
 import com.example.model.Preferences;
 import com.example.model.Rest;
 

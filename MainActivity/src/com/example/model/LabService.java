@@ -102,5 +102,9 @@ public class LabService
 		return quantity;
 	}
 	
+	public String toString(){
+		return lab_service_name;
+	}
+	
 	
 }

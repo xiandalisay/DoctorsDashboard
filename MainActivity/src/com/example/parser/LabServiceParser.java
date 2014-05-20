@@ -5,30 +5,31 @@ package com.example.parser;
 
 import java.util.ArrayList;
 
-import com.example.model.Encounter;
 import com.example.model.LabRequest;
+import com.example.model.LabService;
 import com.google.resting.json.JSONArray;
 import com.google.resting.json.JSONException;
 import com.google.resting.json.JSONObject;
 
 public class LabServiceParser extends JSONParser{
-	private ArrayList<LabRequest> labrequests;
+	private ArrayList<LabService> labservices;
 	//private HashMap<String, String> data = new HashMap<String, String>();
 	//private JSONObject json_childNode;
 	private JSONArray json_array;
 		
-	private final String ENCOUNTER_NR 	= "encounter_nr";
-	private final String REFNO 	= "refno";
-	private final String SERVICE_CODE 	= "service_code";
-	private final String SERVICE_NAME = "service_name";
-	private final String QUANTITY = "quantity";
+	private final String CODE 	= "code";
+	private final String TEST 	= "test";
+	private final String SECTION_CODE 	= "section_code";
+	private final String SECTION = "section";
+	private final String OPD = "opd";
+	private final String IPD = "ipd";
 	
 	
 
 	
 	public LabServiceParser(String content) throws NullPointerException{
 		
-		labrequests = new ArrayList<LabRequest>();
+		labservices = new ArrayList<LabService>();
 		try {
 			json_array = new JSONArray(content);
 		} catch (JSONException e) {
@@ -37,10 +38,10 @@ public class LabServiceParser extends JSONParser{
 		
 	}
 	
-	public ArrayList<LabRequest> getLabRequests(){
+	public ArrayList<LabService> getLabServices(){
 		
 		try{
-			labrequests = new ArrayList<LabRequest>();
+			labservices = new ArrayList<LabService>();
 		
 			int lengthJsonArr = json_array.length();  
 	   
@@ -52,19 +53,21 @@ public class LabServiceParser extends JSONParser{
 				
 	                           
 	                         /******* Fetch node values **********/
-	            int    encounter_nr      	= Integer.parseInt(jsonChildNode.optString(ENCOUNTER_NR).toString());
-	            int    refno       	= Integer.parseInt(jsonChildNode.optString(REFNO).toString());
-				String service_code		= jsonChildNode.optString(SERVICE_CODE).toString();
-				String service_name = jsonChildNode.optString(SERVICE_NAME).toString();
-				String quantity = jsonChildNode.optString(QUANTITY).toString();
+	            String    code      	= jsonChildNode.optString(CODE).toString();
+	            String    test       	= jsonChildNode.optString(TEST).toString();
+				String section_code		= jsonChildNode.optString(SECTION_CODE).toString();
+				String service = jsonChildNode.optString(SECTION).toString();
+				String opd = jsonChildNode.optString(OPD).toString();
+				String ipd = jsonChildNode.optString(IPD).toString();
 				
+				LabService labservice = new LabService(code, test, section_code, service, opd, ipd);
 				
-				LabRequest labrequest = new LabRequest(refno, encounter_nr, service_code, service_name, Integer.parseInt(quantity),"nothing","nothing","nothing");
-				labrequests.add(labrequest);
+				labservices.add(labservice);
+			
 							
 	        }
-		}catch(Exception e){System.out.println(e.toString() + " pong was here too :)");}
+		}catch(Exception e){System.out.println(e.toString() + " pong was here :)");}
         
-        return labrequests;
+        return labservices;
 	}
 }

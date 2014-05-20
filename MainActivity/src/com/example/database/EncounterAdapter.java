@@ -141,8 +141,7 @@ public class EncounterAdapter extends Data {
 			}
 		} catch (SQLException se) {
 			Log.d("DepartmentAdapter insertDoctorEncounters", Log.getStackTraceString(se));
-		}
-		finally	{
+		}finally {
 			db.close();
 		}
 	}
