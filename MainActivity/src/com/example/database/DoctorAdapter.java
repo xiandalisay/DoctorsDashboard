@@ -7,6 +7,7 @@
 
 package com.example.database;
 
+import com.example.model.DateTime;
 import com.example.model.Doctor;
 
 import android.content.ContentValues;
@@ -38,7 +39,7 @@ public class DoctorAdapter extends Data{
 		}
 	}
 	
-	//This function adds the values of the doctor into the table
+	/* This function adds the values of the doctor into the table */
 	public void addDoctor(Doctor doctor)
 	{
 		db = dbHandler.getWritableDatabase();
@@ -55,7 +56,6 @@ public class DoctorAdapter extends Data{
 		values.put(URL, doctor.getBaseUrl());
 		values.put(BIRTH, doctor.getBirthDate());
 		values.put(SEX, doctor.getSex());
-		
 		try {
 			db.insert(TABLE_DOCTOR, null, values);
 			db.close();
@@ -65,13 +65,14 @@ public class DoctorAdapter extends Data{
 		}
 	}
 	
-	//This function updates the last manual sync made by the doctor
-	public void setLastSync(String license) {
+	/* This function updates the last manual sync made by the doctor */
+	public void setLastSync(Integer personnel) {
 		db = dbHandler.getWritableDatabase();
-		
+		System.out.println("setLastSync");
 		String query = "UPDATE " + TABLE_DOCTOR + 
-						" SET " + LAST_SYNC + " = " + "''" +
-						" WHERE " + LICENSE_NO + " = " + license;
+						" SET " + LAST_SYNC + " = " + "'"+DateTime.getDateTime()+"'" +
+						" WHERE " + PERSONNEL_ID + " = " + personnel;
+		System.out.println(""+query);
 		try {
 			db.execSQL(query);
 		}
@@ -80,7 +81,7 @@ public class DoctorAdapter extends Data{
 		}
 	}
 	
-	//This function checks if a doctor exists using his/her license
+	/* This function checks if a doctor exists using his/her license */
 	public boolean isDoctorExists(String license)	{
 		db = dbHandler.getReadableDatabase();
 		
@@ -102,6 +103,9 @@ public class DoctorAdapter extends Data{
 			return false; 
 	}
 	
+	/* This function gets the base url associated with the doctor 
+	 * by his/her authentication token
+	 */
 	public String getBaseUrl(String auth) {
 		db = dbHandler.getReadableDatabase();
 		String query = 
@@ -119,6 +123,9 @@ public class DoctorAdapter extends Data{
 		return cursor.getString(0);
 	}
 	
+	/* This function gets the personnel number associated with the doctor 
+	 * by his/her authentication token
+	 */
 	public Integer getPersonnelNr(String auth) {
 		db = dbHandler.getReadableDatabase();
 		String query = 
@@ -135,4 +142,6 @@ public class DoctorAdapter extends Data{
 		System.out.println("Personnel Nr: "+ cursor.getString(0));
 		return cursor.getInt(0);
 	}
+	
+	
 }

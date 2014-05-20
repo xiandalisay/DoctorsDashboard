@@ -39,7 +39,6 @@ public class UntagPatientActivity extends InitialActivity {
 		retrieveBundle();
 		
 		submitUntag();
-		//deleteRelatedData();
 		
 		finish();
 	}
@@ -61,7 +60,6 @@ public class UntagPatientActivity extends InitialActivity {
 		
 		/* process request service request */
 		rest.execute();
-
 		
 		/* check if connection was successful */
 		while(rest.getContent() == null){}
@@ -72,7 +70,7 @@ public class UntagPatientActivity extends InitialActivity {
 		if(rest.getResult()) {
 			deleteUntaggedEncounter();
 		}
-
+		
 	}
 
 	/* retrieves base_url */
@@ -93,17 +91,13 @@ public class UntagPatientActivity extends InitialActivity {
 		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
 	}
 
-	/* 
-	 * if only one doctor tagged it, deletes the data of the patient 
-	 * else deletes the row of the relation
-	 */
 	private void deleteUntaggedEncounter() {
 		Integer personnel = getPersonnelNumber();
 		
 		DoctorEncounterAdapter doc_enc = new DoctorEncounterAdapter(this);
 		/* If an encounter is tagged to many doctors
-		 * 	Then, delete lab results, requests and notes associated with them
-		 * Else, deletes all remaining data which encounter associated 
+		 * 	Then, delete lab results, requests and notes associated with that encounter
+		 * Else, deletes all remaining data which encounter is associated 
 		 */
 		if(doc_enc.countDoctorsByEncounter(encounter_id) > 1) {
 			LabResultAdapter res = new LabResultAdapter(this);

@@ -146,7 +146,6 @@ public class Data {
 	 static final String CREATE_TABLE_DEPARTMENT = 
 		"CREATE TABLE " + TABLE_DEPARTMENT + " ( " +
 		DEPT_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		ACRONYM		+ " NVARCHAR(15), " +
 		SHORT_DEPT	+ " NVARCHAR(20) UNIQUE, " 	+
 		DEPT 		+ " NVARCHAR(25) UNIQUE NOT NULL " 	+ " ) ";
 	
@@ -162,7 +161,8 @@ public class Data {
 		ACCESS 		+ " NVARCHAR(45) UNIQUE NOT NULL, " +
 		SEX 		+ " CHAR(1), " +
 		BIRTH 		+ " DATE, " +
-		URL 		+ " TEXT NOT NULL" 	+	" )";
+		URL 		+ " TEXT NOT NULL" 	+	"," + 
+		LAST_SYNC	+ " DATETIME  "+ ")";
 	
 	 static final String CREATE_TABLE_PATIENT = 
 		"CREATE TABLE " + TABLE_PATIENT + " ( " +
@@ -185,14 +185,14 @@ public class Data {
 		PID 		+ " INTEGER NOT NULL REFERENCES " + TABLE_PATIENT + "(" + PID + ")" + ", "	+
 		PATIENT 	+ " NVARCHAR(20), " +
 		COMPLAINT 	+ " TEXT, " +
-		ENCOUNTERED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " +	", " +
+		ENCOUNTERED + " DATETIME  " +	", " +
 		OFFICIAL_RECEIPT_NR + " NVARCHAR(10), " +
-		IS_CONFIDENTIAL + " CHAR(3) DEFAULT 'No' " +	")";
+		IS_CONFIDENTIAL + " NVARCHAR(3) DEFAULT 'No' " +	")";
 	
 	 static final String CREATE_TABLE_DOC_ENC = 
 		"CREATE TABLE " + TABLE_DOC_ENC + "(" +
-		PERSONNEL_ID 	+ " INTEGER NOT NULL " + ", " +
-		ENCOUNTER_ID 	+ " INTEGER NOT NULL " + ") ";
+		PERSONNEL_ID 	+ " INTEGER NOT NULL REFERENCES "  + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
+		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES "  + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ") ";
 			
 	 static final String CREATE_TABLE_REASON = 
 		"CREATE TABLE " + TABLE_REASON + "(" +
@@ -205,13 +205,14 @@ public class Data {
 		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES "  + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
 		DEPT_ID 		+ " INTEGER NOT NULL REFERENCES "  + TABLE_DEPARTMENT + "(" + DEPT_ID + ")" + ", "	+
 		REASON_ID 		+ " INTEGER NOT NULL REFERENCES "  + TABLE_REASON + "(" + REASON_ID + ")" + ", "	+
-		REFERRED 		+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime')) " + ")";
+		REFERRED 		+ " DATETIME  " + ")";
 		
 	static final String CREATE_TABLE_LAB_REQUEST = 
 		"CREATE TABLE " + TABLE_LAB_REQUEST + " ( " +
 		REQUEST_ID 		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES " + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", " +
-		REQUESTED 		+ " DATETIME NOT NULL " +	" ) ";
+		PERSONNEL_ID 	+ " INTEGER NOT NULL REFERENCES "  + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
+		REQUESTED 		+ " DATETIME  " +	" ) ";
 		
 	 static final String CREATE_TABLE_LAB_SERVICE =
 		"CREATE TABLE " + TABLE_LAB_SERVICE + " ( " +
@@ -238,9 +239,10 @@ public class Data {
 		"CREATE TABLE " + TABLE_NOTES + "(" +
 		NOTES_ID		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID + " INTEGER NOT NULL REFERENCES " 	+ TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
-		TYPE		+ " CHAR(5) NOT NULL, " +
+		PERSONNEL_ID + " INTEGER NOT NULL REFERENCES "  + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
+		TYPE		+ " NVARCHARCHAR(5) NOT NULL, " +
 		TITLE 		+ " NVARCHAR(30) NOT NULL, " 	+ 
 		BODY 		+ " TEXT, " 	+ 
-		CREATED  	+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime'))," +
+		CREATED  	+ " DATETIME ," +
 		SYNC 		+ " BOOLEAN DEFAULT 0" 	+ ")";
 }

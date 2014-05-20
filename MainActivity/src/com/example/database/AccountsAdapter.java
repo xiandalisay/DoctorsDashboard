@@ -13,7 +13,6 @@ package com.example.database;
 
 import java.util.ArrayList;
 
-import com.example.model.DoctorProfile;
 import com.example.model.Encounter;
 import com.example.model.Patient;
 

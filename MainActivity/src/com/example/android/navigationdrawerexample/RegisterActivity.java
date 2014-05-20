@@ -9,7 +9,10 @@
 
 package com.example.android.navigationdrawerexample;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -101,6 +104,7 @@ public class RegisterActivity extends InitialActivity{
 			if(submitCredentials()){
 //				if(insertDoctor()){					
 					startInitialSync();
+					setLastSync();
 //				}
 			}
 		}
@@ -433,5 +437,9 @@ public class RegisterActivity extends InitialActivity{
 		finish();
 	}
 	
-	
+	/* sets the last sync date of the doctor */
+	private void setLastSync() {
+		DoctorAdapter doc = new DoctorAdapter(this);
+		doc.setLastSync(Integer.parseInt(data.get("personell_nr")));
+	}
 }

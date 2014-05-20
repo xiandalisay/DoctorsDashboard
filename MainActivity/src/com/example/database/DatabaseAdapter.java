@@ -59,78 +59,6 @@ public class DatabaseAdapter extends Data {
 		return db;
 	}
 
-	/*public void addDoctorProfile(DoctorProfile doctor)
-	{
-		db = dbHandler.getWritableDatabase();
-		
-		ContentValues values = new ContentValues();
-		values.put(PERSONNEL_ID, doctor.getPersonnelNumber());
-		values.put(DEPT_ID, doctor.getLocationNumber());
-		values.put(USERNAME, doctor.getDoctorUsername());
-		values.put(PASSWORD, doctor.getDoctorPassword());
-		values.put(DNAME_FIRST, doctor.getDoctorFirstName());
-		values.put(DNAME_MIDDLE, doctor.getDoctorMiddleName());
-		values.put(DNAME_LAST, doctor.getDoctorLastName());
-		
-		db.insert(TABLE_DOCTOR, null, values);
-		db.close();
-	}
-	
-	public boolean ifExists(String personnelnumber){
-		db = dbHandler.getWritableDatabase();
-		String query = 
-			"SELECT " +
-				PERSONNEL_ID + ", " + 
-				DNAME_FIRST + ", " + 
-				DNAME_LAST + " " + 
-			" FROM " + TABLE_DOCTOR +
-			" WHERE " + 
-				PERSONNEL_ID + " = " + "'" + personnelnumber + "'";
-		Cursor cursor = db.rawQuery(query, null);
-		if(cursor.moveToFirst()){
-			return true;
-		}
-		else{
-			return false;
-		}
-	
-	
-	}
-	
-	public DoctorProfile getDoctor(String personnelnumber){
-		DoctorProfile doctor = new DoctorProfile("username", "password", "firstname", "lastname");
-		db = dbHandler.getWritableDatabase();
-		String query = 
-			"SELECT " +
-				PERSONNEL_ID + ", " + 
-				DNAME_FIRST + ", " + 
-				DNAME_LAST + " " + 
-			" FROM " + TABLE_DOCTOR +
-			" WHERE " + 
-				PERSONNEL_ID + " = " +  "'" + personnelnumber + "'";
-		Cursor cursor = db.rawQuery(query, null);
-		if (cursor.moveToFirst()) {
-    		do {
-            	try{
-	                DoctorProfile doctor1 = new DoctorProfile(cursor.getString(0), cursor.getString(1), cursor.getString(2));
-	                if(doctor1.getPersonnelNumber().equals(personnelnumber)){
-	                	return doctor1;
-	                }
-	                
-            	}
-            	catch(Exception e){
-            		System.out.println(e);
-            		return doctor;
-            	}
-                
-            } while (cursor.moveToNext());
-        }
-    	
-		
-		
-		return doctor;
-	}
-	*/
 	public Patient getPatient(int patientid){
 		db = dbHandler.getWritableDatabase();
 		Patient patient;
@@ -164,34 +92,6 @@ public class DatabaseAdapter extends Data {
 		
 	}
 	
-	
-	//temporary update function
-	/*
-	 * public void updateDoctor(String personnel_id, String username, String password)
-	{
-		db = dbHandler.getWritableDatabase();
-		String query = 
-			"UPDATE " + TABLE_DOCTOR + 
-			" SET " + USERNAME + " = '" + username + "', " + 
-					  PASSWORD + " = '" + password + "' " +
-			"WHERE " + PERSONNEL_ID + " = '" + personnel_id + "'";
-		db.execSQL(query);
-		
-		ContentValues values = new ContentValues();
-		values.put(PERSONNEL_ID, doctor.getPersonnelNumber());
-		values.put(location_number, doctor.getLocationNumber());
-		values.put(doctor_username, doctor.getDoctorUsername());
-		values.put(doctor_password, doctor.getDoctorPassword());
-		values.put(DNAME_FIRST, doctor.getDoctorFirstName());
-		values.put(doctor_middle_name, doctor.getDoctorMiddleName());
-		values.put(DNAME_LAST, doctor.getDoctorLastName());
-		
-		return db.update(TABLE_DOCTOR, values, PERSONNEL_ID + " = ?",
-				new String[] { String.valueOf(doctor.getPersonnelNumber())});
-			
-		
-	}
-	*/
 	public boolean checkDoctorCredentials(String username, String password){
 		db = dbHandler.getReadableDatabase();
 		String query = 
@@ -207,8 +107,6 @@ public class DatabaseAdapter extends Data {
 			db.close();
 			return false;
 		}
-		
-		
 	}
 	
 	public ArrayList<Patient> searchPatient(String search)

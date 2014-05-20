@@ -106,7 +106,6 @@ public class EncounterAdapter extends Data {
 		
 	}
 	
-	/* @Author: Christian Joseph Dalisay */
 	public void insertDoctorEncounter(Integer encounter,Integer personnel) {
 		db = dbHandler.getWritableDatabase();
 		values = new ContentValues();
@@ -156,12 +155,12 @@ public class EncounterAdapter extends Data {
 				values.put(PERSONNEL_ID, personnel_id);	
 			
 				db.insertWithOnConflict(TABLE_DOC_ENC, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-				}
-			}catch(Exception e){
-				
-			}finally	{
-			  db.close();
 			}
+		} catch (SQLException se) {
+			Log.d("DepartmentAdapter insertDoctorEncounters", Log.getStackTraceString(se));
+		}finally {
+			db.close();
+		}
 	}
 
 	public void deleteEncounter(int encounter) {

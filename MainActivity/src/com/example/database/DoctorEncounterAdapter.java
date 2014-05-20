@@ -7,33 +7,22 @@
 
 package com.example.database;
 
-
-import java.util.ArrayList;
-
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
 import com.example.database.Data;
-import com.example.model.Age;
-import com.example.model.DoctorProfile;
-import com.example.model.Encounter;
-import com.example.model.Patient;
-
 
 public class DoctorEncounterAdapter extends Data {
 	
 	
 	private SQLiteDatabase db;
 	private DatabaseHandler dbHandler;
+
 	private Cursor cursor;
 	private String query;
-	
-	private ArrayList<Encounter> encounter_list;
 	
 	private static final int 	DATABASE_VERSION	= 1;
 	private static final String DATABASE_NAME 		= "localhost";
