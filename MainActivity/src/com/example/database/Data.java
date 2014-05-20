@@ -158,7 +158,8 @@ public class Data {
 		ACCESS 		+ " NVARCHAR(45) UNIQUE NOT NULL, " +
 		SEX 		+ " CHAR(1), " +
 		BIRTH 		+ " DATE, " +
-		URL 		+ " TEXT NOT NULL" 	+	" )";
+		URL 		+ " TEXT NOT NULL" 	+	"," + 
+		LAST_SYNC	+ " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) "+ ")";
 	
 	 static final String CREATE_TABLE_PATIENT = 
 		"CREATE TABLE " + TABLE_PATIENT + " ( " +
@@ -183,7 +184,7 @@ public class Data {
 		COMPLAINT 	+ " TEXT, " +
 		ENCOUNTERED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " +	", " +
 		OFFICIAL_RECEIPT_NR + " NVARCHAR(10), " +
-		IS_CONFIDENTIAL + " CHAR(3) DEFAULT 'No' " +	")";
+		IS_CONFIDENTIAL + " NVARCHAR(3) DEFAULT 'No' " +	")";
 	
 	 static final String CREATE_TABLE_DOC_ENC = 
 		"CREATE TABLE " + TABLE_DOC_ENC + "(" +

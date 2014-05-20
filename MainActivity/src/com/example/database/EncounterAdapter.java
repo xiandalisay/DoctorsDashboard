@@ -106,7 +106,6 @@ public class EncounterAdapter extends Data {
 		
 	}
 	
-	/* @Author: Christian Joseph Dalisay */
 	public void insertDoctorEncounter(Integer encounter,Integer personnel) {
 		db = dbHandler.getWritableDatabase();
 		values = new ContentValues();
@@ -161,7 +160,7 @@ public class EncounterAdapter extends Data {
 			Log.d("DepartmentAdapter insertDoctorEncounters", Log.getStackTraceString(se));
 		}
 		finally	{
-		  db.endTransaction();
+			db.close();
 		}
 	}
 
