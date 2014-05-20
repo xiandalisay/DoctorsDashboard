@@ -4,9 +4,7 @@ package com.example.android.navigationdrawerexample;
 
 import com.example.model.Preferences;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -21,7 +19,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public abstract class BaseActivity extends InitialActivity{
     private DrawerLayout mDrawerLayout;

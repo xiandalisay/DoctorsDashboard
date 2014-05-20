@@ -16,6 +16,7 @@ import android.os.Bundle;
 
 import com.example.database.EncounterAdapter;
 import com.example.database.PatientAdapter;
+import com.example.database.DoctorEncounterAdapter;
 import com.example.model.Encounter;
 import com.example.model.Patient;
 import com.example.model.Preferences;
@@ -158,9 +159,11 @@ public class TagPatientActivity extends InitialActivity {
 				String content = rest.getContent();
 				EncounterParser encounter_parser = new EncounterParser(content);
 				ArrayList<Encounter> encounters = encounter_parser.getEncounters();
-				EncounterAdapter db = new EncounterAdapter(this);
-				db.insertDoctorEncounter(encounters.get(0).getEncounterId(),Preferences.getPersonnelPreference(this));
-				db.insertEncounters(encounters);
+				EncounterAdapter enc = new EncounterAdapter(this);
+				enc.insertEncounters(encounters);
+				DoctorEncounterAdapter doc_enc = new DoctorEncounterAdapter(this);
+				doc_enc.insertDoctorEncounter(encounters.get(0).getEncounterId(),Preferences.getPersonnelPreference(this));
+				
 			}
 		} 
 		else{

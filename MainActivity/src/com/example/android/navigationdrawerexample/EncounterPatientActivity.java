@@ -7,7 +7,6 @@
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import android.content.Context;

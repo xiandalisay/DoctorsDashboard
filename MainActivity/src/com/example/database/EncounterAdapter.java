@@ -19,7 +19,6 @@ package com.example.database;
 import java.util.ArrayList;
 
 import com.example.model.Encounter;
-import com.example.model.Preferences;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -34,8 +33,6 @@ public class EncounterAdapter extends Data {
 	private Cursor cursor;
 
 	private String query;
-	
-	private ArrayList<Encounter> encounter_list;
 	
 	/* _constructor */
 	public  EncounterAdapter(Context context) 
@@ -164,10 +161,10 @@ public class EncounterAdapter extends Data {
 		}
 	}
 	
-		public ArrayList<Integer> getEncounterIds(int patientid){
+	/* Gets the encounter ids based on pid */
+	public ArrayList<Integer> getEncounterIds(int patientid){
 		ArrayList<Integer> enc_ids = new ArrayList<Integer>();
 		db = dbHandler.getReadableDatabase();
-		encounter_list = new ArrayList<Encounter>();
 		try {
 			query = 
 				"SELECT encounter_id FROM " + TABLE_ENCOUNTER + 

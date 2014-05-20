@@ -72,11 +72,6 @@ public class UntagPatientActivity extends InitialActivity {
 		}
 		
 	}
-
-	/* retrieves base_url */
-	private String getBaseURL() {
-		return Preferences.getBaseURL(this);
-	}
 	
 	/* retrieves base_url */
 	private int getPersonnelNumber() {
