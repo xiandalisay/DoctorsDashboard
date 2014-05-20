@@ -223,4 +223,20 @@
 
     </ListView>
 
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/TagPatientButton"
+        android:layout_alignLeft="@+id/SaveButton"
+        android:text="History of Smoking" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ReferPatientButton"
+        android:layout_alignParentRight="true"
+        android:text="History of Drinking" />
+
 </RelativeLayout>

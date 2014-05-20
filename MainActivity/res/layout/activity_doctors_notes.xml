@@ -106,7 +106,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
