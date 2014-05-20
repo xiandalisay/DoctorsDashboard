@@ -157,9 +157,12 @@ public class EncounterAdapter extends Data {
 			
 				db.insertWithOnConflict(TABLE_DOC_ENC, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			}
-			finally	{
-			  db.endTransaction();
-			}
+		} catch (SQLException se) {
+			Log.d("DepartmentAdapter insertDoctorEncounters", Log.getStackTraceString(se));
+		}
+		finally	{
+		  db.endTransaction();
+		}
 	}
 
 	public void deleteEncounter(int encounter) {

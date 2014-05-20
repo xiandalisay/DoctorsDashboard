@@ -143,7 +143,6 @@ public class Data {
 	 static final String CREATE_TABLE_DEPARTMENT = 
 		"CREATE TABLE " + TABLE_DEPARTMENT + " ( " +
 		DEPT_ID 	+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		ACRONYM		+ " NVARCHAR(15), " +
 		SHORT_DEPT	+ " NVARCHAR(20) UNIQUE, " 	+
 		DEPT 		+ " NVARCHAR(25) UNIQUE NOT NULL " 	+ " ) ";
 	
@@ -188,8 +187,8 @@ public class Data {
 	
 	 static final String CREATE_TABLE_DOC_ENC = 
 		"CREATE TABLE " + TABLE_DOC_ENC + "(" +
-		PERSONNEL_ID 	+ " INTEGER NOT NULL " + ", " +
-		ENCOUNTER_ID 	+ " INTEGER NOT NULL " + ") ";
+		PERSONNEL_ID 	+ " INTEGER NOT NULL REFERENCES "  + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
+		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES "  + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ") ";
 			
 	 static final String CREATE_TABLE_REASON = 
 		"CREATE TABLE " + TABLE_REASON + "(" +
@@ -208,6 +207,7 @@ public class Data {
 		"CREATE TABLE " + TABLE_LAB_REQUEST + " ( " +
 		REQUEST_ID 		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES " + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", " +
+		PERSONNEL_ID 	+ " INTEGER NOT NULL REFERENCES "  + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
 		REQUESTED 		+ " DATETIME NOT NULL " +	" ) ";
 		
 	 static final String CREATE_TABLE_LAB_SERVICE =
@@ -235,7 +235,8 @@ public class Data {
 		"CREATE TABLE " + TABLE_NOTES + "(" +
 		NOTES_ID		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID + " INTEGER NOT NULL REFERENCES " 	+ TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
-		TYPE		+ " CHAR(5) NOT NULL, " +
+		PERSONNEL_ID + " INTEGER NOT NULL REFERENCES "  + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
+		TYPE		+ " NVARCHARCHAR(5) NOT NULL, " +
 		TITLE 		+ " NVARCHAR(30) NOT NULL, " 	+ 
 		BODY 		+ " TEXT, " 	+ 
 		CREATED  	+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime'))," +

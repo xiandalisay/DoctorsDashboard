@@ -39,10 +39,6 @@ public class UntagPatientActivity extends InitialActivity {
 		retrieveBundle();
 		
 		submitUntag();
-<<<<<<< HEAD
-		//deleteRelatedData();
-=======
->>>>>>> be27e278aa86999fd995f6c6122900b78a7762d3
 		
 		finish();
 	}
@@ -64,8 +60,6 @@ public class UntagPatientActivity extends InitialActivity {
 		
 		/* process request service request */
 		rest.execute();
-<<<<<<< HEAD
-=======
 		
 		/* check if connection was successful */
 		while(rest.getContent() == null){}
@@ -77,7 +71,6 @@ public class UntagPatientActivity extends InitialActivity {
 			deleteUntaggedEncounter();
 		}
 		
->>>>>>> be27e278aa86999fd995f6c6122900b78a7762d3
 	}
 
 	/* retrieves base_url */
