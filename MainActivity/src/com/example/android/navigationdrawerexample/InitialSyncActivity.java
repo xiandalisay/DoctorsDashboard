@@ -202,8 +202,7 @@ public class InitialSyncActivity extends InitialActivity {
 			/* retrieve and parse labo requests of each encounter of patient(i) */
 			requests = (parser.getRequestService());
 		
-			System.out.println("Size: "+requests.size());
-			
+			//print all encounters and requests
 			for(int j=0;j<requests.size();j++){
 				System.out.println("Encounter ID: "+requests.get(j).getEncounterNumber());
 				System.out.println("Ref No: "+requests.get(j).getRequestNumber());

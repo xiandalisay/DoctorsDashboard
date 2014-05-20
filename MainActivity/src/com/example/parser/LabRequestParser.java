@@ -107,6 +107,7 @@ public class LabRequestParser extends JSONParser{
 	            /* check if ref_no has changed, save the new request as object and add to ArrayList */
 	            if(current_request != request_nr){
 
+	            	/* instantiate a new request and set necessary values */
 	            	LabRequest request = new LabRequest();	
 	            	
 	            	request.setEncounterNumber(encounter_id);
@@ -115,26 +116,27 @@ public class LabRequestParser extends JSONParser{
 	            	
 	            	requests.add(request);
 	            	
+	            	/* clear all contents of services */
 	            	services.clear();
+	            	
+	            	/* re assign current request */
 	            	current_request = request_nr;
 	            }
 
+	            /* retrieve lab service info from JSON object */
 				String service_code			= jsonChildNode.optString("service_code").toString();
 				String service_name 		= jsonChildNode.optString("service_name").toString();
 				int quantity 				= Integer.parseInt(jsonChildNode.optString("quantity"));
 
+				/* instantiate a new service and set values */
 				LabService service = new LabService();
 				
 				service.setServiceCode(service_code);
 				service.setLabServiceName(service_name);
 				service.setQuantity(quantity);
 				
-				System.out.println(service.getServiceCode());
-				System.out.println(service.getLabServiceName());
-				System.out.println(service.getQuantity());
-				
+				/* add a new service to "services" ArrayList */
 				services.add(service);
-
 	        }
 			
 			LabRequest request = new LabRequest();	
