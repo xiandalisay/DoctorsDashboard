@@ -7,17 +7,8 @@
 
 package com.example.database;
 
-import java.util.ArrayList;
-
-import com.example.model.DoctorProfile;
-import com.example.model.Encounter;
-import com.example.model.Patient;
-
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.database.Data;

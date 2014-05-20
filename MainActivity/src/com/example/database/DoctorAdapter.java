@@ -7,6 +7,7 @@
 
 package com.example.database;
 
+import com.example.model.DateTime;
 import com.example.model.Doctor;
 
 import android.content.ContentValues;
@@ -55,7 +56,6 @@ public class DoctorAdapter extends Data{
 		values.put(URL, doctor.getBaseUrl());
 		values.put(BIRTH, doctor.getBirthDate());
 		values.put(SEX, doctor.getSex());
-		
 		try {
 			db.insert(TABLE_DOCTOR, null, values);
 			db.close();
@@ -66,12 +66,13 @@ public class DoctorAdapter extends Data{
 	}
 	
 	//This function updates the last manual sync made by the doctor
-	public void setLastSync(String license) {
+	public void setLastSync(Integer personnel) {
 		db = dbHandler.getWritableDatabase();
-		
+		System.out.println("setLastSync");
 		String query = "UPDATE " + TABLE_DOCTOR + 
-						" SET " + LAST_SYNC + " = " + "''" +
-						" WHERE " + LICENSE_NO + " = " + license;
+						" SET " + LAST_SYNC + " = " + "'"+DateTime.getDateTime()+"'" +
+						" WHERE " + PERSONNEL_ID + " = " + personnel;
+		System.out.println(""+query);
 		try {
 			db.execSQL(query);
 		}
@@ -135,4 +136,6 @@ public class DoctorAdapter extends Data{
 		System.out.println("Personnel Nr: "+ cursor.getString(0));
 		return cursor.getInt(0);
 	}
+	
+	
 }

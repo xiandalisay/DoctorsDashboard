@@ -131,7 +131,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		} catch (Exception e) {
 			Log.d("onCreateDummy Exception",Log.getStackTraceString(e));
 		} finally {
-			db.endTransaction();
 			db.close();
 		}
 	}

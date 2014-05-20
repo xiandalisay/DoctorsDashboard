@@ -159,7 +159,7 @@ public class Data {
 		SEX 		+ " CHAR(1), " +
 		BIRTH 		+ " DATE, " +
 		URL 		+ " TEXT NOT NULL" 	+	"," + 
-		LAST_SYNC	+ " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) "+ ")";
+		LAST_SYNC	+ " DATETIME  "+ ")";
 	
 	 static final String CREATE_TABLE_PATIENT = 
 		"CREATE TABLE " + TABLE_PATIENT + " ( " +
@@ -182,7 +182,7 @@ public class Data {
 		PID 		+ " INTEGER NOT NULL REFERENCES " + TABLE_PATIENT + "(" + PID + ")" + ", "	+
 		PATIENT 	+ " NVARCHAR(20), " +
 		COMPLAINT 	+ " TEXT, " +
-		ENCOUNTERED + " DATETIME DEFAULT (DATETIME('now','unixepoch','localtime')) " +	", " +
+		ENCOUNTERED + " DATETIME  " +	", " +
 		OFFICIAL_RECEIPT_NR + " NVARCHAR(10), " +
 		IS_CONFIDENTIAL + " NVARCHAR(3) DEFAULT 'No' " +	")";
 	
@@ -202,14 +202,14 @@ public class Data {
 		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES "  + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", "	+
 		DEPT_ID 		+ " INTEGER NOT NULL REFERENCES "  + TABLE_DEPARTMENT + "(" + DEPT_ID + ")" + ", "	+
 		REASON_ID 		+ " INTEGER NOT NULL REFERENCES "  + TABLE_REASON + "(" + REASON_ID + ")" + ", "	+
-		REFERRED 		+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime')) " + ")";
+		REFERRED 		+ " DATETIME  " + ")";
 		
 	static final String CREATE_TABLE_LAB_REQUEST = 
 		"CREATE TABLE " + TABLE_LAB_REQUEST + " ( " +
 		REQUEST_ID 		+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		ENCOUNTER_ID 	+ " INTEGER NOT NULL REFERENCES " + TABLE_ENCOUNTER + "(" + ENCOUNTER_ID + ")" + ", " +
 		PERSONNEL_ID 	+ " INTEGER NOT NULL REFERENCES "  + TABLE_DOCTOR + "(" + PERSONNEL_ID + ")" + ", "	+
-		REQUESTED 		+ " DATETIME NOT NULL " +	" ) ";
+		REQUESTED 		+ " DATETIME  " +	" ) ";
 		
 	 static final String CREATE_TABLE_LAB_SERVICE =
 		"CREATE TABLE " + TABLE_LAB_SERVICE + " ( " +
@@ -240,6 +240,6 @@ public class Data {
 		TYPE		+ " NVARCHARCHAR(5) NOT NULL, " +
 		TITLE 		+ " NVARCHAR(30) NOT NULL, " 	+ 
 		BODY 		+ " TEXT, " 	+ 
-		CREATED  	+ " DATETIME DEFAULT (DATETIME ('now','unixepoch','localtime'))," +
+		CREATED  	+ " DATETIME ," +
 		SYNC 		+ " BOOLEAN DEFAULT 0" 	+ ")";
 }
