@@ -45,7 +45,9 @@ public class InitializeActivity extends InitialActivity{
 		
 		logMessage("Status: InitializeActivity");
 		
-		/* when dummy datum client_id is used */
+		/* Generates client id 
+		 * If there is no one exists in DB
+		 * and sets in the shared preferences */
 		if(!checkClientId()){
 			client_id = generateClientId();
 			Preferences.setInitializePreference(this,client_id);
@@ -56,7 +58,9 @@ public class InitializeActivity extends InitialActivity{
 			Preferences.setInitializePreference(this,getClientId());
 		}
 		
-		/* check if department table is empty */
+		/* If department table is empty 
+		 * retrieves the departments, 
+		 * reasons, and services from the API to DB*/
 		if(isDepartmentEmpty()){
 			logMessage("Empty");
 			

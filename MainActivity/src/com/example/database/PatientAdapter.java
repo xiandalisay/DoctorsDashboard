@@ -2,8 +2,6 @@ package com.example.database;
 
 import java.util.ArrayList;
 
-import com.example.model.Doctor;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -25,7 +23,7 @@ public class PatientAdapter extends Data {
 	
 	private Cursor cursor;
 	private String query;
-private ContentValues values;
+	private ContentValues values;
 
 	private static final int 	DATABASE_VERSION	= 1;
 	private static final String DATABASE_NAME 		= "localhost";

@@ -6,17 +6,9 @@
 package com.example.api.auth;
 
 import javax.crypto.Mac;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Hex;
-
-import android.util.Base64;
-
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 public class HMAC_SHA1 {
 	

@@ -43,10 +43,7 @@ public class DepartmentAdapter extends Data {
 		
 	}
 	
-	/*
-	 * @Author: Christian Joseph Dalisay
-	 * 
-	 */
+	/* Inserts the departments by the given departments */
 	public void insertDepartments(ArrayList<Department> dept){
 		db = dbHandler.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -70,10 +67,7 @@ public class DepartmentAdapter extends Data {
 			}
 	}
 	
-	/*
-	 * @Author: Christian Joseph Dalisay
-	 * 
-	 */
+	/* Gets all departments */
 	public ArrayList<Department> getDepartments() {
 		db = dbHandler.getWritableDatabase();
 		ArrayList<Department> deptlist = new ArrayList<Department>();
