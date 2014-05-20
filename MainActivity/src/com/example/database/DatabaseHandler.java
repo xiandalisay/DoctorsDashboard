@@ -40,7 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL(Data.CREATE_TABLE_LAB_RESULT);
 			db.execSQL(Data.CREATE_TABLE_NOTES);
 			
-			onCreateDummy(db);
+			//onCreateDummy(db);
 			Log.d("DatabaseHandler","Database onCreateTables Successful");
 		} catch (SQLException se) {
 			System.out.println("did not");
@@ -63,7 +63,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	public void onCreateDummy(SQLiteDatabase db) {
 		try	{ 
-			db.beginTransaction();
+			
 			/*
 			db.execSQL("insert into [department] values(106, '', 'Med-Rheuma', 'Medicine-Rheumatology'), " +
 					" (107, '', 'Med-Neuro', 'Medicine-Neurology'), " +
@@ -127,7 +127,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		} catch (Exception e) {
 			Log.d("onCreateDummy Exception",Log.getStackTraceString(e));
 		} finally {
-			db.close();
 		}
 	}
 	

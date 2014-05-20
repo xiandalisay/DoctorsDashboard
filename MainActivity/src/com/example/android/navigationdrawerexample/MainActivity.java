@@ -52,9 +52,14 @@ public class MainActivity extends BaseActivity {
     	startActivity(intent);
     }
     
-    public void showEncountersActivity(View view){
-    	Intent intent = new Intent(this, EncounterPatientActivity.class);
-    	startActivity(intent);
+    public void showLoginActivity(View view){
+    	logMessage("logout");
+    	resetPreferences();
+        intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        
+        startActivity(intent);
     }
     
     public void showCanvassActivity(View view){

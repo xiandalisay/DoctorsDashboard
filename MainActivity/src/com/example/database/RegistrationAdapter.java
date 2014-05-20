@@ -49,6 +49,8 @@ public class RegistrationAdapter extends Data{
 		cursor.moveToFirst();
 		
 		System.out.println(cursor.getString(0));
+		
+		db.close();
 		return cursor.getString(0);
 	}
 	
@@ -65,6 +67,7 @@ public class RegistrationAdapter extends Data{
 		Cursor cursor = db.rawQuery(query, null);
 		System.out.println(cursor.getString(0));
 		
+		db.close();
 		return cursor.getString(0);
 	}
 }

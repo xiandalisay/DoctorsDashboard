@@ -3,7 +3,7 @@
  * @date created: 05/13/14
  * @description: 
  * 			Class that handles all database 
- * 			processes related to encounterss
+ * 			processes related to encounters
  * 
  */
 
@@ -57,7 +57,9 @@ public class EncounterAdapter extends Data {
 		} catch(Exception e) {
 			Log.d("Encounter Adapter","0 rows retrieved");
 			return -1;
-		}
+		}finally{
+        	db.close();
+        }
 	}
 	
 	public boolean isEncounterExists(int encounter_id){
@@ -121,7 +123,6 @@ public class EncounterAdapter extends Data {
 		db = dbHandler.getWritableDatabase();
 		values = new ContentValues();
 		try {
-			db.beginTransaction();
 			for(int i = 0; i < enc.size(); i++) {
 				values.put(ENCOUNTER_ID, enc.get(i).getEncounterId());	
 				values.put(PID, enc.get(i).getPID());	
@@ -130,15 +131,34 @@ public class EncounterAdapter extends Data {
 				values.put(COMPLAINT , enc.get(i).getMessageComplaint());
 				db.insertWithOnConflict(TABLE_ENCOUNTER, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			  }
-			  db.setTransactionSuccessful();
-				Log.d("DepartmentAdapter insertEncounters", "setTransactionSuccessful");
+
+		}
+		catch (SQLException se) {
+			Log.d("DepartmentAdapter insertEncounters", Log.getStackTraceString(se));
+		}finally{
+        	db.close();
+        }
+	}
+	
+	/* insert new encounter_id to doctor-encounter table*/
+	public void insertDoctorEncounters(ArrayList<Encounter> encounters, Integer personnel_id) {
+		
+		db = dbHandler.getWritableDatabase();
+		values = new ContentValues();
+		
+		try {
+			for(int i = 0; i < encounters.size(); i++) {
+				values.put(ENCOUNTER_ID, encounters.get(i).getEncounterId());	
+				values.put(PERSONNEL_ID, personnel_id);	
+			
+				db.insertWithOnConflict(TABLE_DOC_ENC, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			}
-			catch (SQLException se) {
-				Log.d("DepartmentAdapter insertEncounters", Log.getStackTraceString(se));
-			}
-			finally	{
-			  db.endTransaction();
-			}
+		} catch(SQLException se) {
+			Log.d("EncounterAdapter insertDocEnc", Log.getStackTraceString(se));
+		} finally {
+			db.close();
+		}
+		
 	}
 
 	/* @Author: Christian Joseph Dalisay
@@ -151,9 +171,8 @@ public class EncounterAdapter extends Data {
 		}
 		catch (SQLException se) {
 			Log.d("DepartmentAdapter deleteEncounter", Log.getStackTraceString(se));
-		}
-		finally {
-		  db.close();
-		}
+		}finally{
+        	db.close();
+        }
 	}
 }

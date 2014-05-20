@@ -40,11 +40,14 @@ public class TokenAdapter extends Data {
 		
 		try {
 			cursor = db.rawQuery(sql, null);
+			cursor.moveToFirst();
 		}catch(Exception e){
         	Log.d("TokenAdapter getAuthentication", Log.getStackTraceString(e));
         	return null;
+        }finally{
+        	db.close();
         }
-		cursor.moveToFirst();
+		
 		System.out.println("Token " + cursor.getString(0));
 		return cursor.getString(0);
 	}
@@ -59,9 +62,12 @@ public class TokenAdapter extends Data {
 		
 		try{
 			cursor = db.rawQuery(sql, null);
+			cursor.moveToFirst();
         }catch(Exception e) {
          Log.d("Token Adapter getTokens", Log.getStackTraceString(e));
          return null;
+        }finally{
+        	db.close();
         }
 		
 		TokenValidate token = new TokenValidate();
@@ -83,6 +89,8 @@ public class TokenAdapter extends Data {
         	db.execSQL(query);
         } catch(SQLException se) {
         	Log.d("TokenAdapter setTokens", Log.getStackTraceString(se));
+        }finally{
+        	db.close();
         }
     }
 	
@@ -101,7 +109,9 @@ public class TokenAdapter extends Data {
 		} catch(SQLException se) {
 	        Log.d("TokenAdapter isAuthtokenExists", Log.getStackTraceString(se));
 	        return false;
-	    }
+	    }finally{
+        	db.close();
+        }
 		
 		if(cursor.getInt(0) > 0)
 			return true;

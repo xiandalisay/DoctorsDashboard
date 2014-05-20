@@ -38,11 +38,15 @@ public class ClientAdapter extends Data{
 		
 		cursor = db.rawQuery(query, null);
 		if(cursor.moveToFirst()){
+			db.close();
 			return true;
 		}
 		else{
+			db.close();
 			return false;
 		}
+		
+		
 	}
 	
 	/*  generated client_id to mobile DB */
@@ -68,9 +72,11 @@ public class ClientAdapter extends Data{
 		
 		cursor = db.rawQuery(query, null);
 		if(cursor.moveToFirst()){
+			db.close();
 			return cursor.getString(0);
 		}
 		else{
+			db.close();
 			return "";
 		}
 	}

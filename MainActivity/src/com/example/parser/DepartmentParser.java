@@ -57,7 +57,7 @@ public class DepartmentParser extends JSONParser {
 				
 				Department department = new Department(deptnr, deptid, dept_name);
 				departments.add(department);
-				//System.out.println(pid);			
+				
 	        }
 		}catch(Exception e){System.out.println(e.toString() + "yu was here");}
         

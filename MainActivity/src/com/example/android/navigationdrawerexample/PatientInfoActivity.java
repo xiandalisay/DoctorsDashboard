@@ -429,8 +429,6 @@ public class PatientInfoActivity extends ExpandableListActivity {
 	/* called when the "Tag" button is clicked */
 	public void handleTagClick(View view){
 		tagText = tag.getText().toString();
-		
-		alertMessage("clicked");
 
 		EncounterAdapter db = new EncounterAdapter(this);
 		if(tagText.equals("Tag Patient")){

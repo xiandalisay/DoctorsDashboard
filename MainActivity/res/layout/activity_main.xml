@@ -21,7 +21,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/gradient">
 
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
@@ -149,7 +149,8 @@
             android:layout_height="107dp"
             android:layout_alignRight="@+id/textView6"
             android:layout_alignTop="@+id/imageButton4"
-            android:src="@drawable/ic_newlogout" />
+            android:src="@drawable/ic_newlogout"
+            android:onClick="showLoginActivity" />
 
         <TextView
             android:id="@+id/textView1"
@@ -169,7 +170,8 @@
             android:layout_alignRight="@+id/textView3"
             android:layout_marginRight="12dp"
             android:text="Logout"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium" 
+            />
 
     </RelativeLayout>
     

@@ -14,6 +14,7 @@ public class LabService
 	private String lab_section_name;
 	private String opd;
 	private String ipd;
+	int quantity;
 	
 	public LabService()
 	{
@@ -23,6 +24,7 @@ public class LabService
 		lab_section_name = "";
 		opd = "";
 		setIpd("");
+		quantity = 0;
 	}
 	
 	public LabService(String servicecode, String sectioncode, String labservicename, String labsectionname, String opd, String ipd)
@@ -59,6 +61,15 @@ public class LabService
 		this.opd = opd;
 	}
 	
+	public void setIpd(String ipd) {
+		this.ipd = ipd;
+	}
+	
+	public void setQuantity(int quantity){
+		this.quantity = quantity;
+	}
+	
+	
 	public String getIpd(){
 		return this.ipd;
 	}
@@ -87,7 +98,9 @@ public class LabService
 		return ipd;
 	}
 
-	public void setIpd(String ipd) {
-		this.ipd = ipd;
+	public int getQuantity(){
+		return quantity;
 	}
+	
+	
 }

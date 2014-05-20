@@ -13,21 +13,13 @@ import com.example.api.auth.HMAC_SHA1;
 import com.example.api.auth.MD5Hash;
 import com.example.database.*;
 import com.example.model.Preferences;
-import com.example.model.Registration;
-import com.example.model.TokenValidate;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -37,37 +29,31 @@ import android.widget.Toast;
 public class LoginActivity extends InitialActivity {
 	
 	
-	// Values for username and password at the time of the login attempt.
+	/* values for username and password at the time of the login attempt */
 	private String username = "seurinane";
 	private String password = "1234";
 	
-	private boolean success;
-	
-	// UI references.
+	/* UI layout references */
 	private EditText et_username;
 	private EditText et_password;
-	
-	private View mLoginFormView;
-	private View mLoginStatusView;
-	private TextView mLoginStatusMessageView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		
 		intent = getIntent();
 		extras = intent.getExtras();
 		
+		/* alerts that registration was successful */
 		try{
 			if(extras.getBoolean("EXTRA_SUCCESS_REGISTER")){
 				alertMessage("Successfully registered");
 			}
 		}catch(NullPointerException e){
-			
+			logMessage(e.toString() + "no registration attempted");
 		}
 		
 		/* checks if phone is connected to a network */
@@ -80,6 +66,7 @@ public class LoginActivity extends InitialActivity {
 				&& Preferences.getRememberPreference(this)){
 			successfulLogin();
 		}
+		setContentView(R.layout.activity_login);
 	}
 	
 	@Override
@@ -95,29 +82,35 @@ public class LoginActivity extends InitialActivity {
 		return true;
 	}
 	
+	/* called when the "Register" button is clicked */
 	public void showRegisterActivity(View view){
 		Intent intent = new Intent(this, RegisterActivity.class);
 		startActivity(intent);
 	}
 	
+	/* starts the MainActivity because of a successful login attempt */
 	public void successfulLogin(){
 		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+		
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
 		startActivity(intent);	
 	}
 	
-	/* Retrieves inputted text by user and assigns it to a variable */
+	/* retrieves inputted text by user and assigns it to a variable */
 	private void setInputText(){
 		et_username = (EditText) findViewById(R.id.username);
 		et_password = (EditText) findViewById(R.id.password);
 	}
 	
-	/* Retrieves inputted text by user and converts/saves it as String */
+	/* retrieves inputted text by user and converts/saves it as String */
 	private void convertInputText(){
 		username = et_username.getText().toString();
 		password = et_password.getText().toString();
 	}
 	
-	
+	/* called when the "Sign in" button is clicked */
 	public void handleLogin(View view){
 		
 		setInputText();
@@ -182,11 +175,11 @@ public class LoginActivity extends InitialActivity {
 		}
 	
 
-        	/* 
-	       * 	 checks if there is a match to the generated  token in the mobile DB
+   	/* 
+     * 	 checks if there is a match to the generated  token in the mobile DB
 	 * 	 then stores the authentication token, base_url, and personnel_nr of the user
 	 * 	 account into the preferences. 
-		 */
+	 */
 	public boolean validateAuthtoken() {
 		
 		RegistrationAdapter client = new RegistrationAdapter(this);
@@ -223,27 +216,31 @@ public class LoginActivity extends InitialActivity {
 		}
 	}
 	
+	/* checks if there exists the same auth token in mobile DB */
 	private boolean isAuthtokenExists(String token) {
+		
 		TokenAdapter _token = new TokenAdapter(this);
 		 
 		if(_token.isAuthtokenExists(token)) {
+			logMessage("there is");
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
+	/* called when the "remember me" checkbox is checked/unchecked */
 	public void isRemember(View v) {
 		Preferences.setRememberPreference(this, !Preferences.getRememberPreference(this));
 	}
 	
-	//saves the key base url in the preferences for API use
+	/* saves the key base url in the preferences for API use */
 	public void setBaseUrl() {
 		DoctorAdapter doc = new DoctorAdapter(this);
 		Preferences.setBaseUrlPreference(this, doc.getBaseUrl(Preferences.getAuthenticationPreference(this)));
 	}
 	
-	//saves the key personnel_nr in the preferences for API use
+	/* saves the key personnel_nr in the preferences for API use */
 	public void setPersonnel() {
 		DoctorAdapter doc = new DoctorAdapter(this);
 		Preferences.setPersonnelPreference(this, doc.getPersonnelNr(Preferences.getAuthenticationPreference(this)));
