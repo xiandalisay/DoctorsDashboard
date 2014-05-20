@@ -122,9 +122,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				" (2,2,131,2,'2013-08-10 12:12:00' ), " + 	
 				" (3,3,136,3,'2014-02-20 07:08:00' ) " );
 			db.execSQL("INSERT INTO 'notes' ('notes_id','encounter_id','title','body','date_created','sync') " + 
-					" VALUES (1,1,'First Encounter','Encountered for the first time','2013-06-02 00:12:00',0 ), " + 
-					" (2,2,'Second Encounter','Encountered for the first time','2013-08-10 12:12:00',0 ), " + 	
-					" (3,3,'Third Encounter','Encountered for the first time','2014-02-20 07:08:00',0 ) " );*/
+					" VALUES ('1',1,'First Encounter','Encountered for the first time','2013-06-02 00:12:00',0 ), " + 
+					" ('2',2,'Second Encounter','Encountered for the first time','2013-08-10 12:12:00',0 ), " + 	
+					" ('3',3,'Third Encounter','Encountered for the first time','2014-02-20 07:08:00',0 ) " );*/
 			Log.d("DatabaseHandler","onCreateDummy successful");
 			
 		} catch (SQLException se) {

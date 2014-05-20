@@ -19,6 +19,8 @@ public class DepartmentAdapter extends Data {
 			Log.d("DatabaseHandler", "Database Created");
 		} catch (Exception e) {
 			Log.d("DatabaseHandler Exception", Log.getStackTraceString(e));
+		} finally{
+			db.close();
 		}
 	}
 	
@@ -61,8 +63,7 @@ public class DepartmentAdapter extends Data {
 			catch (SQLException se) {
 				Log.d("DepartmentAdapter insertDepartments", Log.getStackTraceString(se));
 			}
-			finally
-			{
+			finally {
 			  db.close();
 			}
 	}

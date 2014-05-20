@@ -93,6 +93,8 @@ public class LaboratoryAdapter extends Data {
 			
 			Log.d("LABORATORY_ADAPTER", Log.getStackTraceString(se));
 	
+		} finally{
+			db.close();
 		}
 	}
 	

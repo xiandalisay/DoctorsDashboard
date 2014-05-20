@@ -11,15 +11,8 @@
 package com.example.database;
 
 
-import java.util.ArrayList;
-
-import com.example.model.Encounter;
-import com.example.model.Patient;
-
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -27,35 +20,40 @@ import com.example.database.Data;
 
 public class AccountsAdapter extends Data{
 	
-	Cursor cursor;
+	private Cursor cursor;
+	private String query;
 	
-	public  SQLiteDatabase db;
+	private  SQLiteDatabase db;
 	private DatabaseHandler dbHandler;
 	
 	private static final int 	DATABASE_VERSION	= 1;
 	private static final String DATABASE_NAME 		= "localhost";
 	//
-	public  AccountsAdapter(Context context) 
-	{
+	public  AccountsAdapter(Context context) {
 		try {
 			dbHandler = new DatabaseHandler(context, DATABASE_NAME, null, DATABASE_VERSION);
 		} catch (Exception e) {
 			Log.d("DatabaseHandler Exception", Log.getStackTraceString(e));
+		} finally {
+			db.close();
 		}
 	}
 	
 	public int getAccounts(){
-		//Add code here for query getting number of accounts in mobile DB
 		db = dbHandler.getReadableDatabase();
-		String query=
-				" SELECT count(" + LICENSE_NO + ")" +
-				" FROM " + TABLE_DOCTOR;
+		//Add code here for query getting number of accounts in mobile DB
+		try {
+			query = " SELECT count(" + LICENSE_NO + ")" +
+				" FROM " + TABLE_DOCTOR;		
+			cursor = db.rawQuery(query, null);
+			cursor.moveToFirst();
+			System.out.println(cursor.getInt(0));
+		} catch (Exception e) {
+			Log.d("DatabaseHandler Exception", Log.getStackTraceString(e));
+		} finally {
+			db.close();
+		}
 		
-		cursor = db.rawQuery(query, null);
-		cursor.moveToFirst();
-		System.out.println(cursor.getInt(0));
-		
-		db.close();
 		return cursor.getInt(0);
 	}
 }
