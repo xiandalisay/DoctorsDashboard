@@ -10,12 +10,15 @@ package com.example.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import android.util.Log;
 
 import com.example.database.Data;
 
 public class ClientAdapter extends Data{
+	
+	private Cursor cursor;
 	
 	public  ClientAdapter(Context context) 
 	{

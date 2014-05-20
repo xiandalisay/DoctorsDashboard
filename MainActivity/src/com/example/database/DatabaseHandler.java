@@ -108,18 +108,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						"(2008000002, 1000000, 'OPD',null, '2008-12-24 08:07:43.000',null,null)");
 			db.execSQL("insert into doctor_encounter (personnel_id,encounter_id) values ('0117236',2),('0117236',2),('0117236',3)");
 			db.execSQL("insert into [client] values(1, '06778975-75e3-4da2-9e1e-866b222e0fa6')");
-			db.execSQL("INSERT INTO 'reason' ('reason_id','name_reason') " +
+			/*db.execSQL("INSERT INTO 'reason' ('reason_id','name_reason') " +
 				" VALUES (1,'Surgery'), " + 
 				"   (2,'Dialysis'), " +
 				"	(3,'ER')"); 
+			db.execSQL("INSERT INTO lab_request ('request_id',encounter_id,personnel_id,date_requested) VALUES (1,1,100055,'2011-01-01 00:00:00'),(2,1,100055,'2011-02-01 00:00:00')");
+			db.execSQL("INSERT INTO lab_result ('result_id','request_id','date_received','name_test','message_hl7','name_patho') " + 
+					"VALUES(1,1,'2011-01-01 00:00:00','asd','asd','asd'), " + 
+					"(2,1,'2011-01-01 00:00:00','asd','asd','asd')");
 			db.execSQL("INSERT INTO 'referral' ('referral_id','encounter_id','dept_id','reason_id','date_referred') " + 
 				" VALUES (1,1,107,1,'2013-06-02 00:12:00' ), " + 
 				" (2,2,131,2,'2013-08-10 12:12:00' ), " + 	
 				" (3,3,136,3,'2014-02-20 07:08:00' ) " );
-			db.execSQL("INSERT INTO 'notes' ('notes_id','encounter_id','type','title','body','date_created','sync') " + 
-					" VALUES (1,1,'TEXT','First Encounter','Encountered for the first time','2013-06-02 00:12:00',0 ), " + 
-					" (2,2,'TEXT','Second Encounter','Encountered for the first time','2013-08-10 12:12:00',0 ), " + 	
-					" (3,3,'TEXT','Third Encounter','Encountered for the first time','2014-02-20 07:08:00',0 ) " );
+			db.execSQL("INSERT INTO 'notes' ('notes_id','encounter_id','title','body','date_created','sync') " + 
+					" VALUES (1,1,'First Encounter','Encountered for the first time','2013-06-02 00:12:00',0 ), " + 
+					" (2,2,'Second Encounter','Encountered for the first time','2013-08-10 12:12:00',0 ), " + 	
+					" (3,3,'Third Encounter','Encountered for the first time','2014-02-20 07:08:00',0 ) " );*/
 			Log.d("DatabaseHandler","onCreateDummy successful");
 			
 		} catch (SQLException se) {
@@ -127,6 +131,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		} catch (Exception e) {
 			Log.d("onCreateDummy Exception",Log.getStackTraceString(e));
 		} finally {
+			db.endTransaction();
+			db.close();
 		}
 	}
 	

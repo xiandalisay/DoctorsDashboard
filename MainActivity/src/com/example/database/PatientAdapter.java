@@ -2,6 +2,8 @@ package com.example.database;
 
 import java.util.ArrayList;
 
+import com.example.model.Doctor;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,10 +17,19 @@ import com.example.model.Patient;
 
 public class PatientAdapter extends Data {
 	
-	private ContentValues values;
-	
+		
 	private ArrayList<Encounter> encounters;
 	
+	private SQLiteDatabase db;
+	private DatabaseHandler dbHandler;
+	
+	private Cursor cursor;
+	private String query;
+private ContentValues values;
+
+	private static final int 	DATABASE_VERSION	= 1;
+	private static final String DATABASE_NAME 		= "localhost";
+
 	/* _constructor */
 	public PatientAdapter(Context context) 
 	{
@@ -168,4 +179,39 @@ public class PatientAdapter extends Data {
 			db.close();
 		}
 	}
+	
+	/* gets pids tagged by a specific doctor */
+	public ArrayList<Integer> getPids(int personnel) {
+		db = dbHandler.getReadableDatabase();
+		query = "SELECT pid FROM " + TABLE_PATIENT + 
+				" JOIN " + TABLE_ENCOUNTER + " USING (" + PID + ")" + 
+				" JOIN " + TABLE_DOC_ENC + " USING (" + ENCOUNTER_ID + ")" + 
+				" JOIN " + TABLE_DOCTOR + " USING (" + PERSONNEL_ID + ")" + 
+				" WHERE doctor.personnel_id = '" + personnel + "'";
+		
+		cursor = db.rawQuery(query, null);
+		if(cursor.moveToFirst()) {
+			ArrayList<Integer> pids = new ArrayList<Integer>();
+			do {
+				pids.add(cursor.getInt(cursor.getColumnIndex("pid")));
+			} while(cursor.moveToNext());
+			return pids;
+		}
+		Log.d("PatientAdapter getPids", "0 rows retrieved.");
+		return null;
+	}
+	
+	public void deletePatient(int patient) {
+		db = dbHandler.getWritableDatabase();
+		try {
+			db.delete(TABLE_PATIENT, " pid = " + patient, null);
+		}  catch (Exception se) {
+			Log.d("deletePatient", Log.getStackTraceString(se));
+		}
+		finally {
+			db.close();
+		}
+	}
+	
+	
 }
