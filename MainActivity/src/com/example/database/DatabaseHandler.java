@@ -61,6 +61,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		} 
 	}
 	
+	/* Creates dummy data for testing purposes */
 	public void onCreateDummy(SQLiteDatabase db) {
 		try	{ 
 			

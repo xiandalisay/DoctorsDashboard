@@ -33,6 +33,7 @@ public class LabRequestAdapter extends Data {
 		}
 	}
 	
+	/* deletes all lab requests based on the encounter id */
 	public void deleteLabRequest(int encounter_id, int personnel_id) {
 		db = dbHandler.getWritableDatabase();
 		

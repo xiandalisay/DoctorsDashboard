@@ -33,6 +33,7 @@ public class LabResultAdapter extends Data {
 		}
 	}
 	
+	/* deletes all lab results based on the encounter id */
 	public void deleteLabResult(int encounter_id) {
 		db = dbHandler.getWritableDatabase();
 		

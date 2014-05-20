@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -39,20 +38,7 @@ public class ReferralAdapter extends Data {
 		}
 	}
 	
-	public  ReferralAdapter open() throws SQLException {
-		db = dbHandler.getWritableDatabase();
-		return this;
-	}
-	
-	public void close() {
-		db.close();
-	}
-	
-	public  SQLiteDatabase getDatabaseInstance() {
-		return db;
-	}
-	
-	
+	/* gets all the referrals based on the encounter_id */
 	public ArrayList<Referral> getReferrals(int encounter) {
 		db = dbHandler.getWritableDatabase();
 		referral_list = new ArrayList<Referral>();
@@ -83,6 +69,7 @@ public class ReferralAdapter extends Data {
 		return referral_list;
 	}	
 	
+	/* deletes all referrals based on the encounter id */
 	public void deleteReferral(int encounter_id) {
 		db = dbHandler.getWritableDatabase();
 		

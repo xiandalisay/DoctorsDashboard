@@ -32,6 +32,7 @@ public class NotesAdapter extends Data {
 		}
 	}
 
+	/* deletes all notes based on the encounter id */
 	public void deleteNotes(int encounter_id, int personnel_id) {
 		db = dbHandler.getWritableDatabase();
 		

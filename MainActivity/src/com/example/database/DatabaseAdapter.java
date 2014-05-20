@@ -18,7 +18,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.model.Age;
 import com.example.model.Encounter;
 import com.example.model.Notes;
 import com.example.model.Patient;

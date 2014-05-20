@@ -57,6 +57,7 @@ public class DoctorEncounterAdapter extends Data {
 		}
 	}
 	
+	/* Deletes the row that satisfy the encounter_id and personnel_id */
 	public void deleteDoctorEncounter(Integer encounter, Integer personnel) {
 		db = dbHandler.getWritableDatabase();
 		
@@ -71,6 +72,7 @@ public class DoctorEncounterAdapter extends Data {
 		}
 	}
 	
+	/* displays the rows of the table doctor encounter */
 	public void showDoctorEncounter() {
 		db = dbHandler.getReadableDatabase();
 		try {

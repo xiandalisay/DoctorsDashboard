@@ -30,7 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.api.auth.IPAddressValidator;
 import com.example.api.auth.MD5Hash;
 import com.example.database.DoctorAdapter;
 import com.example.database.EncounterAdapter;

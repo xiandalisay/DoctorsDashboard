@@ -32,7 +32,7 @@ public class EncounterAdapter extends Data {
 	
 	private ContentValues values;
 	private Cursor cursor;
-	
+
 	private String query;
 	
 	private ArrayList<Encounter> encounter_list;
@@ -73,6 +73,7 @@ public class EncounterAdapter extends Data {
 		}
 	}
 	
+	/* Checks if the encounter exists with the given encounter id */
 	public boolean isEncounterExists(int encounter_id){
 
 		db = dbHandler.getReadableDatabase();
@@ -106,22 +107,7 @@ public class EncounterAdapter extends Data {
 		
 	}
 	
-	public void insertDoctorEncounter(Integer encounter,Integer personnel) {
-		db = dbHandler.getWritableDatabase();
-		values = new ContentValues();
-		try {
-			values.put(ENCOUNTER_ID, encounter);	
-			values.put(PERSONNEL_ID, personnel);	
-			
-			db.insertWithOnConflict(TABLE_DOC_ENC, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-		} catch(SQLException se) {
-			Log.d("EncounterAdapter insertDocEnc", Log.getStackTraceString(se));
-		} finally {
-			db.close();
-		}
-		
-	}
-	
+	/* Inserts encounters by the given arraylist encounters */
 	public void insertEncounters(ArrayList<Encounter> enc) {
 		db = dbHandler.getWritableDatabase();
 		values = new ContentValues();
@@ -164,6 +150,7 @@ public class EncounterAdapter extends Data {
 		}
 	}
 
+	/* deletes all rows associated with the given encounter_id */
 	public void deleteEncounter(int encounter) {
 		db = dbHandler.getWritableDatabase();
 		try {
@@ -203,6 +190,7 @@ public class EncounterAdapter extends Data {
 		return enc_ids;
 	}
 	
+	/* retrieves the pids based on the encounter id */
 	public Integer getPid(int encounter) {
 		db = dbHandler.getReadableDatabase();
 		try {
