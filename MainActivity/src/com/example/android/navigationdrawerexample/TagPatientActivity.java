@@ -163,7 +163,7 @@ public class TagPatientActivity extends InitialActivity {
 				enc.insertEncounters(encounters);
 				DoctorEncounterAdapter doc_enc = new DoctorEncounterAdapter(this);
 				doc_enc.insertDoctorEncounter(encounters.get(0).getEncounterId(),Preferences.getPersonnelPreference(this));
-				
+				  
 			}
 		} 
 		else{

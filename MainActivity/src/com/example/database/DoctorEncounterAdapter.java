@@ -109,6 +109,6 @@ public class DoctorEncounterAdapter extends Data {
 			db.close();
 		}
 		
-	}
+	}   
 	
 }
