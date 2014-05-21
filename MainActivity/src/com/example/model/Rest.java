@@ -171,8 +171,12 @@ public class Rest extends AsyncTask<String, Void, Void>{
 				result = false;
 			}
 		}
-
-		content = response.getResponseString();
+		
+		try{
+			content = response.getResponseString();
+		}catch(Exception e){
+			System.out.println("Empty Content");
+		}
 		
 		if(!content.isEmpty()){
 			setMessage();

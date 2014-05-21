@@ -108,12 +108,31 @@ public class Preferences extends HelperSharedPreferences{
 		putSharedPreferencesInt(context, "key_encounter_id", pref);
 	}
 
+	/* department name */
+	public static String getDepartmentName(Context context){
+		return getSharedPreferencesString(context, "key_dept_name", "");
+	}
+	
+	public static void setDepartmentName(Context context,	String pref) {
+		putSharedPreferencesString(context, "key_dept_name", pref);
+	}
+	
+	/* department ID */
 	public static String getDepartmentId(Context context){
 		return getSharedPreferencesString(context, "key_dept_id", "");
 	}
 	
 	public static void setDepartmentId(Context context,	String pref) {
 		putSharedPreferencesString(context, "key_dept_id", pref);
+	}
+	
+	/* short name for department */
+	public static String getDepartmentShort(Context context){
+		return getSharedPreferencesString(context, "key_short_dept", "");
+	}
+	
+	public static void setDepartmentShort(Context context,	String pref) {
+		putSharedPreferencesString(context, "key_short_dept", pref);
 	}
 	
 	
