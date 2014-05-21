@@ -36,7 +36,7 @@ public class Preferences extends HelperSharedPreferences{
 	/* retrieve personnel_nr for a specific doctor from preferences */
 	public static int getPersonnelNumber(Context context){
 		try{
-			return getSharedPreferencesInt(context, "key_personnel_nr", NULL);			
+			return getSharedPreferencesInt(context, "key_personnel_nr", 0);			
 		} catch(Exception e){
 			System.out.println("getPersonnelNumber Error");
 			return NULL;
@@ -86,7 +86,7 @@ public class Preferences extends HelperSharedPreferences{
 	}
 	
 	public static Integer getPersonnelPreference(Context context) {
-		return getSharedPreferencesInt(context, "key_personnel_nr", NULL);
+		return getSharedPreferencesInt(context, "key_personnel_nr", 0);
 	}
 	
 	public static void setPersonnelPreference(Context context, Integer pref) {

@@ -61,8 +61,7 @@ public class DepartmentAdapter extends Data {
 			catch (SQLException se) {
 				Log.d("DepartmentAdapter insertDepartments", Log.getStackTraceString(se));
 			}
-			finally
-			{
+			finally {
 			  db.close();
 			}
 	}

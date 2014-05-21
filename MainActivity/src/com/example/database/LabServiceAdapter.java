@@ -114,6 +114,8 @@ public class LabServiceAdapter extends Data {
 		}
 		catch(SQLException se) {
 			Log.d("LabServiceAdapter getLabServices method",Log.getStackTraceString(se));
+		} finally {
+			db.close();
 		}
 		return null;	
 	}
@@ -136,6 +138,8 @@ public class LabServiceAdapter extends Data {
 		}
 		catch(SQLException se) {
 			Log.d("LabServiceAdapter getSectionNames method",Log.getStackTraceString(se));
+		} finally {
+			db.close();
 		}
 		return sectionnames;
 	}

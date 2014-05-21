@@ -10,7 +10,6 @@ import com.example.database.LaboratoryAdapter;
 import com.example.database.PatientAdapter;
 import com.example.model.Encounter;
 import com.example.model.LabRequest;
-import com.example.model.LabService;
 import com.example.model.Patient;
 import com.example.model.Rest;
 import com.example.parser.EncounterParser;
@@ -199,7 +198,7 @@ public class InitialSyncActivity extends InitialActivity {
 			
 			LabRequestParser parser = new LabRequestParser(rest.getContent());
 			
-			/* retrieve and parse labo requests of each encounter of patient(i) */
+			/* retrieve and parse lab requests of each encounter of patient(i) */
 			requests = (parser.getRequestService());
 		
 			//print all encounters and requests
@@ -209,7 +208,7 @@ public class InitialSyncActivity extends InitialActivity {
 			}
 			
 			/* insert encounters of patient(i) in mobile DB */
-			db.insertLabRequestsEncounter(requests);
+			db.insertLabRequestsEncounter(requests, Integer.parseInt(personnel_id));
 		}
 	}
 	

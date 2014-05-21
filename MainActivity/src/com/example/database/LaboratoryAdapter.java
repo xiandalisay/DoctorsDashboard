@@ -38,7 +38,7 @@ public class LaboratoryAdapter extends Data {
 	/* inserts lab requests in mobile DB
 	 * TABLE = "lab_request" 
 	 */
-	public void insertLabRequestsEncounter(ArrayList<LabRequest> requests) {
+	public void insertLabRequestsEncounter(ArrayList<LabRequest> requests, int personnel_id) {
 		
 		db = dbHandler.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -48,6 +48,8 @@ public class LaboratoryAdapter extends Data {
 				values.put(ENCOUNTER_ID, requests.get(i).getEncounterNumber());	
 				//Log.d("Lab Request Insert","Encounter ID: "+requests.get(i).getEncounterNumber());
 				values.put(REQUEST_ID, requests.get(i).getRequestNumber());				
+				//Log.d("Lab Request Insert","Request ID: "+requests.get(i).getRequestNumber());
+				values.put(PERSONNEL_ID, personnel_id);				
 				//Log.d("Lab Request Insert","Request ID: "+requests.get(i).getRequestNumber());
 				values.put(REQUESTED, "2011-00-00 00:00:00");
 				
@@ -92,9 +94,5 @@ public class LaboratoryAdapter extends Data {
 			Log.d("LABORATORY_ADAPTER", Log.getStackTraceString(se));
 	
 		}
-	}
-	
-	public void close(){
-		db.close();
 	}
 }

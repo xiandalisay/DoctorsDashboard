@@ -7,7 +7,6 @@ package com.example.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
 
 public class HelperSharedPreferences {
 

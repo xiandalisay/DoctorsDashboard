@@ -62,6 +62,8 @@ public class DoctorAdapter extends Data{
 		}
 		catch (SQLException se) {
 			Log.d("DoctorAdapter addDoctor",Log.getStackTraceString(se));
+		} finally{
+			db.close();
 		}
 	}
 	
@@ -78,6 +80,8 @@ public class DoctorAdapter extends Data{
 		}
 		catch (SQLException se) {
 			Log.d("DoctorAdapter setLastSync",Log.getStackTraceString(se));
+		} finally{
+			db.close();
 		}
 	}
 	
