@@ -15,13 +15,16 @@ import java.util.ArrayList;
 import android.os.Bundle;
 
 import com.example.database.EncounterAdapter;
+import com.example.database.NotesAdapter;
 import com.example.database.PatientAdapter;
 import com.example.database.DoctorEncounterAdapter;
 import com.example.model.Encounter;
+import com.example.model.Notes;
 import com.example.model.Patient;
 import com.example.model.Preferences;
 import com.example.model.Rest;
 import com.example.parser.EncounterParser;
+import com.example.parser.NotesParser;
 import com.example.parser.PatientParser;
 
 public class TagPatientActivity extends InitialActivity {
@@ -163,6 +166,45 @@ public class TagPatientActivity extends InitialActivity {
 				enc.insertEncounters(encounters);
 				DoctorEncounterAdapter doc_enc = new DoctorEncounterAdapter(this);
 				doc_enc.insertDoctorEncounter(encounters.get(0).getEncounterId(),Preferences.getPersonnelPreference(this));
+				  
+			}
+		} 
+		else{
+			alertMessage("Network Unavailable");
+		}
+		
+	}
+	
+	/* Gets specific doctors notes from the API by encounter_id */
+	public void getNoteFromTag() {
+		
+		if(isNetworkAvailable()){
+			Rest rest = new Rest("GET",this, "Retrieving notes of encounter..");
+			/* setup API URL */
+			rest.setURL(
+						"http://121.97.45.242/segservice"+ 
+						"/doctor/notes/"
+						);
+
+			rest.addRequestParams("doctor_nr", Preferences.getPersonnelPreference(this) + "");
+			//rest.addRequestParams("encounter_nr", Preferences.getEncounterPreference(this)+ "");
+			
+			/* process request service request */
+			rest.execute();
+			
+						
+			/* check if connection was successful */
+			while(rest.getContent() == null){}
+		
+			
+			System.out.println("Data Received:\n" + rest.getContent()); 
+			
+			if(rest.getResult()) {
+				String content = rest.getContent();
+				NotesParser notes_parser = new NotesParser(content);
+				ArrayList<Notes> notes = notes_parser.getNotes();
+				NotesAdapter note_adp = new NotesAdapter(this);
+				note_adp.insertNotes(notes);
 				  
 			}
 		} 

@@ -1,8 +1,15 @@
+/*
+ * Editor: Christian Joseph Dalisay
+ * Date: 05/21/14
+ * Description
+ * 		added personnel_id
+ */
 package com.example.model;
 
 public class Notes {
 	private int notes_id;
 	private int encounter_id;
+	private int personnel_id;
 	private String title;
 	private String body;
 	private String type;
@@ -12,6 +19,7 @@ public class Notes {
 	public Notes() {
 		notes_id = -1;
 		encounter_id = -1;
+		this.personnel_id = -1;
 		title = null;
 		body = null;
 		type = null;
@@ -29,12 +37,16 @@ public class Notes {
 		this.sync = sync;
 	}
 	
-	public int getNotes_id() {
+	public int getNotesId() {
 		return notes_id;
 	}
 
-	public int getEncounter_id() {
+	public int getEncounterId() {
 		return encounter_id;
+	}
+
+	public int getPersonnelId() {
+		return this.personnel_id;
 	}
 
 	public String getTitle() {
@@ -49,7 +61,7 @@ public class Notes {
 		return type;
 	}
 
-	public String getDate_created() {
+	public String getDateCreated() {
 		return date_created;
 	}
 
@@ -57,12 +69,16 @@ public class Notes {
 		return sync;
 	}
 
-	public void setNotes_id(int notes_id) {
+	public void setNotesId(int notes_id) {
 		this.notes_id = notes_id;
 	}
 
-	public void setEncounter_id(int encounter_id) {
+	public void setEncounterId(int encounter_id) {
 		this.encounter_id = encounter_id;
+	}
+
+	public void setPersonnelId(int personnel_id) {
+		this.personnel_id = personnel_id;
 	}
 
 	public void setTitle(String title) {
@@ -77,7 +93,7 @@ public class Notes {
 		this.type = type;
 	}
 
-	public void setDate_created(String date_created) {
+	public void setDateCreated(String date_created) {
 		this.date_created = date_created;
 	}
 
@@ -86,6 +102,6 @@ public class Notes {
 	}
 	
 	public String toString() {
-		return this.title + "\n" + this.type + "\n" + this.date_created.substring(0,10);
+		return this.title + "\n" + this.type + "\n" + this.date_modified;
 	}
 }

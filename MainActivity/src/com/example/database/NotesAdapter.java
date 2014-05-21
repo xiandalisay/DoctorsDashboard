@@ -7,18 +7,26 @@
 
 package com.example.database;
 
+import java.util.ArrayList;
+
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
 import com.example.database.Data;
+import com.example.model.Encounter;
+import com.example.model.Notes;
 
 public class NotesAdapter extends Data {
 	
 	
-	public  SQLiteDatabase db;
+	private  SQLiteDatabase db;
 	private DatabaseHandler dbHandler;
+	
+	private ContentValues values;
 	
 	private static final int 	DATABASE_VERSION	= 1;
 	private static final String DATABASE_NAME 		= "localhost";
@@ -47,4 +55,27 @@ public class NotesAdapter extends Data {
 		}
 	}
 
+	/* Inserts doctor notes by the given arraylist notes */
+	public void insertNotes(ArrayList<Notes> notes) {
+		db = dbHandler.getWritableDatabase();
+		values = new ContentValues();
+		try {
+			for(int i = 0; i < notes.size(); i++) {
+				values.put(ENCOUNTER_ID, notes.get(i).getEncounterId());	
+				values.put(PERSONNEL_ID, notes.get(i).getPersonnelId());	
+				values.put(TITLE, notes.get(i).getTitle());	
+				values.put(TYPE, notes.get(i).getType());	
+				values.put(BODY, notes.get(i).getBody());	
+				values.put(MODIFIED , notes.get(i).getDateModified());
+				values.put(SYNC , 0);
+				db.insertWithOnConflict(TABLE_ENCOUNTER, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+			  }
+			}
+			catch (SQLException se) {
+				Log.d("NotesAdapter insertNotes", Log.getStackTraceString(se));
+		}finally{
+        	db.close();
+        }
+	}
+	
 }
