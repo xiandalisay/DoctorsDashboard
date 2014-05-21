@@ -74,12 +74,14 @@ public class PatientActivity extends BaseActivity {
 
 			while(rest.getContent() == null){}
 			
+			logMessage(rest.getContent());
 			
 			if(rest.getResult()){
 				String content = rest.getContent();
 				PatientParser patient_parser = new PatientParser(content);
 				patients = patient_parser.getPatients();
 			}
+			
 		} 
 		else{
 		

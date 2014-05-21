@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 
 public class Preferences extends HelperSharedPreferences{
 	
-	private final static int NULL = NULL;
+	private final static int NULL = 0;
 	private  ConnectivityManager connectivityManager;
 	
 	public boolean isNetworkAvailable(Context context) {
@@ -100,4 +100,13 @@ public class Preferences extends HelperSharedPreferences{
 	public static void setPatientId(Context context, int pref){
 		putSharedPreferencesInt(context, "key_patient_id", pref);
 	}
+	public static int getEncounterId(Context context){
+		return getSharedPreferencesInt(context, "key_encounter_id", NULL);
+	}
+	
+	public static void setEncounterId(Context context, int pref){
+		putSharedPreferencesInt(context, "key_encounter_id", pref);
+	}
+	
+	
 }

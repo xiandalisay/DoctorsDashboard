@@ -151,6 +151,7 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		if(method.equals("GET")){
 			try{
 				response = Resting.get(url, this.params, EncodingTypes.UTF8, headers, 0);
+				result = true;
 	        } catch(Exception e){
 				result = false;
 			}
@@ -158,12 +159,14 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		else if(method.equals("POST")){
 			try{
 				response = PostHelper.post(url, port, EncodingTypes.UTF8, this.params,headers, null);
+				result = true;
 	        } catch(Exception e){
 				result = false;
 			}
 		}else if(method.equals("PUT")){
 			try{
 				response = PutHelper.put(url, EncodingTypes.UTF8, port, this.params, headers, null);
+				result = true;
 	        } catch(Exception e){
 				result = false;
 			}
