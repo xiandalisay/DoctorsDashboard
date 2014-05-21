@@ -194,7 +194,7 @@ public class TagPatientActivity extends InitialActivity {
 						);
 
 			rest.addRequestParams("doctor_nr", Preferences.getPersonnelPreference(this) + "");
-			//rest.addRequestParams("encounter_nr", Preferences.getEncounterPreference(this)+ "");
+			rest.addRequestParams("encounter_nr", Preferences.getEncounterId(this)+ "");
 			
 			/* process request service request */
 			rest.execute();

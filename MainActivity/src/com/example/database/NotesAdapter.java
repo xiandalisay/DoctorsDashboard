@@ -45,7 +45,7 @@ public class NotesAdapter extends Data {
 		db = dbHandler.getWritableDatabase();
 		
 		try {
-			db.execSQL("DELETE FROM notes WHERE encounter_id = " + encounter_id + " AND personnel_id = " + personnel_id);
+			db.delete(TABLE_NOTES, " encounter_id = " + encounter_id + " AND personnel_id = " + personnel_id, null);
 		} catch (Exception se) {
 			Log.d("NotesAdapter deleteNotes", Log.getStackTraceString(se));
 		}
@@ -55,7 +55,7 @@ public class NotesAdapter extends Data {
 		}
 	}
 
-	/* Inserts doctor notes by the given arraylist notes */
+	/* Inserts into doctor notes by the given notes */
 	public void insertNotes(ArrayList<Notes> notes) {
 		db = dbHandler.getWritableDatabase();
 		values = new ContentValues();

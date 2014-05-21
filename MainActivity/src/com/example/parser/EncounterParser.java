@@ -5,7 +5,6 @@ package com.example.parser;
 
 import java.util.ArrayList;
 
-import com.example.model.Department;
 import com.example.model.Encounter;
 import com.google.resting.json.JSONArray;
 import com.google.resting.json.JSONException;
