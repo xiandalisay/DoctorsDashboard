@@ -162,10 +162,10 @@ public class PatientInfoActivity extends ExpandableListActivity {
 			saveEncounterIdPreferences();
 			alertMessage(encounter_id+"");
 		}
-		
+
 		/* hide tag and refer button on offline mode */
 		tag.setVisibility(CONTEXT_RESTRICTED);
-		refer.setVisibility(CONTEXT_RESTRICTED);
+		refer.setVisibility(CONTEXT_RESTRICTED);		
 				
 		}		
 		
@@ -184,14 +184,25 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 			//temp
 			System.out.println("patient not in DB. searching ONLINE..");
-		
-			tag.setText("Tag Patient");
+			
+			tag.setText("Tag Patient");		
 		}
 		else{
 			tag.setText("Undo Tag");
 		}
 		
 		retrieveEncounterAPI(patient_id);
+		
+		System.out.println("Encounter Dept:" + encounter.getDepartmentId());
+
+		/* check if current encounter belongs to the same department as the doctor */
+		if(Preferences.getDepartmentId(this) != encounter.getDepartmentId()){
+			
+			System.out.println("Different departments");
+			/* hide tag and refer button on online mode if location_nr are different */
+			tag.setVisibility(CONTEXT_RESTRICTED);
+			refer.setVisibility(CONTEXT_RESTRICTED);		
+		}
 	}
 		
 		
@@ -253,10 +264,10 @@ public class PatientInfoActivity extends ExpandableListActivity {
 				
 		
 		if(patient.getSex().equals("M")){
-			genderEditText.setText("Male");
+			genderEditText.setText("M");
 		}
 		else{
-			genderEditText.setText("Female");
+			genderEditText.setText("F");
 		}
 		
 		HRN.setText(patient.getPID()+"");
@@ -267,7 +278,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 		String age = String.valueOf(patient.getAge());
 		
-		ageEditText.setText(age);
+		ageEditText.setText(patient.getAge()+"");
 	}
 
 	/* associate layout elements */
@@ -329,10 +340,14 @@ public class PatientInfoActivity extends ExpandableListActivity {
 				}
 			}
 
-			encounter = encounters.get(encounters.size()-1);
+			
 			
 			/* get latest encounter if encounter_id is not set */
 			if(encounter_id == EMPTY){			
+				
+				/* retrieve latest encounter of patient */
+				encounter = encounters.get(encounters.size()-1);
+				
 				/* set the current encounter_id to be associated with Patient Info Page */ 
 				encounter_id = encounter.getEncounterId();
 				

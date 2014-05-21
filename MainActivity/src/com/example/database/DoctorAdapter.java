@@ -147,5 +147,24 @@ public class DoctorAdapter extends Data{
 		return cursor.getInt(0);
 	}
 	
+	/* This function gets the dept number associated with the doctor 
+	 * by his/her authentication token
+	 */
+	public String getDepartment(String auth) {
+		db = dbHandler.getReadableDatabase();
+		String query = 
+				"SELECT dept.name_dept " + 
+				"FROM department as dept " +
+				"INNER JOIN doctor as doc ON doc.authtoken = '" + auth + "' "
+						+ "AND dept.dept_id = doc.dept_id";
+		try{
+			cursor = db.rawQuery(query, null);
+        }catch(Exception e) {
+         Log.d("DoctorAdapter getDeptNr", Log.getStackTraceString(e));
+        }
+		cursor.moveToFirst();
+		System.out.println("Dept Name: "+ cursor.getString(0));
+		return cursor.getString(0);
+	}
 	
 }

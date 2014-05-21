@@ -82,11 +82,11 @@ public class TagPatientActivity extends InitialActivity {
 		System.out.println("Data Received:\n" + rest.getContent()); 
 		
 		/* checks if the untagging of encounter is successful */
-		if(rest.getResult() && rest.getMessage().equals("Successfully saved")) {
-			getPatientFromTag();
-			getEncounterFromTag();
-			//TODO Create method to retrieve notes of specific encounter
-		}
+//		if(rest.getResult() && rest.getMessage().equals("Successfully saved")) {
+//			getPatientFromTag();
+//			getEncounterFromTag();
+//			//TODO Create method to retrieve notes of specific encounter
+//		}
 			
 	}
 

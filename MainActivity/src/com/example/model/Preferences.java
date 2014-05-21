@@ -107,6 +107,14 @@ public class Preferences extends HelperSharedPreferences{
 	public static void setEncounterId(Context context, int pref){
 		putSharedPreferencesInt(context, "key_encounter_id", pref);
 	}
+
+	public static String getDepartmentId(Context context){
+		return getSharedPreferencesString(context, "key_dept_id", "");
+	}
+	
+	public static void setDepartmentId(Context context,	String pref) {
+		putSharedPreferencesString(context, "key_dept_id", pref);
+	}
 	
 	
 }

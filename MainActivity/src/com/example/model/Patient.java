@@ -40,6 +40,20 @@ public class Patient {
 		this.patient_age = -1;
 	}
 	
+	public Patient(int pid, String lastname, String firstname, String middlename, String sex, String birthdate, int age, String street, String city, String province, String zipcode){
+		patient_pid = pid;
+		patient_name_last = lastname;
+		patient_name_first = firstname;
+		patient_name_middle = middlename;
+		patient_sex = sex;
+		patient_date_birth = birthdate;
+		patient_age = age;
+		patient_street = street;
+		patient_city = city;
+		patient_province = province;
+		patient_zipcode = zipcode;
+	}
+	
 	public Patient(int pid, String lastname, String firstname, String middlename, String sex, String birthdate, String street, String city, String province, String zipcode){
 		patient_pid = pid;
 		patient_name_last = lastname;

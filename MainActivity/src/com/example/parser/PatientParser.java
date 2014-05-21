@@ -176,6 +176,7 @@ public class PatientParser extends JSONParser {
 			String name_middle 			= jsonChildNode.optString(NAME_MIDDLE).toString();
 			String date_birth 			= jsonChildNode.optString(DATE_BIRTH).toString();
 			int age 					= patient_age.getAge(date_birth);
+			System.out.println("Age:" + age);
 			String sex 					= jsonChildNode.optString(SEX).toString();
 			String street1 				= jsonChildNode.optString(STREET_1).toString();
 			String city 				= jsonChildNode.optString(CITY).toString();
@@ -186,7 +187,7 @@ public class PatientParser extends JSONParser {
 			//String father_of_patient 	= jsonChildNode.optString(FATHER_OF_PATIENT).toString();
 			//String spouse_of_patient 	= jsonChildNode.optString(SPOUSE_OF_PATIENT).toString();
 			
-			patient = new Patient(pid,name_last,name_first,name_middle,sex,date_birth,street1,city,province,zipCode);	
+			patient = new Patient(pid,name_last,name_first,name_middle,sex,date_birth,age,street1,city,province,zipCode);	
 
 		}catch(Exception e){System.out.println(e.toString() + "alvin was here");}
         

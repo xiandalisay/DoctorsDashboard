@@ -50,7 +50,7 @@ public class Encounter implements Comparable<Encounter> {
 		message_complaint = messagecomplaint;
 		date_encountered = dateencountered;
 		pid = patientid;
-		//this.department = department;
+		this.department = department;
 		//is_confidential = isconfidential;
 	}
 	
@@ -94,6 +94,10 @@ public class Encounter implements Comparable<Encounter> {
 		this.date_encountered = rDate_Encountered;
 	}
 	
+	public void setDepartmentId(String department) {
+		this.department = department;
+	}
+	
 	//Getter Methods
 	
 	public Encounter getEncounter() {
@@ -118,6 +122,10 @@ public class Encounter implements Comparable<Encounter> {
 	
 	public String getDateEncountered() {
 		return this.date_encountered;
+	}
+	
+	public String getDepartmentId() {
+		return this.department;
 	}
 	
 	public String toString()

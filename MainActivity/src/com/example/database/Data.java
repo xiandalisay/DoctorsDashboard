@@ -185,6 +185,7 @@ public class Data {
 		PID 		+ " INTEGER NOT NULL REFERENCES " + TABLE_PATIENT + "(" + PID + ")" + ", "	+
 		PATIENT 	+ " NVARCHAR(20), " +
 		COMPLAINT 	+ " TEXT, " +
+		DEPT_ID 		+ " INTEGER NOT NULL REFERENCES "  + TABLE_DEPARTMENT + "(" + DEPT_ID + ")" + ", "	+
 		ENCOUNTERED + " DATETIME  " +	", " +
 		OFFICIAL_RECEIPT_NR + " NVARCHAR(10), " +
 		IS_CONFIDENTIAL + " NVARCHAR(3) DEFAULT 'No' " +	")";
