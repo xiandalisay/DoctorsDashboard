@@ -66,7 +66,7 @@ public class NotesAdapter extends Data {
 				values.put(TITLE, notes.get(i).getTitle());	
 				values.put(TYPE, notes.get(i).getType());	
 				values.put(BODY, notes.get(i).getBody());	
-				values.put(MODIFIED , notes.get(i).getDateModified());
+				values.put(CREATED , notes.get(i).getDateCreated());
 				values.put(SYNC , 0);
 				db.insertWithOnConflict(TABLE_ENCOUNTER, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			  }

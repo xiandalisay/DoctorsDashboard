@@ -102,6 +102,6 @@ public class Notes {
 	}
 	
 	public String toString() {
-		return this.title + "\n" + this.type + "\n" + this.date_modified;
+		return this.title + "\n" + this.type + "\n" + this.date_created;
 	}
 }
