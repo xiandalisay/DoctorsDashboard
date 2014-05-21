@@ -19,7 +19,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:text="View Canvas"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ImageView
             android:id="@+id/imageView1"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textView2"
             android:layout_alignBottom="@+id/textView2"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@+id/viewButton"
             android:layout_toRightOf="@+id/textView2"
             android:ems="10" >
 
@@ -62,71 +62,6 @@
             android:text="Canvas"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView1"
-            android:layout_toLeftOf="@+id/dateTextCanvas"
-            android:text="Title:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/titleTextCanvas"
-            android:text="Date:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <Button
-            android:id="@+id/editButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView2"
-            android:layout_below="@+id/textView4"
-            android:layout_toLeftOf="@+id/eraseEverythingButton"
-            android:text="Edit Existing Canvas" />
-
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/editButton"
-            android:layout_below="@+id/editButton"
-            android:layout_toLeftOf="@+id/viewButton"
-            android:text="Save Picture" />
-
-        <Button
-            android:id="@+id/eraseEverythingButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/saveButton"
-            android:layout_alignBottom="@+id/saveButton"
-            android:layout_alignRight="@+id/viewButton"
-            android:text="Erase Everything" />
-
-        <Button
-            android:id="@+id/viewButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/textView4"
-            android:text="View Existing Canvas" />
-
-        <ImageView
-            android:id="@+id/imageCanvas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/saveButton"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/saveButton"
-            android:src="@drawable/action_search" />
-
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
@@ -135,6 +70,73 @@
             android:layout_below="@+id/dateTextCanvas"
             android:layout_marginTop="14dp"
             android:src="@drawable/line" />
+
+        <Button
+            android:id="@+id/eraseEverythingButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/viewButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="Erase Everything" />
+
+        <Button
+            android:id="@+id/editButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/eraseEverythingButton"
+            android:layout_alignParentLeft="true"
+            android:text="Edit Existing Canvas" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/editButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/viewButton"
+            android:layout_below="@+id/textView4"
+            android:src="@drawable/action_search" />
+
+        <Button
+            android:id="@+id/saveButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignRight="@+id/editButton"
+            android:layout_below="@+id/editButton"
+            android:text="Save Picture" />
+
+        <Button
+            android:id="@+id/viewButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/eraseEverythingButton"
+            android:layout_alignParentRight="true"
+            android:text="View Existing Canvas" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/titleTextCanvas"
+            android:layout_alignBottom="@+id/titleTextCanvas"
+            android:layout_alignLeft="@+id/viewButton"
+            android:text="Date:"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/imageView1"
+            android:text="Title:"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </RelativeLayout>
 
