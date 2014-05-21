@@ -6,35 +6,39 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CalculationsActivity extends BaseActivity {
+public class CalculationsActivity extends InitialActivity {
 
-	private String value1 ;
-	private String value2 ;
+	private String feet;
+	private String inches;
+	private String pounds;
 	
 	/* UI layout references */
-	private EditText et_value1;
-	private EditText et_value2;
-	private TextView rating;
+	private EditText et_feet;
+	private EditText et_inches;
+	private EditText et_pounds;
+	private EditText et_rating;
+	private TextView tv_bmi;
 	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.activity_calculations);
 		super.onCreate(savedInstanceState);
-
-		
+		setContentView(R.layout.activity_calculations);
+				
 	}
 	
 	/* retrieves inputted text by user and assigns it to a variable */
 	private void setInputText(){
-//		et_value1 = (EditText) findViewById(R.id.value1);
-//		et_value2 = (EditText) findViewById(R.id.value2);
+		et_feet = (EditText) findViewById(R.id.feet);
+		et_inches = (EditText) findViewById(R.id.inches);
+		et_pounds = (EditText) findViewById(R.id.pounds);
 	}
 	
 	/* retrieves inputted text by user and converts/saves it as String */
 	private void convertInputText(){
-		value1 = et_value1.getText().toString();
-		value2 = et_value2.getText().toString();
+		feet = et_feet.getText().toString();
+		inches = et_inches.getText().toString();
+		pounds = et_pounds.getText().toString();
 	}
 	
 	/* called when the "Sign in" button is clicked */
@@ -50,7 +54,7 @@ public class CalculationsActivity extends BaseActivity {
 			computeBMI();
 		}
 			else {
-				Toast.makeText(getApplicationContext(), "Failed to Authenticate", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "Failed to Calculate", Toast.LENGTH_SHORT).show();
 			}
 	}
 	
@@ -59,34 +63,26 @@ public class CalculationsActivity extends BaseActivity {
 		boolean cancel = false; //for flagging; will be equal to true if there are errors
 		View focusView = null; //refers to the EditText View that will be focused if there are errors
 		
-		/* must only contain numeric characters */
-		String regex = "^[-+]?[0-9]*\\.?[0-9]+$"; 
-		if (!value1.matches(regex)) {
-			et_value1.setError(getString(R.string.error_invalid_format));
-			focusView = et_value1;
-			cancel = true;
-		} 
-		
-		/* must only contain numeric characters */
-		if (!value2.matches(regex)) {
-			et_value2.setError(getString(R.string.error_invalid_format));
-			focusView = et_value2;
-			cancel = true;
-		} 
-		
 		/* there must be a value in the field */
-		if (value1.isEmpty()){
-			et_value1.setError(getString(R.string.error_field_required));
-			focusView = et_value1;
+		if (feet.isEmpty()){
+			et_feet.setError(getString(R.string.error_field_required));
+			focusView = et_feet;
 			cancel = true;
 		}
 		
 		/* there must be a value in the field */
-		if (value2.isEmpty()){
-			et_value2.setError(getString(R.string.error_field_required));
-			focusView = et_value2;		
+		if (inches.isEmpty()){
+			et_inches.setError(getString(R.string.error_field_required));
+			focusView = et_inches;
 			cancel = true;
-		} 
+		}
+		
+		/* there must be a value in the field */
+		if (pounds.isEmpty()){
+			et_pounds.setError(getString(R.string.error_field_required));
+			focusView = et_pounds;
+			cancel = true;
+		}
 		
 		if(cancel){
 			focusView.requestFocus();
@@ -98,25 +94,47 @@ public class CalculationsActivity extends BaseActivity {
 		}
 	}
 
+	/* computes the BMI of the given feet, inches and pounds */
 	public Float computeBMI() {
-		return (Float) (Float.parseFloat(value1)/(Float.parseFloat(value2)*Float.parseFloat(value2)));
+		System.out.println("feet "+feet);
+		System.out.println("inches "+inches);
+		System.out.println("pounds "+pounds);
+		Float dividend = Float.parseFloat(pounds) * 703;
+		Float divisor = ((Float.parseFloat(feet)*12)+Float.parseFloat(inches));
+		divisor *= divisor;
+		System.out.println("");
+		
+		return dividend/divisor;
 	}
 	
-	public void displayRating() {
-		Float BMI = computeBMI();
-		if(BMI >= 30) {
-			rating.setText("Obesity");
-		}
-		if(BMI >= 25 ) {
-			rating.setText("Overweight");
-		}
-		if(BMI >= 18.5) {
-			rating.setText("Normal Weight");
-		}
-		else {
-			rating.setText("Underweight");
+	public void displayRating(View v) {
+		setInputText();
+		
+		/* Convert data type from EditText -> Editable -> String */ 
+		convertInputText();
+		
+		if(validateInputs()){
+			Float BMI = computeBMI();
+			System.out.println("bmi "+BMI);
+			if(BMI < 18.5) {
+				setCalculation(BMI, "Underweight");
+			}	
+			else if(BMI < 25 && BMI >= 18.5  ) {
+				setCalculation(BMI,"Normal Weight");
+			}
+			else if(BMI < 30 && BMI >= 25) {
+				setCalculation(BMI,"Overweight");
+			}
+			else if (BMI >= 30) {
+				setCalculation(BMI,"Obesity");
+			}
 		}
 	}
-		 
-
+	
+	public void setCalculation(Float BMI, String rating) {
+		tv_bmi = (TextView) findViewById (R.id.bmi);
+		tv_bmi.setText(String.valueOf(BMI));
+		et_rating = (EditText) findViewById (R.id.rating);
+		et_rating.setText(rating);
+	}
 }
