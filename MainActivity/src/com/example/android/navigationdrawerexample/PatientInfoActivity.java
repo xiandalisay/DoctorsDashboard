@@ -40,6 +40,7 @@ import com.example.database.PatientAdapter;
 import com.example.model.Encounter;
 import com.example.model.Notes;
 import com.example.model.Patient;
+import com.example.model.Preferences;
 import com.example.model.ReferralHelper;
 import com.example.model.Rest;
 import com.example.parser.EncounterParser;
@@ -112,11 +113,13 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		extras = intent.getExtras();
 			
 		patient_id = extras.getInt("EXTRA_PATIENT_ID");
-		encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
+
 		/* check if encounter_id was passed from previous intent */
 		try{
 			encounter_id = extras.getInt("EXTRA_ENCOUNTER_ID");
 			System.out.println("encounter_id:" + encounter_id);
+			saveEncounterIdPreferences();
+			alertMessage(encounter_id+"");
 		}catch(Exception e){
 			System.out.println("no encounter_id");
 		}
@@ -154,8 +157,10 @@ public class PatientInfoActivity extends ExpandableListActivity {
 			encounter = encounters.get(encounters.size()-1);
 			
 		/* set the current encounter_id to be associated with Patient Info Page */ 
-		if(encounter_id == 0){
+		if(encounter_id == EMPTY){
 			encounter_id = encounter.getEncounterId();
+			saveEncounterIdPreferences();
+			alertMessage(encounter_id+"");
 		}
 		
 		/* hide tag and refer button on offline mode */
@@ -206,6 +211,8 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 		setGroupParents();
 		
+		System.out.println("Encounters Size: "+encounters.size());
+
 		for(int i=0; i<encounters.size();i++){
 			encounter = encounters.get(i);
 			
@@ -239,8 +246,8 @@ public class PatientInfoActivity extends ExpandableListActivity {
 	/* set contents of layout elements based on patient info */
 	private void setViewsContents() {
 		
-		histOfSmokingCheckBox.setChecked(true);
-		histOfDrinkingCheckBox.setChecked(true);
+		histOfSmokingCheckBox.setChecked(false);
+		histOfDrinkingCheckBox.setChecked(false);
 		
 		String nametext = patient.getNameLast() + ", " + patient.getNameFirst();
 				
@@ -253,7 +260,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		}
 		
 		HRN.setText(patient.getPID()+"");
-		CaseNo.setText(encounter.getEncounterId()+"");
+		CaseNo.setText(encounter_id+"");
 		
 		addressEditText.setText(patient.getAddress());
 		nameEditText.setText(nametext);
@@ -303,7 +310,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		
 		try{
 			//print how many encounters
-			System.out.println("# of encounters:");// + encounters.size());	
+			System.out.println("# of encounters:" + encounters.size());	
 			
 			/* sort encounters based on encountered_data*/
 			Collections.sort(encounters, new CustomComparator());
@@ -321,18 +328,24 @@ public class PatientInfoActivity extends ExpandableListActivity {
 					System.out.println("null error");
 				}
 			}
+
+			encounter = encounters.get(encounters.size()-1);
 			
 			/* get latest encounter if encounter_id is not set */
 			if(encounter_id == EMPTY){			
-				encounter = encounters.get(encounters.size()-1);
+				/* set the current encounter_id to be associated with Patient Info Page */ 
+				encounter_id = encounter.getEncounterId();
+				
+				saveEncounterIdPreferences();
+				alertMessage(encounter_id+"");
+				
 			}
 			
 			//print pid and encounter_id
 			System.out.println("PID: " + encounter.getPID());
 			System.out.println("EID: " + encounter.getEncounterId());
 			
-			/* set the current encounter_id to be associated with Patient Info Page */ 
-			encounter_id = encounter.getEncounterId();
+			
 		} catch(Exception e){
 			alertMessage("No encounters");
 		}
@@ -362,7 +375,7 @@ public class PatientInfoActivity extends ExpandableListActivity {
 	public void setGroupParents() {
 		parentItems.add("Medical History");
 		parentItems.add("Previous Requests");
-		parentItems.add("Referrals");
+		//parentItems.add("Referrals");
 		parentItems.add("Notes");
 	}
 	
@@ -380,24 +393,16 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		DatabaseAdapter db1 = new DatabaseAdapter(this);
 		
 		// MEDICAL HISTORY / ENCOUNTERS
-		ArrayList<Encounter> encounterList = db.getPatientEncounter(patient_id);
-		for (int i = 0; i < encounterList.size(); i++) {
-			child.add(encounterList.get(i));
+		//ArrayList<Encounter> encounterList = db.getPatientEncounter(patient_id);
+		for (int i = 0; i < encounters.size(); i++) {
+			child.add(encounters.get(i));
 		}
 		childItems.add(child);
 		child = new ArrayList<Object>();
 		
 		// PREVIOUS REQUESTS / LAB REQUESTS
-		for (int i = 0; i < encounterList.size(); i++) {
-			child.add(encounterList.get(i));
-		}
-		childItems.add(child);
-		child = new ArrayList<Object>();
-		
-		// REFERRALS
-		ArrayList<ReferralHelper> refList = db1.getReferralHelpers(encounter_id);
-		for (int i = 0; i < refList.size(); i++) {
-			child.add(refList.get(i));
+		for (int i = 0; i < encounters.size(); i++) {
+			child.add(encounters.get(i));
 		}
 		childItems.add(child);
 		child = new ArrayList<Object>();
@@ -473,6 +478,12 @@ public class PatientInfoActivity extends ExpandableListActivity {
 		alertMessage("Successfully Untagged");
 	}
 	
+	/* saves encounter_id in preferences */
+	private void saveEncounterIdPreferences() {
+		/* sets current encounter by saving the encounter_nr in preferences */
+		Preferences.setEncounterId(this, encounter_id); /* key = "key_encounetr_id" */
+	}
+	
 	private boolean isEncounterExists(int encounter_id){
 		EncounterAdapter db = new EncounterAdapter(this);
 		
@@ -531,4 +542,12 @@ public class PatientInfoActivity extends ExpandableListActivity {
 	    }
 	}
 
+	@Override
+	protected void onPause() {
+		finish();
+		super.onPause();
+	}
+
+    
+    
 }
