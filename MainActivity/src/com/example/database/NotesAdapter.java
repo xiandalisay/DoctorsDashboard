@@ -61,13 +61,18 @@ public class NotesAdapter extends Data {
 		values = new ContentValues();
 		try {
 			for(int i = 0; i < notes.size(); i++) {
+				values.put(NOTES_ID, notes.get(i).getNotesId());	
 				values.put(ENCOUNTER_ID, notes.get(i).getEncounterId());	
 				values.put(PERSONNEL_ID, notes.get(i).getPersonnelId());	
 				values.put(TITLE, notes.get(i).getTitle());	
 				values.put(TYPE, notes.get(i).getType());	
 				values.put(BODY, notes.get(i).getBody());	
 				values.put(CREATED , notes.get(i).getDateCreated());
-				values.put(SYNC , 0);
+				if(notes.get(i).isSync() == true) {
+					values.put(SYNC , 1);
+				} else{
+					values.put(SYNC , 0);
+				}
 				db.insertWithOnConflict(TABLE_ENCOUNTER, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			  }
 			}

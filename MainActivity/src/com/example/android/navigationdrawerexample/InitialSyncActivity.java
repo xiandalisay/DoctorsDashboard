@@ -250,11 +250,13 @@ public class InitialSyncActivity extends InitialActivity {
 			System.out.println("Data Received:\n" + rest.getContent());
 			
 			NotesParser parser = new NotesParser(rest.getContent());
-			
 			/* retrieve and parse notes of each encounter of patient(i) */
 			notes = parser.getNotes();
-		
-			//print all encounters and notes
+			//print all encounters and requests
+			for(int j=0;j<notes.size();j++){
+				System.out.println("Encounter ID: "+notes.get(j).getEncounterId());
+				System.out.println("Title: "+notes.get(j).getNotesId());
+			}
 			/* insert encounters of patient(i) in mobile DB */
 			db.insertNotes(notes);
 		}

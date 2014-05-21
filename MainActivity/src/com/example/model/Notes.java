@@ -7,7 +7,7 @@
 package com.example.model;
 
 public class Notes {
-	private int notes_id;
+	private String notes_id;
 	private int encounter_id;
 	private int personnel_id;
 	private String title;
@@ -17,27 +17,27 @@ public class Notes {
 	private boolean sync;
 	
 	public Notes() {
-		notes_id = -1;
+		notes_id = "";
 		encounter_id = -1;
 		this.personnel_id = -1;
 		title = null;
 		body = null;
 		type = null;
-		date_created = null;
+		date_created = DateTime.getDateTime();
 		sync = false;
 	}
 	
-	public Notes(int nid, int eid, String title, String body, String type, String date_created, boolean sync) {
+	public Notes(String nid, int eid, String title, String body, String type, String date_created, boolean sync) {
 		this.notes_id = nid;
 		this.encounter_id = eid;
 		this.title = title;
 		this.body = body;
 		this.type = type;
-		this.date_created = date_created;
+		this.date_created = DateTime.getDateTime();
 		this.sync = sync;
 	}
 	
-	public int getNotesId() {
+	public String getNotesId() {
 		return notes_id;
 	}
 
@@ -69,7 +69,7 @@ public class Notes {
 		return sync;
 	}
 
-	public void setNotesId(int notes_id) {
+	public void setNotesId(String notes_id) {
 		this.notes_id = notes_id;
 	}
 
@@ -94,7 +94,7 @@ public class Notes {
 	}
 
 	public void setDateCreated(String date_created) {
-		this.date_created = date_created;
+		this.date_created = DateTime.getDateTime();
 	}
 
 	public void setSync(boolean sync) {

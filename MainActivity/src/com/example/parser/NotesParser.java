@@ -8,6 +8,8 @@ package com.example.parser;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 import com.example.model.Notes;
 import com.google.resting.json.JSONArray;
 import com.google.resting.json.JSONException;
@@ -28,7 +30,7 @@ public class NotesParser extends JSONParser {
 		} catch (JSONException e) {
 			System.out.println("JSON error");
 		}
-		//department api returns an array
+		//notes api returns an array
 	}
 	
 	public ArrayList<Notes> getNotes(){
@@ -46,13 +48,13 @@ public class NotesParser extends JSONParser {
 				
 	                           
 	                         /******* Fetch node values **********/
-	            int    notes_id     = Integer.parseInt(jsonChildNode.optString("notes_nr"));
+	            String notes_id  	= jsonChildNode.optString("title_id").toString();
 	            int    encounter_id = Integer.parseInt(jsonChildNode.optString("encounter_nr"));
-	            int    personnel_id = Integer.parseInt(jsonChildNode.optString("personnel_nr"));
+	            int    personnel_id = Integer.parseInt(jsonChildNode.optString("doctor_nr"));
 	            String title       	= jsonChildNode.optString("title").toString();
 				String type			= jsonChildNode.optString("type").toString();
 				String body       	= jsonChildNode.optString("body").toString();
-				String created		= jsonChildNode.optString("date_created").toString();
+				//String created		= jsonChildNode.optString("date_created").toString();
 				
 				Notes note = new Notes();
 				note.setNotesId(notes_id);
@@ -61,12 +63,14 @@ public class NotesParser extends JSONParser {
 				note.setTitle(title);
 				note.setType(type);
 				note.setBody(body);
-				note.setDateCreated(created);
+				note.setSync(true);
+				//note.setDateCreated(created);
 				
 				notes.add(note);
 	        }
 	        
-		}catch(Exception e){System.out.println(e.toString());}
+		}catch(Exception e){
+			Log.d("getNotes", e.toString() + " yu was here");}
         
         return notes;
 	}
