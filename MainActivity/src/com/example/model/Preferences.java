@@ -43,52 +43,51 @@ public class Preferences extends HelperSharedPreferences{
 		}
 	}
 
+	/* retrieves the client id of the application from preferences */
 	public static String getInitializePreference(Context context) {
 		return getSharedPreferencesString(context, "key_client", "client");
 	}
 	
+	/* stores the client id of the application into the preferences */
 	public static void setInitializePreference(Context context, String pref) {
 		putSharedPreferencesString(context, "key_client", pref);
 	}
-	
-	public static String[] getLoginPreference(Context context) {
-		return new String[] {
-				getSharedPreferencesString(context, "key_username", "username"),
-				getSharedPreferencesString(context, "key_password", "password"),
-				getSharedPreferencesString(context, "key_authentication", "authtoken")
-				};
-	}
-	
-	public static void setLoginPreference(Context context, String[] pref) {
-		putSharedPreferencesString(context, "key_username", pref[NULL]);
-		putSharedPreferencesString(context, "key_password", pref[1]);
-		putSharedPreferencesString(context, "key_authentication", pref[2]);
-	}	
 	
 	public static String getAuthenticationPreference(Context context) {
 		return getSharedPreferencesString(context, "key_authentication", "authtoken");
 	}
 	
+	/* stores the authentication token id for a specific doctor into the preferences */
 	public static void setAuthenticationPreference(Context context, String pref) {
 		putSharedPreferencesString(context, "key_authentication", pref);
 	}	
 	
+	/* retrieves remember me of login for a specific doctor from preferences */
 	public static Boolean getRememberPreference(Context context) {
 		return getSharedPreferencesBoolean(context, "key_remember", false);
 	}
 	
+	/* stores the remember me of login for a specific doctor into the preferences */
 	public static void setRememberPreference(Context context, Boolean pref) {
 		putSharedPreferencesBoolean(context, "key_remember", pref);
 	}
 	
+	/* retrieves the base url for a specific doctor from preferences */
+	public static String getBaseUrlPreference(Context context) {
+		return getSharedPreferencesString(context, "key_base_url", "base_url");
+	}
+	
+	/* stores the authentication token for a specific doctor into the preferences */
 	public static void setBaseUrlPreference(Context context, String pref) {
 		putSharedPreferencesString(context, "key_base_url", pref);
 	}
 	
+	/* retrieves personnel number for a specific doctor from preferences */
 	public static Integer getPersonnelPreference(Context context) {
 		return getSharedPreferencesInt(context, "key_personnel_nr", 0);
 	}
 	
+	/* stores the personnel number for a specific doctor into the preferences */
 	public static void setPersonnelPreference(Context context, Integer pref) {
 		putSharedPreferencesInt(context, "key_personnel_nr", pref);
 	}
