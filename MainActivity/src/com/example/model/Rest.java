@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Base64;
+
 
 
 //	To import Resting, copy the .JAR files in Alvin's Seg Dropbox 
@@ -45,6 +47,8 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	private boolean 			result;
 	private ProgressDialog      progressdialog; 
 	private Context             context;
+	
+	private String 				message;
 	
 	
 	public Rest(String method){
@@ -98,6 +102,14 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		this.url = url;
 	}
 
+	private void setMessage(){
+		
+		try {
+			message = new JSONObject(content).optString("message");
+		} catch (JSONException e) {
+			System.out.println(e.toString() + ": no message node");
+		}
+	}
 	
 	/* Getter Methods */
 	
@@ -111,6 +123,14 @@ public class Rest extends AsyncTask<String, Void, Void>{
 	
 	public ServiceResponse getResponse(){
 		return response;
+	}
+	
+	public boolean getResult(){
+		return result;
+	}
+	
+	public String getMessage(){
+		return message;
 	}
 	
 
@@ -131,8 +151,6 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		if(method.equals("GET")){
 			try{
 				response = Resting.get(url, this.params, EncodingTypes.UTF8, headers, 0);
-				content = response.getResponseString();
-				result = true;
 	        } catch(Exception e){
 				result = false;
 			}
@@ -140,22 +158,27 @@ public class Rest extends AsyncTask<String, Void, Void>{
 		else if(method.equals("POST")){
 			try{
 				response = PostHelper.post(url, port, EncodingTypes.UTF8, this.params,headers, null);
-				content = response.getResponseString();
 	        } catch(Exception e){
 				result = false;
 			}
 		}else if(method.equals("PUT")){
 			try{
-				PutHelper.put(url, EncodingTypes.UTF8, port, this.params, headers, null);
+				response = PutHelper.put(url, EncodingTypes.UTF8, port, this.params, headers, null);
 	        } catch(Exception e){
 				result = false;
 			}
 		}
+
+		content = response.getResponseString();
+		
+		if(!content.isEmpty()){
+			setMessage();
+			result = true;
+		}
+		
 		
 		return null;
 	}
-
-	
 
 	@Override
 	protected void onPostExecute(Void result) {
@@ -166,11 +189,4 @@ public class Rest extends AsyncTask<String, Void, Void>{
 			
 		}
 	}
-
-	public boolean getResult(){
-		return result;
-	}
-	
-
-
 }

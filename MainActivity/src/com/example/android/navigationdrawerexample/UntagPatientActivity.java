@@ -1,4 +1,7 @@
 /*
+ * Created by: Alvin Jay Cosare
+ * Date created: 05/14/14
+ * 
  * @Editor: Christian Joseph Dalisay
  * @Edited: 05/19/2014
  * @Description:
@@ -43,6 +46,7 @@ public class UntagPatientActivity extends InitialActivity {
 		finish();
 	}
 
+	/* process untagging */
 	private void submitUntag() {
 		
 		rest = new Rest("PUT");
@@ -66,8 +70,8 @@ public class UntagPatientActivity extends InitialActivity {
 		
 		System.out.println("Data Received:\n" + rest.getContent()); 
 		
-		/* Checks if the untagging of encounter is successful */
-		if(rest.getResult()) {
+		/* checks if the untagging of encounter is successful */
+		if(rest.getResult() && rest.getMessage().equals("Successfully saved")) {
 			deleteUntaggedEncounter();
 		}
 		
