@@ -8,6 +8,7 @@
  * Description:
  * 		This activity is created when doctor clicks the "tag" button
  */
+
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
@@ -41,10 +42,8 @@ public class TagPatientActivity extends InitialActivity {
 		//print encounter_id
 		System.out.println(encounter_id);
 		
+		/* process tagging */
 		submitTag();
-		getPatientFromTag();
-		getEncounterFromTag();
-		//Add code to retrieve notes of specific encounter
 		
 		finish();
 	}
@@ -81,6 +80,13 @@ public class TagPatientActivity extends InitialActivity {
 		while(rest.getContent() == null){}
 		
 		System.out.println("Data Received:\n" + rest.getContent()); 
+		
+		/* checks if the untagging of encounter is successful */
+		if(rest.getResult() && rest.getMessage().equals("Successfully saved")) {
+			getPatientFromTag();
+			getEncounterFromTag();
+			//TODO Create method to retrieve notes of specific encounter
+		}
 			
 	}
 
@@ -95,6 +101,7 @@ public class TagPatientActivity extends InitialActivity {
 	}
 
 	private void getPatientFromTag() {
+		
 		if(isNetworkAvailable()){
 			
 			Rest rest = new Rest("GET", this, "");

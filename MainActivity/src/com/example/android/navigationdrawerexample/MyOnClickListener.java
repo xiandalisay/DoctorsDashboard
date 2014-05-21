@@ -21,8 +21,7 @@ public class MyOnClickListener implements OnClickListener {
 	
 	private final int INDEX_MEDICAL_HISTORY = 0;
 	private final int INDEX_PREVIOUS_REQUESTS = 1;
-	private final int INDEX_REFERRALS = 2;
-	private final int INDEX_NOTES = 3;
+	private final int INDEX_NOTES = 2;
 	
 	private static int lastExpandedGroupPosition;
 	
@@ -60,17 +59,6 @@ public class MyOnClickListener implements OnClickListener {
 				eid = ((Encounter)child.get(childPos)).getEncounterId();
 				bundle = new Bundle();
 				bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
-				//intent = new Intent(view.getContext(), PatientInfoActivity.class);
-				//intent.putExtras(bundle);
-				//view.getContext().startActivity(intent);
-				
-				Toast.makeText(view.getContext(),"groupPos:"+lastExpandedGroupPosition+"\n"+"childPos:"+childPos, Toast.LENGTH_SHORT).show();
-				break;
-			case INDEX_REFERRALS:
-				
-				//eid = ((ReferralHelper)child.get(childPos)).getEncounterId();
-				//bundle = new Bundle();
-				//bundle.putInt("EXTRA_ENCOUNTER_ID", eid);
 				//intent = new Intent(view.getContext(), PatientInfoActivity.class);
 				//intent.putExtras(bundle);
 				//view.getContext().startActivity(intent);

@@ -7,16 +7,13 @@
 package com.example.android.navigationdrawerexample;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.ParseException;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,30 +29,23 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.example.database.DatabaseAdapter;
-import com.example.database.EncounterAdapter;
 import com.example.model.Age;
-import com.example.model.Encounter;
-import com.example.model.HelperSharedPreferences;
 import com.example.model.Patient;
 import com.example.model.Preferences;
 import com.example.model.Rest;
-import com.example.parser.EncounterParser;
 import com.example.parser.PatientParser;
 
 public class PatientActivity extends BaseActivity {
 	
 	private Patient patient;
 	private ArrayList<Patient> patients;
-	private ArrayList<Encounter> encounters;
 	
 	
 	private String patients_url; // = Preferences.getBaseURL(this) + "/patient/show/";
-	private String encounters_url; // = Preferences.getBaseURL(this) + "/encounter/";
 
 	//private final String patients_url = "http://121.97.45.242/segservice/patient/show/";
 	//private final String encounters_url = getBaseURL() + "/encounter/";
 	
-	private int encounter_id;
 	private int patient_id;
 	
 	private Context context;
@@ -84,12 +74,14 @@ public class PatientActivity extends BaseActivity {
 
 			while(rest.getContent() == null){}
 			
+			logMessage(rest.getContent());
 			
 			if(rest.getResult()){
 				String content = rest.getContent();
 				PatientParser patient_parser = new PatientParser(content);
 				patients = patient_parser.getPatients();
 			}
+			
 		} 
 		else{
 		
@@ -128,8 +120,7 @@ public class PatientActivity extends BaseActivity {
 					displayinfo = "HRN: " + Integer.toString(patient.getPID()) +
 							", " + displayinfo + ", Age: " + age.getAge(patient.getBirthdate().substring(0,10));
 				} catch (java.text.ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logMessage(e.toString());
         	    }
 
         	    	
@@ -149,7 +140,6 @@ public class PatientActivity extends BaseActivity {
 				
 				/* getting values from selected ListItem */
 				TextView text = (TextView) view.findViewById(android.R.id.text1);
-				String patientname = text.getText().toString();
 				
 				// Starting single contact activity
 				patient = patients.get(position);
@@ -160,6 +150,8 @@ public class PatientActivity extends BaseActivity {
 				extras = new Bundle();
 				extras.putInt("EXTRA_PATIENT_ID", patient_id);
 				
+				/* sets current patient by saving the pid of the selected patient in preferences */
+				Preferences.setPatientId(context, patient_id); /* key = "key_patient_id" */
 				
 				/* start next activity Patient Info (2nd Page) */
 				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
@@ -247,10 +239,9 @@ public class PatientActivity extends BaseActivity {
 		        					displayinfo = "HRN: " + Integer.toString(patient.getPID()) +
 		        							", " + displayinfo + ", Age: " + age.getAge(patient.getBirthdate().substring(0,10));
 		        				} catch (java.text.ParseException e) {
-		        					// TODO Auto-generated catch block
-		        					e.printStackTrace();
-			            	    }
-			            	    
+		        					logMessage(e.toString());
+		                	    }
+		                	    
 			            	    text1.setText(displayname);
 			            	    text2.setText(displayinfo);
 		                	    
@@ -275,6 +266,10 @@ public class PatientActivity extends BaseActivity {
 			    				intent = new Intent(getApplicationContext(), PatientInfoActivity.class);
 			    				extras = new Bundle();
 			    				extras.putInt("EXTRA_PATIENT_ID", patient_id);
+			    				
+			    				/* sets current patient by saving the pid of the selected patient in preferences */
+			    				Preferences.setPatientId(context, patient_id); /* key = "key_patient_id" */
+			    				
 			    				intent.putExtras(extras);
 			    				startActivity(intent);
 
@@ -295,14 +290,7 @@ public class PatientActivity extends BaseActivity {
 		});
 		
 	}
-	
-	/* retrieves latest encounter of the patient */
-	private int getLatestEncounter(int patient_id) {
-		EncounterAdapter db = new EncounterAdapter(this);
-		
-		return db.getLatestEncounter(patient_id);
-	}
-	
+
 	public boolean isNetworkAvailable() {
 	    ConnectivityManager connectivityManager 
 	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

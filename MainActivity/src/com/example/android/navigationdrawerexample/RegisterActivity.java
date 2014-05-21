@@ -101,10 +101,10 @@ public class RegisterActivity extends InitialActivity{
 		 /* if inputs are all valid, submits them thru API */
 		if(prepareCredentials()){
 			if(submitCredentials()){
-//				if(insertDoctor()){					
+				if(insertDoctor()){					
 					startInitialSync();
 					setLastSync();
-//				}
+				}
 			}
 		}
 	}

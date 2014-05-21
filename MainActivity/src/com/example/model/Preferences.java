@@ -5,7 +5,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class Preferences extends HelperSharedPreferences{
-		
+	
+	private final static int NULL = 0;
+	private  ConnectivityManager connectivityManager;
+	
 	public boolean isNetworkAvailable(Context context) {
 	    ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -36,7 +39,7 @@ public class Preferences extends HelperSharedPreferences{
 			return getSharedPreferencesInt(context, "key_personnel_nr", 0);			
 		} catch(Exception e){
 			System.out.println("getPersonnelNumber Error");
-			return 0;
+			return NULL;
 		}
 	}
 
@@ -57,7 +60,7 @@ public class Preferences extends HelperSharedPreferences{
 	}
 	
 	public static void setLoginPreference(Context context, String[] pref) {
-		putSharedPreferencesString(context, "key_username", pref[0]);
+		putSharedPreferencesString(context, "key_username", pref[NULL]);
 		putSharedPreferencesString(context, "key_password", pref[1]);
 		putSharedPreferencesString(context, "key_authentication", pref[2]);
 	}	
@@ -89,4 +92,21 @@ public class Preferences extends HelperSharedPreferences{
 	public static void setPersonnelPreference(Context context, Integer pref) {
 		putSharedPreferencesInt(context, "key_personnel_nr", pref);
 	}
+	
+	public static int getPatientId(Context context){
+		return getSharedPreferencesInt(context, "key_patient_id", NULL);
+	}
+
+	public static void setPatientId(Context context, int pref){
+		putSharedPreferencesInt(context, "key_patient_id", pref);
+	}
+	public static int getEncounterId(Context context){
+		return getSharedPreferencesInt(context, "key_encounter_id", NULL);
+	}
+	
+	public static void setEncounterId(Context context, int pref){
+		putSharedPreferencesInt(context, "key_encounter_id", pref);
+	}
+	
+	
 }
