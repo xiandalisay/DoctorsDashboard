@@ -164,21 +164,30 @@
             android:src="@drawable/line" />
 
         <TextView
-            android:id="@+id/bmi"
+            android:id="@+id/tv_current"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView5"
             android:layout_centerHorizontal="true"
             android:text="Current BMI"
             android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+        <TextView
+            android:id="@+id/bmi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_current"
+            android:layout_centerHorizontal="true"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <EditText
+        <TextView
             android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/bmi"
             android:layout_centerHorizontal="true"
-            android:ems="10" />
+            android:textAlignment="center" />
 
     </RelativeLayout>
 

@@ -16,7 +16,7 @@ public class CalculationsActivity extends InitialActivity {
 	private EditText et_feet;
 	private EditText et_inches;
 	private EditText et_pounds;
-	private EditText et_rating;
+	private TextView et_rating;
 	private TextView tv_bmi;
 
 
@@ -134,7 +134,7 @@ public class CalculationsActivity extends InitialActivity {
 	public void setCalculation(Float BMI, String rating) {
 		tv_bmi = (TextView) findViewById (R.id.bmi);
 		tv_bmi.setText(String.valueOf(BMI));
-		et_rating = (EditText) findViewById (R.id.rating);
+		et_rating = (TextView) findViewById (R.id.rating);
 		et_rating.setText(rating);
 	}
 }
